@@ -22,6 +22,8 @@ class reglas {
 
   /** lexical states */
   public static final int YYINITIAL = 0;
+  public static final int A = 2;
+  public static final int B = 4;
 
   /**
    * ZZ_LEXSTATE[l] is the state in the DFA for the lexical state l
@@ -30,18 +32,21 @@ class reglas {
    * l is of the form l = 2*k, k a non negative integer
    */
   private static final int ZZ_LEXSTATE[] = { 
-     0, 0
+     0,  0,  0,  0,  0, 0
   };
 
   /** 
    * Translates characters to character classes
    */
   private static final String ZZ_CMAP_PACKED = 
-    "\11\0\1\21\1\21\1\22\1\22\1\21\22\0\1\21\17\0\1\4"+
-    "\7\3\2\1\7\0\6\17\24\16\4\0\1\20\1\0\1\16\1\13"+
-    "\1\16\1\11\1\15\3\16\1\10\2\16\1\14\2\16\1\2\5\16"+
-    "\1\12\1\7\1\16\1\5\2\16\1\0\1\6\10\0\1\22\u1fa2\0"+
-    "\1\22\1\22\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\udfe6\0";
+    "\11\0\1\41\1\41\1\54\1\54\1\41\22\0\1\41\1\43\3\0"+
+    "\1\42\1\45\1\0\1\50\1\51\1\42\1\42\1\42\1\42\1\42"+
+    "\1\42\1\4\7\3\2\1\1\0\1\42\1\43\1\44\1\43\2\0"+
+    "\1\34\5\37\7\36\1\33\14\36\1\46\1\0\1\47\1\0\1\40"+
+    "\1\0\1\24\1\13\1\23\1\11\1\15\1\25\1\22\1\26\1\10"+
+    "\1\36\1\32\1\14\1\27\1\16\1\2\1\30\1\36\1\21\1\20"+
+    "\1\17\1\12\1\7\1\31\1\5\1\35\1\36\1\52\1\6\1\53"+
+    "\7\0\1\54\u1fa2\0\1\54\1\54\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\udfe6\0";
 
   /** 
    * Translates characters to character classes
@@ -54,11 +59,12 @@ class reglas {
   private static final int [] ZZ_ACTION = zzUnpackAction();
 
   private static final String ZZ_ACTION_PACKED_0 =
-    "\1\0\1\1\1\2\1\3\1\2\3\3\1\4\1\5"+
-    "\1\0\2\3\1\6\2\3\1\7\2\3";
+    "\1\0\1\1\1\2\1\3\1\2\1\3\1\1\15\3"+
+    "\1\4\2\5\1\1\3\5\1\6\1\0\2\3\1\7"+
+    "\16\3\1\10\1\3\1\7\13\3\1\7\24\3";
 
   private static int [] zzUnpackAction() {
-    int [] result = new int[19];
+    int [] result = new int[81];
     int offset = 0;
     offset = zzUnpackAction(ZZ_ACTION_PACKED_0, offset, result);
     return result;
@@ -83,12 +89,20 @@ class reglas {
   private static final int [] ZZ_ROWMAP = zzUnpackRowMap();
 
   private static final String ZZ_ROWMAP_PACKED_0 =
-    "\0\0\0\23\0\46\0\71\0\114\0\137\0\162\0\205"+
-    "\0\230\0\71\0\253\0\276\0\321\0\253\0\344\0\367"+
-    "\0\137\0\u010a\0\u011d";
+    "\0\0\0\55\0\132\0\207\0\264\0\341\0\u010e\0\u013b"+
+    "\0\u0168\0\u0195\0\u01c2\0\u01ef\0\u021c\0\u0249\0\u0276\0\u02a3"+
+    "\0\u02d0\0\u02fd\0\u032a\0\u0357\0\u0384\0\55\0\u03b1\0\u03de"+
+    "\0\u040b\0\u0438\0\u0465\0\207\0\u0492\0\u04bf\0\u04ec\0\341"+
+    "\0\u0519\0\u0546\0\u0573\0\u05a0\0\u05cd\0\u05fa\0\u0627\0\u0654"+
+    "\0\u0681\0\u06ae\0\u06db\0\u0708\0\u0735\0\u0762\0\u0492\0\u078f"+
+    "\0\u07bc\0\u07e9\0\u0816\0\u0843\0\u0870\0\u089d\0\u08ca\0\u08f7"+
+    "\0\u0924\0\u0951\0\u097e\0\u09ab\0\u09d8\0\u0a05\0\u0a32\0\u0a5f"+
+    "\0\u0a8c\0\u0ab9\0\u0ae6\0\u0b13\0\u0b40\0\u0b6d\0\u0b9a\0\u0bc7"+
+    "\0\u0bf4\0\u0c21\0\u0c4e\0\u0c7b\0\u0ca8\0\u0cd5\0\u0d02\0\u0d2f"+
+    "\0\u0d5c";
 
   private static int [] zzUnpackRowMap() {
-    int [] result = new int[19];
+    int [] result = new int[81];
     int offset = 0;
     offset = zzUnpackRowMap(ZZ_ROWMAP_PACKED_0, offset, result);
     return result;
@@ -111,21 +125,68 @@ class reglas {
   private static final int [] ZZ_TRANS = zzUnpackTrans();
 
   private static final String ZZ_TRANS_PACKED_0 =
-    "\1\2\1\3\1\4\1\3\1\5\1\6\1\2\1\7"+
-    "\1\6\1\10\6\6\1\2\1\11\25\0\1\3\1\0"+
-    "\2\3\17\0\2\6\2\12\1\6\1\0\12\6\3\0"+
-    "\1\3\1\0\2\3\1\13\16\0\5\6\1\0\12\6"+
-    "\3\0\1\6\1\14\3\6\1\0\12\6\3\0\1\6"+
-    "\1\15\3\6\1\0\12\6\23\0\1\11\2\0\1\16"+
-    "\1\0\2\16\1\0\1\16\10\0\1\16\4\0\5\6"+
-    "\1\0\1\6\1\17\10\6\3\0\5\6\1\0\3\6"+
-    "\1\20\6\6\3\0\5\6\1\0\2\6\1\21\7\6"+
-    "\3\0\5\6\1\0\4\6\1\22\5\6\3\0\5\6"+
-    "\1\0\5\6\1\23\4\6\3\0\5\6\1\0\6\6"+
-    "\1\21\3\6\2\0";
+    "\1\2\1\3\1\4\1\3\1\5\1\6\1\7\1\10"+
+    "\1\11\1\12\1\6\1\13\1\6\1\14\1\15\1\16"+
+    "\1\17\1\20\1\6\1\21\1\6\1\22\3\6\1\23"+
+    "\1\6\1\24\4\6\1\2\1\25\1\26\2\27\1\30"+
+    "\1\31\1\26\1\32\1\26\1\33\1\26\57\0\1\3"+
+    "\1\0\2\3\51\0\2\6\2\34\1\6\1\0\32\6"+
+    "\15\0\1\3\1\0\2\3\1\35\50\0\5\6\1\0"+
+    "\32\6\22\0\1\26\47\0\1\6\1\36\3\6\1\0"+
+    "\32\6\15\0\5\6\1\0\7\6\1\37\6\6\1\40"+
+    "\1\6\1\41\11\6\15\0\1\6\1\42\3\6\1\0"+
+    "\32\6\15\0\1\6\1\43\3\6\1\0\12\6\1\44"+
+    "\17\6\15\0\4\6\1\45\1\0\5\6\1\46\24\6"+
+    "\15\0\5\6\1\0\3\6\1\47\26\6\15\0\5\6"+
+    "\1\0\17\6\1\50\12\6\15\0\5\6\1\0\10\6"+
+    "\1\51\21\6\15\0\5\6\1\0\6\6\1\52\23\6"+
+    "\15\0\5\6\1\0\5\6\1\53\24\6\15\0\1\6"+
+    "\1\54\3\6\1\0\32\6\15\0\5\6\1\0\17\6"+
+    "\1\55\12\6\15\0\5\6\1\0\6\6\1\56\23\6"+
+    "\55\0\1\25\57\0\1\26\55\0\1\26\56\0\1\26"+
+    "\56\0\1\26\56\0\1\26\2\0\1\57\1\0\2\57"+
+    "\1\0\1\57\25\0\1\57\2\0\1\57\16\0\5\6"+
+    "\1\0\1\6\1\60\30\6\15\0\5\6\1\0\10\6"+
+    "\1\61\21\6\15\0\5\6\1\0\21\6\1\62\10\6"+
+    "\15\0\5\6\1\0\3\6\1\63\26\6\15\0\1\6"+
+    "\1\64\3\6\1\0\32\6\15\0\5\6\1\0\6\6"+
+    "\1\65\23\6\15\0\5\6\1\0\10\6\1\66\21\6"+
+    "\15\0\5\6\1\0\11\6\1\67\20\6\15\0\5\6"+
+    "\1\0\5\6\1\64\24\6\15\0\5\6\1\0\1\6"+
+    "\1\70\30\6\15\0\5\6\1\0\12\6\1\71\17\6"+
+    "\15\0\5\6\1\0\10\6\1\72\21\6\15\0\5\6"+
+    "\1\0\15\6\1\73\14\6\15\0\5\6\1\0\12\6"+
+    "\1\40\17\6\15\0\5\6\1\0\1\6\1\74\30\6"+
+    "\15\0\5\6\1\0\22\6\1\75\7\6\15\0\5\6"+
+    "\1\0\2\6\1\40\27\6\15\0\5\6\1\0\6\6"+
+    "\1\76\23\6\15\0\5\6\1\0\5\6\1\77\24\6"+
+    "\15\0\5\6\1\0\4\6\1\74\25\6\15\0\5\6"+
+    "\1\0\5\6\1\40\24\6\15\0\5\6\1\0\15\6"+
+    "\1\100\14\6\15\0\5\6\1\0\6\6\1\101\23\6"+
+    "\15\0\5\6\1\0\6\6\1\40\23\6\15\0\5\6"+
+    "\1\0\11\6\1\40\20\6\15\0\5\6\1\0\1\6"+
+    "\1\102\30\6\15\0\5\6\1\0\3\6\1\103\26\6"+
+    "\15\0\5\6\1\0\11\6\1\70\20\6\15\0\5\6"+
+    "\1\0\5\6\1\67\24\6\15\0\5\6\1\0\25\6"+
+    "\1\104\4\6\15\0\5\6\1\0\12\6\1\105\17\6"+
+    "\15\0\5\6\1\0\6\6\1\106\23\6\15\0\5\6"+
+    "\1\0\23\6\1\40\6\6\15\0\5\6\1\0\7\6"+
+    "\1\107\22\6\15\0\5\6\1\0\7\6\1\110\22\6"+
+    "\15\0\5\6\1\0\12\6\1\111\17\6\15\0\5\6"+
+    "\1\0\12\6\1\112\17\6\15\0\5\6\1\0\16\6"+
+    "\1\113\13\6\15\0\5\6\1\0\20\6\1\114\11\6"+
+    "\15\0\5\6\1\0\2\6\1\70\27\6\15\0\5\6"+
+    "\1\0\13\6\1\40\16\6\15\0\5\6\1\0\7\6"+
+    "\1\40\22\6\15\0\5\6\1\0\12\6\1\115\17\6"+
+    "\15\0\5\6\1\0\15\6\1\116\14\6\15\0\5\6"+
+    "\1\0\6\6\1\117\23\6\15\0\5\6\1\0\15\6"+
+    "\1\120\14\6\15\0\5\6\1\0\14\6\1\67\15\6"+
+    "\15\0\5\6\1\0\7\6\1\121\22\6\15\0\5\6"+
+    "\1\0\26\6\1\40\3\6\15\0\5\6\1\0\10\6"+
+    "\1\70\21\6\14\0";
 
   private static int [] zzUnpackTrans() {
-    int [] result = new int[304];
+    int [] result = new int[3465];
     int offset = 0;
     offset = zzUnpackTrans(ZZ_TRANS_PACKED_0, offset, result);
     return result;
@@ -163,10 +224,10 @@ class reglas {
   private static final int [] ZZ_ATTRIBUTE = zzUnpackAttribute();
 
   private static final String ZZ_ATTRIBUTE_PACKED_0 =
-    "\1\0\1\11\10\1\1\0\10\1";
+    "\1\0\1\11\23\1\1\11\6\1\1\0\64\1";
 
   private static int [] zzUnpackAttribute() {
-    int [] result = new int[19];
+    int [] result = new int[81];
     int offset = 0;
     offset = zzUnpackAttribute(ZZ_ATTRIBUTE_PACKED_0, offset, result);
     return result;
@@ -266,7 +327,7 @@ class reglas {
     char [] map = new char[0x110000];
     int i = 0;  /* index in packed string  */
     int j = 0;  /* index in unpacked array */
-    while (i < 118) {
+    while (i < 184) {
       int  count = packed.charAt(i++);
       char value = packed.charAt(i++);
       do map[j++] = value; while (--count > 0);
@@ -617,33 +678,37 @@ class reglas {
       else {
         switch (zzAction < 0 ? zzAction : ZZ_ACTION[zzAction]) {
           case 1: 
-            { return Error.toString();
-            }
-          case 8: break;
-          case 2: 
-            { return Decimal.toString() + ", "+ yytext()+" Linea: "+ yyline+" Columna: " + yycolumn;
+            { return "***"+Error.toString()+"***" + "En: <"+yytext() + ">"+" Linea: "+ yyline+" Columna: " + yycolumn;
             }
           case 9: break;
-          case 3: 
-            { return Identifier.toString() + ", "+ yytext()+" Linea: "+ yyline+" Columna: " + yycolumn;
+          case 2: 
+            { return "<"+Decimal.toString()+">" + ", "+ "<"+ yytext()+">"+" Linea: "+ yyline+" Columna: " + yycolumn;
             }
           case 10: break;
+          case 3: 
+            { return "<"+Identifier.toString()+">" + ", "+"<"+ yytext()+">"+" Linea: "+ yyline+" Columna: " + yycolumn;
+            }
+          case 11: break;
           case 4: 
             { return "";
             }
-          case 11: break;
-          case 5: 
-            { return Octal.toString() + ", "+ yytext()+" Linea: "+ yyline+" Columna: " + yycolumn;
-            }
           case 12: break;
-          case 6: 
-            { return Hex.toString() + ", "+ yytext()+" Linea: "+ yyline+" Columna: " + yycolumn;
+          case 5: 
+            { return "<"+Operador.toString()+">" + ", "+ "<"+yytext()+">"+" Linea: "+ yyline+" Columna: " + yycolumn;
             }
           case 13: break;
-          case 7: 
-            { return "PClave" + ", "+ yytext()+" Linea: "+ yyline+" Columna: " + yycolumn;
+          case 6: 
+            { return "<"+Octal.toString()+">" + ", "+"<"+ yytext()+">"+" Linea: "+ yyline+" Columna: " + yycolumn;
             }
           case 14: break;
+          case 7: 
+            { return "<" + PalabraClave.toString()+">" + ", "+ "<"+yytext()+">"+" Linea: "+ yyline+" Columna: " + yycolumn;
+            }
+          case 15: break;
+          case 8: 
+            { return "<"+Hex.toString()+">" + ", "+"<"+ yytext()+">"+" Linea: "+ yyline+" Columna: " + yycolumn;
+            }
+          case 16: break;
           default:
             zzScanError(ZZ_NO_MATCH);
         }

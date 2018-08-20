@@ -10,5 +10,5 @@ package compilador;
  * @author Mario
  */
 public enum Token {
-    Decimal, Octal, Hex, Identifier, Error;
+    Decimal, Octal, Hex, Identifier, Error, Operador, PalabraClave;
 }

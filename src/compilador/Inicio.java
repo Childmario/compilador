@@ -118,7 +118,7 @@ if (result == JFileChooser.APPROVE_OPTION) {
             
             String token = analisis.yylex();
         
-            if (token == null) {
+            if (token == "FIN") {
                 resultados = resultados + "\n\rFIN";
                 jTextArea1.setText(resultados);
                 return;

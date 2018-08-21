@@ -16,25 +16,46 @@ import java.util.ArrayList;
 
 %init}
 
-%{
-//private ArrayList token
-%}
-%states A B
-
-D     = [0-9]+                /* Macro for Integer numbers */
-O       = "o"[0-7]+             /* Macro for Octal numbers */
-H         = "0x"[0-9|A-F]+        /* Macro for Hexadecimal numbers */
-PClave = "void"|"double"|"int"|"bool"|"string"|"class"|"interface"|"null"|"this"|"extends"|"implements"|"for"|"while"|"if"|"else"|"return"|"break"|"New"|"NewArray"
-Id  = [a-zA-Z][a-zA-Z0-9_]* /* Macro for Identifiers */
-S  = [ \n\t\r]+ //Espacios
-OP = "+"|"-"|"*"|"/"|"%"|"<"|"<="|">"|">="|"="|"=="|"!="|"&&"|"||"|"!"|";"|","|"."|"["|"]"|"("|")"|"{"|"}"|"[]"|"()"|"{}"
+InputChar = [^\n\r]
+SpaceChar = [\ \t]
+LineChar = \n|\r|\r\n
+Zero = 0
+DecInt = [1-9][0-9]*
+OctalInt = 0[0-7]+
+HexInt = 0[xX][0-9a-fA-F]+
+Integer = ( {Zero} | {DecInt} | {OctalInt} | {HexInt} )[lL]?
+Exponent = [eE] [\+\-]? [0-9]+
+Float1 = [0-9]+ \. [0-9]+ {Exponent}?
+Float2 = \. [0-9]+ {Exponent}?
+Float3 = [0-9]+ \. {Exponent}?
+Float4 = [0-9]+ {Exponent}
+Float = ( {Float1} | {Float2} | {Float3} | {Float4} ) [fFdD]? |
+[0-9]+ [fFDd]
+Ident = [A-Za-z_$] [A-Za-z_$0-9]*
+CChar = [^\'\\\n\r] | {EscChar}
+SChar = [^\"\\\n\r] | {EscChar}
+EscChar = \\[ntbrf\\\'\"] | {OctalEscape}
+OctalEscape = \\[0-7] | \\[0-7][0-7] | \\[0-3][0-7][0-7]
 %%
 
-{D} {return "<"+Decimal.toString()+">" + ", "+ "<"+ yytext()+">"+" Linea: "+ yyline+" Columna: " + yycolumn;}
-{O} {return "<"+Octal.toString()+">" + ", "+"<"+ yytext()+">"+" Linea: "+ yyline+" Columna: " + yycolumn;}
-{H} {return "<"+Hex.toString()+">" + ", "+"<"+ yytext()+">"+" Linea: "+ yyline+" Columna: " + yycolumn;}
-{PClave} {return "<" + PalabraClave.toString()+">" + ", "+ "<"+yytext()+">"+" Linea: "+ yyline+" Columna: " + yycolumn; }
-{Id} {return "<"+Identifier.toString()+">" + ", "+"<"+ yytext()+">"+" Linea: "+ yyline+" Columna: " + yycolumn;}
-{S} {return "";}
-{OP} {return "<"+Operador.toString()+">" + ", "+ "<"+yytext()+">"+" Linea: "+ yyline+" Columna: " + yycolumn;}
-. {return "***"+Error.toString()+"***" + "En: <"+yytext() + ">"+" Linea: "+ yyline+" Columna: " + yycolumn;}
+abstract { return "abstract"; }
+boolean { return "boolean"; }
+break { return "break"; }
+transient { return "trasient"; }
+try { return "try"; }
+void { return "void"; }
+volatile { return "volatile"; }
+while { return "while"; }
+"(" { return "("; }
+")" { return ")"; }
+"{" { return "{"; }
+"}" { return "}"; }
+"[" { return "["; }
+"]" { return "]"; }
+{SpaceChar} { }
+{Ident} { return "Id"; }
+{Integer} { return "Int"; }
+"//"{InputChar}* { return "comentario";}
+{LineChar} { }
+<<EOF>> { return "FIN"; }
+. { return "Error"; }

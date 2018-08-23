@@ -13,9 +13,16 @@ import java.util.ArrayList;
 
 
 %init{
-
 %init}
+%{
 
+public String posicion(String token){
+
+      return "Token: "+ token +" -> " +"<" + yytext() + "> " + "Línea: " + yyline + " Columna: " + yycolumn;
+
+}
+
+%}
 InputChar = [^\n\r]
 SpaceChar = [\ \t]
 LineChar = \n|\r|\r\n
@@ -36,26 +43,59 @@ CChar = [^\'\\\n\r] | {EscChar}
 SChar = [^\"\\\n\r] | {EscChar}
 EscChar = \\[ntbrf\\\'\"] | {OctalEscape}
 OctalEscape = \\[0-7] | \\[0-7][0-7] | \\[0-3][0-7][0-7]
-%%
+%% 
+void { return posicion("void"); }
+int {return posicion("int");}
+double {return posicion("double");}
+bool {return posicion("bool");}
+string {return posicion("string");}
+class {return posicion("class");}
+interface {return posicion("interface");}
+null {return posicion("null");}
+this {return posicion("this");}
+extends {return posicion("extends");}
+implements {return posicion("implements");}
+for {return posicion("for");}
+while {return posicion("while");}
+if {return posicion("if");}
+else {return posicion("else");}
+return {return posicion("return");}
+break {return posicion("break");}
+New {return posicion("New");}
+NewArray {return posicion("New Array");}
 
-abstract { return "abstract"; }
-boolean { return "boolean"; }
-break { return "break"; }
-transient { return "trasient"; }
-try { return "try"; }
-void { return "void"; }
-volatile { return "volatile"; }
-while { return "while"; }
 "(" { return "("; }
 ")" { return ")"; }
 "{" { return "{"; }
 "}" { return "}"; }
 "[" { return "["; }
 "]" { return "]"; }
+"[]" {return "[]";}
+"{}" {return "[]";}
+"()" {return "()";}
+"." {return ".";}
+"," {return ",";}
+";" {return ";";}
+"!" {return "!";}
+"||" {return "||";}
+"&&" {return "&&";}
+"!=" {return "!=";}
+"==" {return "==";}
+"=" {return "=";}
+">=" {return ">=";}
+">" {return ">";}
+"<=" {return "<=";}
+"<" {return "<";}
+"%" {return "%";}
+"/" {return "/";}
+"*" {return "*";}
+"-" {return "-";}
+"+" {return "+";}
 {SpaceChar} { }
-{Ident} { return "Id"; }
-{Integer} { return "Int"; }
-"//"{InputChar}* { return "comentario";}
+{Ident} { return posicion("Id"); }
+{Integer} { return posicion("Int"); }
+"//"{InputChar}* { return posicion("comentario");}
 {LineChar} { }
+"/*"~"*/"  { return "comentario";} 
 <<EOF>> { return "FIN"; }
-. { return "Error"; }
+. { return posicion("Error"); }

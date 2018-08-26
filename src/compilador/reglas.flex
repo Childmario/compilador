@@ -18,7 +18,23 @@ import java.util.ArrayList;
 
 public String posicion(String token){
 
-      return "Token: "+ token +" -> " +"<" + yytext() + "> " + "Línea: " + yyline + " Columna: " + yycolumn;
+       String auxiliar = yytext();
+int col = auxiliar.length();
+boolean truncado = false;
+         if (token.compareTo("Id")==0) {
+        if (col>31) {
+            auxiliar = auxiliar.substring(0, 31);
+truncado = true;
+        }
+    }
+col += yycolumn;
+if(truncado){
+return "Token: "+ token +" -> " +"<" + auxiliar + "> " +" ***Id truncado*** "+ "Línea: " + yyline + " Columna: " + yycolumn +"-"+col;
+}
+else{
+return "Token: "+ token +" -> " +"<" + auxiliar + "> " + "Línea: " + yyline + " Columna: " + yycolumn +"-"+col;
+}
+      
 
 }
 
@@ -28,17 +44,12 @@ SpaceChar = [\ \t]
 LineChar = \n|\r|\r\n
 Zero = 0
 DecInt = [1-9][0-9]*
-OctalInt = 0[0-7]+
 HexInt = 0[xX][0-9a-fA-F]+
-Integer = ( {Zero} | {DecInt} | {OctalInt} | {HexInt} )[lL]?
+double = (([0-9]+)"."([0-9]*))
+Integer =  {Zero} | {DecInt} | {HexInt} 
 Exponent = [eE] [\+\-]? [0-9]+
-Float1 = [0-9]+ \. [0-9]+ {Exponent}?
-Float2 = \. [0-9]+ {Exponent}?
-Float3 = [0-9]+ \. {Exponent}?
-Float4 = [0-9]+ {Exponent}
-Float = ( {Float1} | {Float2} | {Float3} | {Float4} ) [fFdD]? |
-[0-9]+ [fFDd]
-Ident = [A-Za-z_$] [A-Za-z_$0-9]*
+Ident = [A-Za-z] [A-Za-z0-9_]*
+constante = "true"|"false"
 CChar = [^\'\\\n\r] | {EscChar}
 SChar = [^\"\\\n\r] | {EscChar}
 EscChar = \\[ntbrf\\\'\"] | {OctalEscape}
@@ -63,39 +74,43 @@ return {return posicion("return");}
 break {return posicion("break");}
 New {return posicion("New");}
 NewArray {return posicion("New Array");}
+constante {return posicion("Constante");}
+double {return posicion("double");}
+Float {return posicion("Float");}
 
-"(" { return "("; }
-")" { return ")"; }
-"{" { return "{"; }
-"}" { return "}"; }
-"[" { return "["; }
-"]" { return "]"; }
-"[]" {return "[]";}
-"{}" {return "[]";}
-"()" {return "()";}
-"." {return ".";}
-"," {return ",";}
-";" {return ";";}
-"!" {return "!";}
-"||" {return "||";}
-"&&" {return "&&";}
-"!=" {return "!=";}
-"==" {return "==";}
-"=" {return "=";}
-">=" {return ">=";}
-">" {return ">";}
-"<=" {return "<=";}
-"<" {return "<";}
-"%" {return "%";}
-"/" {return "/";}
-"*" {return "*";}
-"-" {return "-";}
-"+" {return "+";}
+"(" { return posicion("("); }
+")" { return posicion(")"); }
+"{" { return posicion("{"); }
+"}" { return posicion("}"); }
+"[" { return posicion("["); }
+"]" { return posicion("]"); }
+"[]" {return posicion("[]");}
+"{}" {return posicion("{}");}
+"()" {return posicion("()");}
+"." {return posicion(".");}
+"," {return posicion(",");}
+";" {return posicion(";");}
+"!" {return posicion("!");}
+"||" {return posicion("||");}
+"&&" {return posicion("&&");}
+"!=" {return posicion("!=");}
+"==" {return posicion("==");}
+"=" {return posicion("=");}
+">=" {return posicion(">=");}
+">" {return posicion(">");}
+"<=" {return posicion("<=");}
+"<" {return posicion("<");}
+"%" {return posicion("%");}
+"/" {return posicion("/");}
+"*" {return posicion("*");}
+"-" {return posicion("-");}
+"+" {return posicion("+");}
 {SpaceChar} { }
 {Ident} { return posicion("Id"); }
 {Integer} { return posicion("Int"); }
 "//"{InputChar}* { return posicion("comentario");}
 {LineChar} { }
 "/*"~"*/"  { return "comentario";} 
+\"{SChar}*\" {return posicion("String");}
 <<EOF>> { return "FIN"; }
 . { return posicion("Error"); }

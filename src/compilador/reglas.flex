@@ -45,8 +45,7 @@ LineChar = \n|\r|\r\n
 Zero = 0
 DecInt = [1-9][0-9]*
 HexInt = 0[xX][0-9a-fA-F]+
-double = (([0-9]+)"."([0-9]*))
-Integer =  {Zero} | {DecInt} | {HexInt} 
+Integer = {Zero} | {DecInt} | {HexInt} 
 Exponent = [eE] [\+\-]? [0-9]+
 Ident = [A-Za-z] [A-Za-z0-9_]*
 constante = "true"|"false"
@@ -57,7 +56,6 @@ OctalEscape = \\[0-7] | \\[0-7][0-7] | \\[0-3][0-7][0-7]
 %% 
 void { return posicion("void"); }
 int {return posicion("int");}
-double {return posicion("double");}
 bool {return posicion("bool");}
 string {return posicion("string");}
 class {return posicion("class");}
@@ -75,7 +73,7 @@ break {return posicion("break");}
 New {return posicion("New");}
 NewArray {return posicion("New Array");}
 constante {return posicion("Constante");}
-double {return posicion("double");}
+({Integer})+"."({Integer})* {return posicion("double");}
 Float {return posicion("Float");}
 
 "(" { return posicion("("); }

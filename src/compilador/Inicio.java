@@ -6,9 +6,12 @@
 package compilador;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
+import javax.swing.table.DefaultTableModel;
 import jdk.nashorn.internal.parser.Lexer;
 
 /**
@@ -16,10 +19,11 @@ import jdk.nashorn.internal.parser.Lexer;
  * @author Mario
  */
 public class Inicio extends javax.swing.JFrame {
-
+    
     /**
      * Creates new form Inicio
      */
+    ArrayList<String> lista_resultado = new ArrayList<>();
     public Inicio() {
         initComponents();
     }
@@ -36,6 +40,8 @@ public class Inicio extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
         jButton1 = new javax.swing.JButton();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        tabla_tokens = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -50,6 +56,31 @@ public class Inicio extends javax.swing.JFrame {
             }
         });
 
+        tabla_tokens.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Token", "Lexema", "Línea", "Columna"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                true, false, true, true
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane3.setViewportView(tabla_tokens);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -57,9 +88,11 @@ public class Inicio extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(25, 25, 25)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 525, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1))
-                .addContainerGap(45, Short.MAX_VALUE))
+                    .addComponent(jButton1)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(61, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -67,8 +100,12 @@ public class Inicio extends javax.swing.JFrame {
                 .addGap(60, 60, 60)
                 .addComponent(jButton1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(42, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(26, Short.MAX_VALUE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         pack();
@@ -94,23 +131,10 @@ if (result == JFileChooser.APPROVE_OPTION) {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     public void analizador_lex(String ruta) throws IOException{
-    
- /*      File fichero = new File (ruta);
-        PrintWriter writer;
-        
-        try {
-            writer = new PrintWriter(fichero);
-            writer.print(jTextField1.getText());
-            writer.close();
-        } catch (Exception e) {
-            Logger.getLogger(Inicio.class.getName()).log(Level.SEVERE, null, e
-            );
-        } */
             FileReader fr = new FileReader(ruta);
             Reader lector = new BufferedReader(fr);
-            //String lectura = lector.readLine();
-            //podría hacer un splir por palabrareservada, simbolo
             reglas analisis = new reglas(lector);
+            DefaultTableModel model = (DefaultTableModel) tabla_tokens.getModel();
             String resultados = "";
             
         while (true){
@@ -124,26 +148,33 @@ if (result == JFileChooser.APPROVE_OPTION) {
                 return;
             }
             
+            lista_resultado.addAll(Arrays.asList(token.split(",")));
+            if (lista_resultado.size()==4) {
+            model.addRow(new Object[] {lista_resultado.get(0),lista_resultado.get(1),lista_resultado.get(2),lista_resultado.get(3)});
+            lista_resultado.clear();
+            }
+
+            
             resultados+=token+"\n\r";
             
-            switch(token){
-            
-                case "Decimal":
-                    resultados = resultados + "Token: "+token+" "+analisis.yytext();
-                    break;
-                case "Octal":
-                    resultados = resultados + "Token: "+token+" "+analisis.yytext();
-                    break;
-                case "Hex":
-                    resultados = resultados + "Token: "+token+" "+analisis.yytext();
-                    break;
-                case "Identifier":
-                    resultados = resultados + "Token: "+token+" "+analisis.yytext();
-                    break;
-                    default:
-                        break;
-                
-            }
+//            switch(token){
+//            
+//                case "Decimal":
+//                    resultados = resultados + "Token: "+token+" "+analisis.yytext();
+//                    break;
+//                case "Octal":
+//                    resultados = resultados + "Token: "+token+" "+analisis.yytext();
+//                    break;
+//                case "Hex":
+//                    resultados = resultados + "Token: "+token+" "+analisis.yytext();
+//                    break;
+//                case "Identifier":
+//                    resultados = resultados + "Token: "+token+" "+analisis.yytext();
+//                    break;
+//                    default:
+//                        break;
+//                
+//            }
                     
             
         }
@@ -188,6 +219,8 @@ if (result == JFileChooser.APPROVE_OPTION) {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JTable tabla_tokens;
     // End of variables declaration//GEN-END:variables
 }

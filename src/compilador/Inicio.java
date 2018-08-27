@@ -68,7 +68,7 @@ public class Inicio extends javax.swing.JFrame {
                 java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                true, false, true, true
+                false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -128,6 +128,33 @@ if (result == JFileChooser.APPROVE_OPTION) {
             System.out.println(e.getMessage());
         }
         
+JFileChooser fileChooser_save = new JFileChooser();
+fileChooser_save.setCurrentDirectory(new File(System.getProperty("user.home")));
+int result_save = fileChooser_save.showSaveDialog(this);
+        if (result_save == JFileChooser.APPROVE_OPTION) {
+    File selectedFile = fileChooser_save.getSelectedFile();
+     
+            try {
+
+    FileWriter escritor = new FileWriter(selectedFile);
+    BufferedWriter escritor2 = new BufferedWriter(escritor);
+    escritor2.write("Token            Lexema           Linea            columna");
+                for (int i = 0; i < tabla_tokens.getRowCount(); i++) {
+                    for (int j = 0; j < tabla_tokens.getColumnCount(); j++) {
+                        escritor2.write(tabla_tokens.getValueAt(i, j).toString());
+                        escritor2.write("-");
+                    }
+                    escritor2.newLine();
+                }
+                escritor2.close();
+                escritor.close();
+                
+            } catch (IOException ex) {
+            }
+
+        }
+        
+        
     }//GEN-LAST:event_jButton1ActionPerformed
 
     public void analizador_lex(String ruta) throws IOException{
@@ -151,8 +178,8 @@ if (result == JFileChooser.APPROVE_OPTION) {
             lista_resultado.addAll(Arrays.asList(token.split(",")));
             if (lista_resultado.size()==4) {
             model.addRow(new Object[] {lista_resultado.get(0),lista_resultado.get(1),lista_resultado.get(2),lista_resultado.get(3)});
-            lista_resultado.clear();
             }
+             lista_resultado.clear();
 
             
             resultados+=token+"\n\r";

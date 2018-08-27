@@ -139,6 +139,7 @@ int result_save = fileChooser_save.showSaveDialog(this);
     FileWriter escritor = new FileWriter(selectedFile);
     BufferedWriter escritor2 = new BufferedWriter(escritor);
     escritor2.write("Token            Lexema           Linea            columna");
+    escritor2.newLine();
                 for (int i = 0; i < tabla_tokens.getRowCount(); i++) {
                     for (int j = 0; j < tabla_tokens.getColumnCount(); j++) {
                         escritor2.write(tabla_tokens.getValueAt(i, j).toString());

@@ -29,7 +29,8 @@ truncado = true;
     }
 col += yycolumn;
 if(truncado){
-return "Token: "+ token +" -> " +"<" + auxiliar + "> " +" ***Id truncado*** "+ "Línea: " + yyline + " Columna: " + yycolumn +"-"+col;
+//return "Token: "+ token +" -> " +"<" + auxiliar + "> " +" ***Id truncado*** "+ "Línea: " + yyline + " Columna: " + yycolumn +"-"+col;
+return token+","+auxiliar+"*"+","+yyline+","+yycolumn +"-"+col;
 }
 else{
 //return "Token: "+ token +" -> " +"<" + auxiliar + "> " + "Línea: " + yyline + " Columna: " + yycolumn +"-"+col;
@@ -74,7 +75,7 @@ break {return posicion("break");}
 New {return posicion("New");}
 NewArray {return posicion("New Array");}
 constante {return posicion("Constante");}
-({Integer})+"."({Integer})* {return posicion("double");}
+({Integer})+"."({Integer})*({Exponent})? {return posicion("double");}
 Float {return posicion("Float");}
 
 "(" { return posicion("("); }

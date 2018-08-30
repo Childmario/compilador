@@ -111,7 +111,7 @@ Float {return posicion("Float");}
 "//"{InputChar}* { return "comentario";}
 {LineChar} { }
 "/*"~"*/"  { return "comentario";} 
-"/*"[^*]+  { return "Error de comentario";}
+"/*"[^*]+  { return posicion("Error de comentario");}
 \"{SChar}*\" {return posicion("String");}
 <<EOF>> { return "FIN"; }
 . { return posicion("Error"); }

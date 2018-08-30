@@ -965,7 +965,7 @@ return token+","+auxiliar+","+yyline+","+yycolumn +"-"+col;
             }
           case 93: break;
           case 39: 
-            { return "Error de comentario";
+            { return posicion("Error de comentario");
             }
           case 94: break;
           case 40: 

@@ -108,7 +108,7 @@ Float {return posicion("Float");}
 {SpaceChar} { }
 {Ident} { return posicion("Id"); }
 {Integer} { return posicion("Int"); }
-"//"{InputChar}* { return posicion("comentario");}
+"//"{InputChar}* { return "comentario";}
 {LineChar} { }
 "/*"~"*/"  { return "comentario";} 
 "/*"[^*]+  { return "Error de comentario";}

@@ -138,12 +138,18 @@ int result_save = fileChooser_save.showSaveDialog(this);
 
     FileWriter escritor = new FileWriter(selectedFile);
     BufferedWriter escritor2 = new BufferedWriter(escritor);
-    escritor2.write("TOKEN        LEXEMA          LINEA        COLUMNA");
+    escritor2.write("TOKEN        LEXEMA                                             LINEA        COLUMNA");
     escritor2.newLine();
                 for (int i = 0; i < tabla_tokens.getRowCount(); i++) {
                     int size_id;
+                    int size_lex;
+                    int size_linea;
                     int equilibrio1 = 0;
                     int equilibrio2 = 10;
+                    int equilibrio3 = 0;
+                    int equilibrio4 = 50;
+                    int equilibrio5 = 0;
+                    int equilibrio6 = 12;
                     for (int j = 0; j < tabla_tokens.getColumnCount(); j++) {
                         if (j==0) {
                             size_id = tabla_tokens.getValueAt(i, j).toString().length();
@@ -152,9 +158,29 @@ int result_save = fileChooser_save.showSaveDialog(this);
                         }
                        
                         if (j!=0) {
+                            if (j==1) {
+                            size_lex = tabla_tokens.getValueAt(i, j).toString().length();
+                            equilibrio3 = size_lex - 1;
+                            equilibrio4 = equilibrio4 - equilibrio3;                                
                             for (int k = 0; k <= equilibrio2; k++) {
-                            escritor2.write(" ");
-                        }  
+                            escritor2.write(" ");                                
+                            }
+                            
+                        }
+                            if (j==2) {
+                            size_linea = tabla_tokens.getValueAt(i, j).toString().length();
+                            equilibrio5 = size_linea - 1;
+                            equilibrio6 = equilibrio6 - equilibrio5;                                
+                                for (int k = 0; k < equilibrio4; k++) {
+                                    escritor2.write(" ");
+                                }
+                            }
+                            
+                            if (j==3) {
+                                for (int k = 0; k < equilibrio6; k++) {
+                                    escritor2.write(" ");
+                                }                                
+                            }
                         }
                       
                         escritor2.write(tabla_tokens.getValueAt(i, j).toString());

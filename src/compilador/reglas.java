@@ -67,10 +67,10 @@ class reglas {
     "\2\0\1\3\1\27\1\0\4\4\1\44\5\4\1\45"+
     "\4\4\1\46\1\4\1\47\2\0\1\3\1\0\1\27"+
     "\1\0\1\50\1\4\1\51\3\4\1\52\1\53\1\54"+
-    "\7\4\1\0\1\55\1\0\1\27\3\4\1\56\2\4"+
-    "\1\57\1\4\1\60\1\4\1\61\2\27\1\62\1\4"+
-    "\1\63\4\4\1\64\7\4\1\65\1\66\1\4\1\67"+
-    "\1\70";
+    "\7\4\1\0\1\43\1\0\1\27\3\4\1\55\2\4"+
+    "\1\56\1\4\1\57\1\4\1\60\2\27\1\61\1\4"+
+    "\1\62\4\4\1\63\7\4\1\64\1\65\1\4\1\66"+
+    "\1\67";
 
   private static int [] zzUnpackAction() {
     int [] result = new int[159];
@@ -815,227 +815,223 @@ return token+","+auxiliar+","+yyline+","+yycolumn +"-"+col;
           case 1: 
             { return posicion("Error");
             }
-          case 57: break;
+          case 56: break;
           case 2: 
             { 
             }
-          case 58: break;
+          case 57: break;
           case 3: 
             { return posicion("Int");
             }
-          case 59: break;
+          case 58: break;
           case 4: 
             { return posicion("Id");
             }
-          case 60: break;
+          case 59: break;
           case 5: 
             { return posicion("+");
             }
-          case 61: break;
+          case 60: break;
           case 6: 
             { return posicion(".");
             }
-          case 62: break;
+          case 61: break;
           case 7: 
             { return posicion("(");
             }
-          case 63: break;
+          case 62: break;
           case 8: 
             { return posicion(")");
             }
-          case 64: break;
+          case 63: break;
           case 9: 
             { return posicion("{");
             }
-          case 65: break;
+          case 64: break;
           case 10: 
             { return posicion("}");
             }
-          case 66: break;
+          case 65: break;
           case 11: 
             { return posicion("[");
             }
-          case 67: break;
+          case 66: break;
           case 12: 
             { return posicion("]");
             }
-          case 68: break;
+          case 67: break;
           case 13: 
             { return posicion(",");
             }
-          case 69: break;
+          case 68: break;
           case 14: 
             { return posicion(";");
             }
-          case 70: break;
+          case 69: break;
           case 15: 
             { return posicion("!");
             }
-          case 71: break;
+          case 70: break;
           case 16: 
             { return posicion("=");
             }
-          case 72: break;
+          case 71: break;
           case 17: 
             { return posicion(">");
             }
-          case 73: break;
+          case 72: break;
           case 18: 
             { return posicion("<");
             }
-          case 74: break;
+          case 73: break;
           case 19: 
             { return posicion("%");
             }
-          case 75: break;
+          case 74: break;
           case 20: 
             { return posicion("/");
             }
-          case 76: break;
+          case 75: break;
           case 21: 
             { return posicion("*");
             }
-          case 77: break;
+          case 76: break;
           case 22: 
             { return posicion("-");
             }
-          case 78: break;
+          case 77: break;
           case 23: 
             { return posicion("double");
             }
-          case 79: break;
+          case 78: break;
           case 24: 
             { return posicion("String");
             }
-          case 80: break;
+          case 79: break;
           case 25: 
             { return posicion("if");
             }
-          case 81: break;
+          case 80: break;
           case 26: 
             { return posicion("()");
             }
-          case 82: break;
+          case 81: break;
           case 27: 
             { return posicion("{}");
             }
-          case 83: break;
+          case 82: break;
           case 28: 
             { return posicion("[]");
             }
-          case 84: break;
+          case 83: break;
           case 29: 
             { return posicion("!=");
             }
-          case 85: break;
+          case 84: break;
           case 30: 
             { return posicion("||");
             }
-          case 86: break;
+          case 85: break;
           case 31: 
             { return posicion("&&");
             }
-          case 87: break;
+          case 86: break;
           case 32: 
             { return posicion("==");
             }
-          case 88: break;
+          case 87: break;
           case 33: 
             { return posicion(">=");
             }
-          case 89: break;
+          case 88: break;
           case 34: 
             { return posicion("<=");
             }
-          case 90: break;
+          case 89: break;
           case 35: 
-            { return posicion("comentario");
+            { return "comentario";
             }
-          case 91: break;
+          case 90: break;
           case 36: 
             { return posicion("for");
             }
-          case 92: break;
+          case 91: break;
           case 37: 
             { return posicion("int");
             }
-          case 93: break;
+          case 92: break;
           case 38: 
             { return posicion("New");
             }
-          case 94: break;
+          case 93: break;
           case 39: 
             { return "Error de comentario";
             }
-          case 95: break;
+          case 94: break;
           case 40: 
             { return posicion("this");
             }
-          case 96: break;
+          case 95: break;
           case 41: 
             { return posicion("else");
             }
-          case 97: break;
+          case 96: break;
           case 42: 
             { return posicion("bool");
             }
-          case 98: break;
+          case 97: break;
           case 43: 
             { return posicion("null");
             }
-          case 99: break;
+          case 98: break;
           case 44: 
             { return posicion("void");
             }
-          case 100: break;
+          case 99: break;
           case 45: 
-            { return "comentario";
-            }
-          case 101: break;
-          case 46: 
             { return posicion("break");
             }
-          case 102: break;
-          case 47: 
+          case 100: break;
+          case 46: 
             { return posicion("class");
             }
-          case 103: break;
-          case 48: 
+          case 101: break;
+          case 47: 
             { return posicion("while");
             }
-          case 104: break;
-          case 49: 
+          case 102: break;
+          case 48: 
             { return posicion("Float");
             }
-          case 105: break;
-          case 50: 
+          case 103: break;
+          case 49: 
             { return posicion("return");
             }
-          case 106: break;
-          case 51: 
+          case 104: break;
+          case 50: 
             { return posicion("string");
             }
-          case 107: break;
-          case 52: 
+          case 105: break;
+          case 51: 
             { return posicion("extends");
             }
-          case 108: break;
-          case 53: 
+          case 106: break;
+          case 52: 
             { return posicion("New Array");
             }
-          case 109: break;
-          case 54: 
+          case 107: break;
+          case 53: 
             { return posicion("interface");
             }
-          case 110: break;
-          case 55: 
+          case 108: break;
+          case 54: 
             { return posicion("Constante");
             }
-          case 111: break;
-          case 56: 
+          case 109: break;
+          case 55: 
             { return posicion("implements");
             }
-          case 112: break;
+          case 110: break;
           default:
             zzScanError(ZZ_NO_MATCH);
         }

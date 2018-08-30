@@ -17,7 +17,7 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        String path = "C:/Users/Mario/Documents/NetBeansProjects/compilador/src/compilador/reglas.flex";
+        String path = "src\\compilador\\reglas.flex";
         reglas_lex(path);
     }
     

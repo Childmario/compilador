@@ -138,12 +138,27 @@ int result_save = fileChooser_save.showSaveDialog(this);
 
     FileWriter escritor = new FileWriter(selectedFile);
     BufferedWriter escritor2 = new BufferedWriter(escritor);
-    escritor2.write("Token            Lexema           Linea            columna");
+    escritor2.write("TOKEN        LEXEMA          LINEA        COLUMNA");
     escritor2.newLine();
                 for (int i = 0; i < tabla_tokens.getRowCount(); i++) {
+                    int size_id;
+                    int equilibrio1 = 0;
+                    int equilibrio2 = 10;
                     for (int j = 0; j < tabla_tokens.getColumnCount(); j++) {
+                        if (j==0) {
+                            size_id = tabla_tokens.getValueAt(i, j).toString().length();
+                            equilibrio1 = size_id - 2;
+                            equilibrio2 = equilibrio2 - equilibrio1;
+                        }
+                       
+                        if (j!=0) {
+                            for (int k = 0; k <= equilibrio2; k++) {
+                            escritor2.write(" ");
+                        }  
+                        }
+                      
                         escritor2.write(tabla_tokens.getValueAt(i, j).toString());
-                        escritor2.write("-");
+                        //escritor2.write("-");
                     }
                     escritor2.newLine();
                 }

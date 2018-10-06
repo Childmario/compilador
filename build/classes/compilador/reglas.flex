@@ -4,13 +4,15 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java_cup.runtime.*;
 %%
 %class reglas //nombre de la clase JFlex que se va a crear
 %unicode
 %line         //Activa el contador de línea para yytext()
 %column       //Activa el contador de columnas para yyext()
 %type String   //Tipo de return que nos va a regresar yytext()
-
+//%cup
+//%cupsym content
 
 %init{
 %init}
@@ -44,10 +46,10 @@ return token+","+auxiliar+","+yyline+","+yycolumn +"-"+col;
 InputChar = [^\n\r]
 SpaceChar = [\ \t]
 LineChar = \n|\r|\r\n
-Zero = 0
-DecInt = [1-9][0-9]*
+//Zero = 0
+DecInt = [0-9][0-9]*
 HexInt = 0[xX][0-9a-fA-F]+
-Integer = {Zero} | {DecInt} | {HexInt} 
+Integer = {DecInt} | {HexInt} //| {Zero}  
 Exponent = [eE] [\+\-]? [0-9]+
 Ident = [A-Za-z] [A-Za-z0-9_]*
 constante = "true"|"false"

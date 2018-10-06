@@ -1,0 +1,38 @@
+/*Codigo de usuario*/
+
+/*Importacion y paquetes*/
+package compilador;
+import java.cup.runtime.Symbol;
+
+
+//---->Codigo, variables y métodos para el parser
+parser code {:
+
+//metodo si da algun error del que se puede recuperar
+public void syntax_error(Symbol content){
+
+//llenado de datospara salida de error
+String lexema = content.value.toString();
+inf fila = s.right;
+int col = s.left;
+
+//mensaje de error
+System.out.println("Error sintactico en: "+"linea: "+fila+" : Columna: "+"col");
+}//syntax_error
+
+
+//metodo si da algun error del que no se puede recuperar
+public void unrecovered_syntax_error(Symbol content){
+
+//llenado de datospara salida de error
+String lexema = content.value.toString();
+inf fila = s.right;
+int col = s.left;
+
+//mensaje de error
+System.out.println("Error sintactico en: "+"linea: "+fila+" : Columna: "+"col");
+
+            }//unrecovered_syntax_error
+}//parser code
+
+:}

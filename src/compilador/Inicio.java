@@ -113,12 +113,12 @@ public class Inicio extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
      String ruta = "";
-     DefaultTableModel model = (DefaultTableModel) tabla_tokens.getModel();
-        while (model.getRowCount() > 0) {            
-            for (int i = 0; i < model.getRowCount(); i++) {
-                model.removeRow(i);
-            }
-        }
+//     DefaultTableModel model = (DefaultTableModel) tabla_tokens.getModel();
+//        while (model.getRowCount() > 0) {            
+//            for (int i = 0; i < model.getRowCount(); i++) {
+//                model.removeRow(i);
+//            }
+//        }
      //DefaultTableModel modelo = (DefaultTableModel) tabla_tokens.getModel();
      //tabla_tokens.setModel(new DefaultTableModel(null,new String [] {"TOKEN        LEXEMA                                             LINEA        COLUMNA"}));
         JFileChooser fileChooser = new JFileChooser();
@@ -136,103 +136,118 @@ if (result == JFileChooser.APPROVE_OPTION) {
             System.out.println(e.getMessage());
         }
         
-JFileChooser fileChooser_save = new JFileChooser();
-fileChooser_save.setCurrentDirectory(new File(System.getProperty("user.home")));
-int result_save = fileChooser_save.showSaveDialog(this);
-        if (result_save == JFileChooser.APPROVE_OPTION) {
-    File selectedFile = fileChooser_save.getSelectedFile();
-     
-            try {
+//JFileChooser fileChooser_save = new JFileChooser();
+//fileChooser_save.setCurrentDirectory(new File(System.getProperty("user.home")));
+//int result_save = fileChooser_save.showSaveDialog(this);
+//        if (result_save == JFileChooser.APPROVE_OPTION) {
+//    File selectedFile = fileChooser_save.getSelectedFile();
+//     
+//            try {
+//
+//    FileWriter escritor = new FileWriter(selectedFile);
+//    BufferedWriter escritor2 = new BufferedWriter(escritor);
+//    escritor2.write("TOKEN        LEXEMA                                             LINEA        COLUMNA");
+//    escritor2.newLine();
+//                for (int i = 0; i < tabla_tokens.getRowCount(); i++) {
+//                    int size_id;
+//                    int size_lex;
+//                    int size_linea;
+//                    int equilibrio1 = 0;
+//                    int equilibrio2 = 10;
+//                    int equilibrio3 = 0;
+//                    int equilibrio4 = 50;
+//                    int equilibrio5 = 0;
+//                    int equilibrio6 = 12;
+//                    for (int j = 0; j < tabla_tokens.getColumnCount(); j++) {
+//                        if (j==0) {
+//                            size_id = tabla_tokens.getValueAt(i, j).toString().length();
+//                            equilibrio1 = size_id - 2;
+//                            equilibrio2 = equilibrio2 - equilibrio1;
+//                        }
+//                       
+//                        if (j!=0) {
+//                            if (j==1) {
+//                            size_lex = tabla_tokens.getValueAt(i, j).toString().length();
+//                            equilibrio3 = size_lex - 1;
+//                            equilibrio4 = equilibrio4 - equilibrio3;                                
+//                            for (int k = 0; k <= equilibrio2; k++) {
+//                            escritor2.write(" ");                                
+//                            }
+//                            
+//                        }
+//                            if (j==2) {
+//                            size_linea = tabla_tokens.getValueAt(i, j).toString().length();
+//                            equilibrio5 = size_linea - 1;
+//                            equilibrio6 = equilibrio6 - equilibrio5;                                
+//                                for (int k = 0; k < equilibrio4; k++) {
+//                                    escritor2.write(" ");
+//                                }
+//                            }
+//                            
+//                            if (j==3) {
+//                                for (int k = 0; k < equilibrio6; k++) {
+//                                    escritor2.write(" ");
+//                                }                                
+//                            }
+//                        }
+//                      
+//                        escritor2.write(tabla_tokens.getValueAt(i, j).toString());
+//                        //escritor2.write("-");
+//                    }
+//                    escritor2.newLine();
+//                }
+//                escritor2.close();
+//                escritor.close();
+//                
+//            } catch (IOException ex) {
+//            }
 
-    FileWriter escritor = new FileWriter(selectedFile);
-    BufferedWriter escritor2 = new BufferedWriter(escritor);
-    escritor2.write("TOKEN        LEXEMA                                             LINEA        COLUMNA");
-    escritor2.newLine();
-                for (int i = 0; i < tabla_tokens.getRowCount(); i++) {
-                    int size_id;
-                    int size_lex;
-                    int size_linea;
-                    int equilibrio1 = 0;
-                    int equilibrio2 = 10;
-                    int equilibrio3 = 0;
-                    int equilibrio4 = 50;
-                    int equilibrio5 = 0;
-                    int equilibrio6 = 12;
-                    for (int j = 0; j < tabla_tokens.getColumnCount(); j++) {
-                        if (j==0) {
-                            size_id = tabla_tokens.getValueAt(i, j).toString().length();
-                            equilibrio1 = size_id - 2;
-                            equilibrio2 = equilibrio2 - equilibrio1;
-                        }
-                       
-                        if (j!=0) {
-                            if (j==1) {
-                            size_lex = tabla_tokens.getValueAt(i, j).toString().length();
-                            equilibrio3 = size_lex - 1;
-                            equilibrio4 = equilibrio4 - equilibrio3;                                
-                            for (int k = 0; k <= equilibrio2; k++) {
-                            escritor2.write(" ");                                
-                            }
-                            
-                        }
-                            if (j==2) {
-                            size_linea = tabla_tokens.getValueAt(i, j).toString().length();
-                            equilibrio5 = size_linea - 1;
-                            equilibrio6 = equilibrio6 - equilibrio5;                                
-                                for (int k = 0; k < equilibrio4; k++) {
-                                    escritor2.write(" ");
-                                }
-                            }
-                            
-                            if (j==3) {
-                                for (int k = 0; k < equilibrio6; k++) {
-                                    escritor2.write(" ");
-                                }                                
-                            }
-                        }
-                      
-                        escritor2.write(tabla_tokens.getValueAt(i, j).toString());
-                        //escritor2.write("-");
-                    }
-                    escritor2.newLine();
-                }
-                escritor2.close();
-                escritor.close();
-                
-            } catch (IOException ex) {
-            }
-
-        }
+       // }
         
         
     }//GEN-LAST:event_jButton1ActionPerformed
 
     public void analizador_lex(String ruta) throws IOException{
             FileReader fr = new FileReader(ruta);
-            Reader lector = new BufferedReader(fr);
-            reglas analisis = new reglas(lector);
-            DefaultTableModel model = (DefaultTableModel) tabla_tokens.getModel();
-            String resultados = "";
+//            BufferedReader lector = new BufferedReader(fr);
+//            
+//            String texto = "";
+//            String temp = "";
+//            String bfread;
+//            while ((bfread = lector.readLine()) != null) {            
+//            temp = temp + bfread;
+//        }
+//            
+//            texto = temp;
+//            reglas analisis = new reglas(new BufferedReader(new StringReader(texto)));
+            Sintactico sintactico = new Sintactico(new reglas(new FileReader(ruta)));
+           // DefaultTableModel model = (DefaultTableModel) tabla_tokens.getModel();
+           // String resultados = "";
             
-        while (true){
-        
-            
-            String token = analisis.yylex();
-        
-            if (token == "FIN") {
-                resultados = resultados + "\n\rFIN";
-                jTextArea1.setText(resultados);
-                return;
-            }
-            
-            lista_resultado.addAll(Arrays.asList(token.split(",")));
-            if (lista_resultado.size()==4) {
-            model.addRow(new Object[] {lista_resultado.get(0),lista_resultado.get(1),lista_resultado.get(2),lista_resultado.get(3)});
-            }
-             lista_resultado.clear();
 
+            try {
+            sintactico.parse();   
+            System.out.println(sintactico.resultado);
+            } catch (Exception e) {
+                System.out.println(sintactico.error_sym()); 
+            }
+
+            //String token = analisis.yylex();
+        
+//            if (token == "FIN") {
+//                resultados = resultados + "\n\rFIN";
+//                jTextArea1.setText(resultados);
+//                return;
+//            }
             
-            resultados+=token+"\n\r";
+//            lista_resultado.addAll(Arrays.asList(token.split(",")));
+//            if (lista_resultado.size()==4) {
+//            model.addRow(new Object[] {lista_resultado.get(0),lista_resultado.get(1),lista_resultado.get(2),lista_resultado.get(3)});
+//            }
+//             lista_resultado.clear();
+
+//            
+//            resultados+=token+"\n\r";
             
 //            switch(token){
 //            
@@ -254,7 +269,7 @@ int result_save = fileChooser_save.showSaveDialog(this);
 //            }
                     
             
-        }
+        
     
     }
     

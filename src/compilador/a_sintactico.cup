@@ -1,38 +1,184 @@
-/*Codigo de usuario*/
-
-/*Importacion y paquetes*/
+/*--------------- 1ra Area: Codigo de Usuario -----------------------*/
+//-------> importaciones, paquetes
 package compilador;
-import java.cup.runtime.Symbol;
+import java_cup.runtime.Symbol;
+
+//------> Codigo para el parser,variables, metodos
+parser code
+{:
+    public String resultado="";
+
+    //Metodo al que se llama automaticamente ante algun error sintactico
+    public void syntax_error(Symbol s)
+    {        
+        String lexema = s.value.toString();
+        int fila = s.right;
+        int columna = s.left;
+        
+        System.out.println("!!!!!!! Error Sintactico Recuperado !!!!!!!");
+        System.out.println("\t\tLexema: "+lexema);
+        System.out.println("\t\tFila: "+fila);
+        System.out.println("\t\tColumna: "+columna);
 
 
-//---->Codigo, variables y métodos para el parser
-parser code {:
+       
+        
+    }
 
-//metodo si da algun error del que se puede recuperar
-public void syntax_error(Symbol content){
+    //Metodo al que se llama en el momento en que ya no es posible una recuperacion de errores
+    public void unrecovered_syntax_error(Symbol s) throws java.lang.Exception
+    {        
+        String lexema = s.value.toString();
+        int fila = s.right;
+        int columna = s.left;
+        
+        System.out.println("!!!!!!! Error Sintactico, Panic Mode !!!!!!! ");
+        System.out.println("\t\tLexema: "+lexema);
+        System.out.println("\t\tFila: "+fila);
+        System.out.println("\t\tColumna: "+columna);
 
-//llenado de datospara salida de error
-String lexema = content.value.toString();
-inf fila = s.right;
-int col = s.left;
-
-//mensaje de error
-System.out.println("Error sintactico en: "+"linea: "+fila+" : Columna: "+"col");
-}//syntax_error
-
-
-//metodo si da algun error del que no se puede recuperar
-public void unrecovered_syntax_error(Symbol content){
-
-//llenado de datospara salida de error
-String lexema = content.value.toString();
-inf fila = s.right;
-int col = s.left;
-
-//mensaje de error
-System.out.println("Error sintactico en: "+"linea: "+fila+" : Columna: "+"col");
-
-            }//unrecovered_syntax_error
-}//parser code
-
+     
+    }
 :}
+
+//------> Codigo para las acciones gramaticales
+action code
+{:
+:}
+
+/*--------------- 2da Area: Declaraciones -----------------------*/
+//------> declaracion de terminales 
+terminal String zvoid,zstring,zclass,zinterface,znull,zthis,zextends;
+terminal String zwhile,zif,zelse,zreturn,zbreak,zNew,zNewArray,zdouble;
+terminal String id,para,parac,lla,llc,coa,coc,corcetes,llaves;
+terminal String paren,punto,coma,pyc,admira,pipes,andpers,negar,zFloat;
+terminal String dobleigual,igual,maigual,mayor,meigual,menor,porcentaje;
+terminal String slash,aster,guin,mas,zimplements,zfor,zprint,zreadinteger;
+terminal String zreadline,zmalloc,zconst_string,zconstante_double,zconst_int;
+terminal Integer   zint;
+terminal Boolen    zbool;
+
+//------> declaracion de no terminales
+non terminal Object  InterfaceDecl, Program, Decl, DeclPlus, VariableDecl;
+non terminal Object  Variable, FunctionDecl, Formals, VariablePlus, extendsident;
+non terminal Object  implementsident, IdentifierPlus, ClassDecl, Field, FieldAst;
+non temrinal Object  Prototype, StmtBlock, VariableDeclAst, Stmt, StmtAst;
+non terminal Object  ExprBool, elseStmt, IfStmt, ExprPlus, WhileStmt, ForStmt;
+non terminal Object  ReturnStmt, BreakStmt, PrintStmt, Expr, LValue, Call;
+non temrinal Object  LibCall, Actuals, Constant, exprPossibilities, DeclPlusBool;
+non terminal Object IdentifierPlusBool, VariablePlusBool, ExprPlusBool;
+non terminal Object IdentifierBool,RemoveRecursion;
+non terminal String     Type;
+
+//----> precedencia de menor a mayor 
+precedence left guin, mas;
+precedence left aster, slash;
+
+start with INICIO;
+
+/*--------------- 3ra Area: Reglas Semanticas -----------------------*/
+   
+Program::= DeclPlus;
+
+Decl::=   VariableDecl
+        | FunctionDecl
+        | ClassDecl
+        | InterfaceDecl;
+
+DeclPlus::= Decl DeclPlusBool;
+
+DeclPlusBool::= |DeclPlus;
+
+VariableDecl::= Variable pyc;
+
+Variable::= Type id;
+
+Type::= zint|zdouble|zbool|zconst_string| id | Type corcetes;
+
+FunctionDecl::= Type id para Formals parac StmtBlock
+                | zvoid id para Formals parac StmtBlock;
+
+Formals::=   | VariablePlus coma;
+
+VariablePlus::= Variable VariablePlusBool;
+
+VariablePlusBool::= | Variable;
+
+extendsident::= | zextends id;
+
+implementsident::=  | zimplements IdentifierPlus coma; 
+
+IdentifierPlus::= id IdentifierBool;
+
+IdentifierPlusBool::= |IdentifierPlus;
+
+ClassDecl::= zclass id extendsident implementsident lla FieldAst llc;
+
+Field::= VariableDecl Field  
+        | FunctionDecl Field;
+
+FieldAst::=  | Field
+            | FieldAst Field;
+
+InterfaceDecl::= interfacee id lla Prototype llc;
+
+Prototype::=| Type id para Formals parac pyc Prototype
+            | zvoid id para Formals parac pyc Prototype;
+
+StmtBlock::= lla VariableDeclAst StmtAst llc;
+
+VariableDeclAst::= |VariableDecl VariableDeclAst;
+
+Stmt::= Expr pyc | pyc  | IfStmt | WhileStmt | ForStmt | BreakStmt | ReturnStmt | PrintStmt  | StmtBlock ;
+
+StmtAst::= |StmtAst Stmt
+           |Stmt;
+
+ExprBool::= |Expr;
+
+elseStmt::= |zelse Stmt;
+
+IfStmt ::= zif para Expr parac elseStmt;
+
+ExprPlus::= Expr ExprPlusBool;
+
+ExprPlusBool::= |ExprPlus;
+WhileStmt::= zwhile para Expr parac Stmt;
+
+ForStmt::= zfor para ExprBool pyc Expr pyc ExprBool parac Stmt;
+
+ReturnStmt::= zreturn ExprBool;
+
+BreakStmt::= zbreak pyc;
+
+PrintStmt::= zprint para ExprPlus coma parac pyc;      
+
+Expr::= LValue igual Expr RemoveRecursion | Constant RemoveRecursion | LValue RemoveRecursion |
+        zthis RemoveRecursion | Call RemoveRecursion | para Expr parac | admira Expr RemoveRecursion |
+        zNew para id parac RemoveRecursion | zNewArray para Expr coma Type parac  RemoveRecursion  |  zreadinteger parentesis RemoveRecursion |
+        zreadline parentesis RemoveRecursion | zmallocc para Expr parac RemoveRecursion;
+
+RemoveRecursion::=  | exprPossibilities RemoveRecursion | minus Expr RemoveRecursion;
+
+exprPossibilities::= plus Expr
+                    | aster Expr
+                    | slash Expr
+                    | porcentaje Expr
+                    | menor Expr
+                    | meigual Expr
+                    | mayor Expr
+                    | maigual Expr
+                    | dobleigual Expr
+                    | negar Expr
+                    | andpers Expr
+                    | pipes Expr;
+
+LValue::= id | Expr punto id | Expr coa Expr coc;
+
+Call::= id para Actuals parac | Expr punto id para Actuals parac;
+
+LibCall::= getBytee para Expr parac  | getBytee para Expr coma Expr parac;
+
+Actuals::= | ExprPlus coma;
+
+Constant::= IntegerConstant | DoubleConstant | BoolConstant | StringConstant | nulll;

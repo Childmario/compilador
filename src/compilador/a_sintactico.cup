@@ -54,27 +54,35 @@ terminal String id,para,parac,lla,llc,coa,coc,corcetes,llaves;
 terminal String paren,punto,coma,pyc,admira,pipes,andpers,negar,zFloat;
 terminal String dobleigual,igual,maigual,mayor,meigual,menor,porcentaje;
 terminal String slash,aster,guin,mas,zimplements,zfor,zprint,zreadinteger;
-terminal String zreadline,zmalloc,zconst_string,zconstante_double,zconst_int;
-terminal Integer   zint;
-terminal Boolen    zbool;
+terminal String zreadline,zmalloc,zconst_string,zconstante_double,zint;
+terminal String zbool, zgetbyte;
+terminal Integer   zconst_int;
+terminal Boolen    cbool;
 
 //------> declaracion de no terminales
 non terminal Object  InterfaceDecl, Program, Decl, DeclPlus, VariableDecl;
 non terminal Object  Variable, FunctionDecl, Formals, VariablePlus, extendsident;
 non terminal Object  implementsident, IdentifierPlus, ClassDecl, Field, FieldAst;
-non temrinal Object  Prototype, StmtBlock, VariableDeclAst, Stmt, StmtAst;
+non terminal Object  Prototype, StmtBlock, VariableDeclAst, Stmt, StmtAst;
 non terminal Object  ExprBool, elseStmt, IfStmt, ExprPlus, WhileStmt, ForStmt;
 non terminal Object  ReturnStmt, BreakStmt, PrintStmt, Expr, LValue, Call;
-non temrinal Object  LibCall, Actuals, Constant, exprPossibilities, DeclPlusBool;
+non terminal Object  LibCall, Actuals, Constant, exprPossibilities, DeclPlusBool;
 non terminal Object IdentifierPlusBool, VariablePlusBool, ExprPlusBool;
 non terminal Object IdentifierBool,RemoveRecursion;
 non terminal String     Type;
 
 //----> precedencia de menor a mayor 
-precedence left guin, mas;
-precedence left aster, slash;
+precedence left zif, zelse, zfor, zwhile;
+precedence left zbreak, zreturn;
+precedence left para, parac, coa, coc, lla, llc, paren, corcetes, llaves;
+precedence left admira, andpers, pipes, menor, meigual, mayor, maigual, dobleigual, negar, aster, slash, porcentaje, mas, guin;
+precedence left id, cbool, zconst_string, zconst_int, zconstante_double, zthis, zNew, zNewArray, znull;
+precedence left punto, coma, pyc;
+precedence left zgetbyte, zreadinteger, zreadline, zmalloc;
+precedence left zvoid, zclass, zinterface, zextends, zimplements, zprint, igual;
+precedence left zbool, zint, zdouble, zstring;
 
-start with INICIO;
+start with Program;
 
 /*--------------- 3ra Area: Reglas Semanticas -----------------------*/
    
@@ -87,7 +95,9 @@ Decl::=   VariableDecl
 
 DeclPlus::= Decl DeclPlusBool;
 
-DeclPlusBool::= |DeclPlus;
+DeclPlusBool::= DeclPlus
+              |
+               ;
 
 VariableDecl::= Variable pyc;
 
@@ -120,7 +130,7 @@ Field::= VariableDecl Field
 FieldAst::=  | Field
             | FieldAst Field;
 
-InterfaceDecl::= interfacee id lla Prototype llc;
+InterfaceDecl::= zinterface id lla Prototype llc;
 
 Prototype::=| Type id para Formals parac pyc Prototype
             | zvoid id para Formals parac pyc Prototype;
@@ -155,12 +165,12 @@ PrintStmt::= zprint para ExprPlus coma parac pyc;
 
 Expr::= LValue igual Expr RemoveRecursion | Constant RemoveRecursion | LValue RemoveRecursion |
         zthis RemoveRecursion | Call RemoveRecursion | para Expr parac | admira Expr RemoveRecursion |
-        zNew para id parac RemoveRecursion | zNewArray para Expr coma Type parac  RemoveRecursion  |  zreadinteger parentesis RemoveRecursion |
-        zreadline parentesis RemoveRecursion | zmallocc para Expr parac RemoveRecursion;
+        zNew para id parac RemoveRecursion | zNewArray para Expr coma Type parac  RemoveRecursion  |  zreadinteger paren RemoveRecursion |
+        zreadline paren RemoveRecursion | zmalloc para Expr parac RemoveRecursion;
 
-RemoveRecursion::=  | exprPossibilities RemoveRecursion | minus Expr RemoveRecursion;
+RemoveRecursion::=  | exprPossibilities RemoveRecursion | guin Expr RemoveRecursion;
 
-exprPossibilities::= plus Expr
+exprPossibilities::= mas Expr
                     | aster Expr
                     | slash Expr
                     | porcentaje Expr
@@ -177,8 +187,8 @@ LValue::= id | Expr punto id | Expr coa Expr coc;
 
 Call::= id para Actuals parac | Expr punto id para Actuals parac;
 
-LibCall::= getBytee para Expr parac  | getBytee para Expr coma Expr parac;
+LibCall::= zgetbyte para Expr parac  | zgetbyte para Expr coma Expr parac;
 
 Actuals::= | ExprPlus coma;
 
-Constant::= IntegerConstant | DoubleConstant | BoolConstant | StringConstant | nulll;
+Constant::= zconst_int | zconstante_double | cbool | zconst_string | znull;

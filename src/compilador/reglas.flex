@@ -55,69 +55,71 @@ HexInt = 0[xX][0-9a-fA-F]+
 Integer = {DecInt} | {HexInt} //| {Zero}  
 Exponent = [eE] [\+\-]? [0-9]+
 Ident = [A-Za-z] [A-Za-z0-9_]*
-constante = "true"|"false"
+cbool = "true"|"false"
 CChar = [^\'\\\n\r] | {EscChar}
 SChar = [^\"\\\n\r] | {EscChar}
 EscChar = \\[ntbrf\\\'\"] | {OctalEscape}
 OctalEscape = \\[0-7] | \\[0-7][0-7] | \\[0-3][0-7][0-7]
 %% 
 <YYINITIAL>{
-Print { return new Symbol(sym.zprint); }
-ReadInteger { return new Symbol(sym.zreadinteger); }
-ReadLine { return new Symbol(sym.zreadline); }
-Malloc { return new Symbol(sym.zmalloc); }
-void { return new Symbol(sym.zvoid); }
-int {return new Symbol(sym.zint);}
-double {return new Symbol(sym.zdouble);}
-bool {return new Symbol(sym.zbool);}
-string {return new Symbol(sym.zstring);}
-class {return new Symbol(sym.zclass);}
-interface {return new Symbol(sym.zinterface);}
-null {return new Symbol(sym.znull);}
-this {return new Symbol(sym.zthis);}
-extends {return new Symbol(sym.zextends);}
-implements {return new Symbol(sym.zimplements);}
-for {return new Symbol(sym.zfor);}
-while {return new Symbol(sym.zwhile);}
-if {return new Symbol(sym.zif);}
-else {return new Symbol(sym.zelse);}
-return {return new Symbol(sym.zreturn);}
-break {return new Symbol(sym.zbreak);}
-New {return new Symbol(sym.zNew);}
-NewArray {return new Symbol(sym.zNewArray);}
-({Integer})+"."({Integer})*({Exponent})? {return new Symbol(sym.zconstante_double);}
-Float {return new Symbol(sym.zFloat);}
+Print { return new Symbol(sym.zprint,yyline,yycolumn,yytext()); }
+ReadInteger { return new Symbol(sym.zreadinteger,yyline,yycolumn,yytext()); }
+ReadLine { return new Symbol(sym.zreadline,yyline,yycolumn,yytext()); }
+Malloc { return new Symbol(sym.zmalloc,yyline,yycolumn,yytext()); }
+void { return new Symbol(sym.zvoid,yyline,yycolumn,yytext()); }
+int {return new Symbol(sym.zint,yyline,yycolumn,yytext());}
+double {return new Symbol(sym.zdouble,yyline,yycolumn,yytext());}
+bool {return new Symbol(sym.zbool,yyline,yycolumn,yytext());}
+string {return new Symbol(sym.zstring,yyline,yycolumn,yytext());}
+class {return new Symbol(sym.zclass,yyline,yycolumn,yytext());}
+interface {return new Symbol(sym.zinterface,yyline,yycolumn,yytext());}
+null {return new Symbol(sym.znull,yyline,yycolumn,yytext());}
+this {return new Symbol(sym.zthis,yyline,yycolumn,yytext());}
+extends {return new Symbol(sym.zextends,yyline,yycolumn,yytext());}
+implements {return new Symbol(sym.zimplements,yyline,yycolumn,yytext());}
+for {return new Symbol(sym.zfor,yyline,yycolumn,yytext());}
+while {return new Symbol(sym.zwhile,yyline,yycolumn,yytext());}
+if {return new Symbol(sym.zif,yyline,yycolumn,yytext());}
+else {return new Symbol(sym.zelse,yyline,yycolumn,yytext());}
+return {return new Symbol(sym.zreturn,yyline,yycolumn,yytext());}
+break {return new Symbol(sym.zbreak,yyline,yycolumn,yytext());}
+New {return new Symbol(sym.zNew,yyline,yycolumn,yytext());}
+NewArray {return new Symbol(sym.zNewArray,yyline,yycolumn,yytext());}
+({Integer})+"."({Integer})*({Exponent})? {return new Symbol(sym.zconstante_double,yyline,yycolumn,yytext());}
+Float {return new Symbol(sym.zFloat,yyline,yycolumn,yytext());}
+getByte {return new Symbol (sym.zgetbyte,yyline,yycolumn,yytext() );}
 
 "(" { return new Symbol(sym.para,yyline,yycolumn,yytext()); }
 ")" { return new Symbol(sym.parac,yyline,yycolumn,yytext()); }
-"{" { return new Symbol(sym.lla); }
-"}" { return new Symbol(sym.llc); }
-"[" { return new Symbol(sym.coa); }
-"]" { return new Symbol(sym.coc); }
-"[]" {return new Symbol(sym.corcetes);}
-"{}" {return new Symbol(sym.llaves);}
-"()" {return new Symbol(sym.paren);}
-"." {return new Symbol(sym.punto);}
-"," {return new Symbol(sym.coma);}
-";" {return new Symbol(sym.pyc);}
-"!" {return new Symbol(sym.admira);}
-"||" {return new Symbol(sym.pipes);}
-"&&" {return new Symbol(sym.andpers);}
-"!=" {return new Symbol(sym.negar);}
-"==" {return new Symbol(sym.dobleigual);}
-"=" {return new Symbol(sym.igual);}
-">=" {return new Symbol(sym.maigual);}
-">" {return new Symbol(sym.mayor);}
-"<=" {return new Symbol(sym.meigual);}
-"<" {return new Symbol(sym.menor);}
-"%" {return new Symbol(sym.porcentaje);}
+"{" { return new Symbol(sym.lla,yyline,yycolumn,yytext()); }
+"}" { return new Symbol(sym.llc,yyline,yycolumn,yytext()); }
+"[" { return new Symbol(sym.coa,yyline,yycolumn,yytext()); }
+"]" { return new Symbol(sym.coc,yyline,yycolumn,yytext()); }
+"[]" {return new Symbol(sym.corcetes,yyline,yycolumn,yytext());}
+"{}" {return new Symbol(sym.llaves,yyline,yycolumn,yytext());}
+"()" {return new Symbol(sym.paren,yyline,yycolumn,yytext());}
+"." {return new Symbol(sym.punto,yyline,yycolumn,yytext());}
+"," {return new Symbol(sym.coma,yyline,yycolumn,yytext());}
+";" {return new Symbol(sym.pyc,yyline,yycolumn,yytext());}
+"!" {return new Symbol(sym.admira,yyline,yycolumn,yytext());}
+"||" {return new Symbol(sym.pipes,yyline,yycolumn,yytext());}
+"&&" {return new Symbol(sym.andpers,yyline,yycolumn,yytext());}
+"!=" {return new Symbol(sym.negar,yyline,yycolumn,yytext());}
+"==" {return new Symbol(sym.dobleigual,yyline,yycolumn,yytext());}
+"=" {return new Symbol(sym.igual,yyline,yycolumn,yytext());}
+">=" {return new Symbol(sym.maigual,yyline,yycolumn,yytext());}
+">" {return new Symbol(sym.mayor,yyline,yycolumn,yytext());}
+"<=" {return new Symbol(sym.meigual,yyline,yycolumn,yytext());}
+"<" {return new Symbol(sym.menor,yyline,yycolumn,yytext());}
+"%" {return new Symbol(sym.porcentaje,yyline,yycolumn,yytext());}
 "/" { System.out.println("dividido"); return new Symbol(sym.slash,yyline,yycolumn,yytext());}
 "*" { System.out.println("por"); return new Symbol(sym.aster,yyline,yycolumn,yytext());}
 "-" { System.out.println("menos"); return new Symbol(sym.guin,yyline,yycolumn,yytext());}
 "+" { System.out.println("mas"); return new Symbol(sym.mas,yyline,yycolumn,yytext());}
 
+{cbool} {return new Symbol(sym.cbool, yyline, yycolumn, yytext())}
 {SpaceChar} { }
-{Ident} { return new Symbol(sym.id); }
+{Ident} { return new Symbol(sym.id, yyline, yycolumn, yytext()); }
 {Integer} {System.out.println(yytext()); return new Symbol(sym.zconst_int,yyline,yycolumn,yytext()); }
 "//"{InputChar}* { System.out.println("Comentario");} //REVISAR
 {LineChar} { }

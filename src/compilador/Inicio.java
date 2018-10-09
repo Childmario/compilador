@@ -228,6 +228,7 @@ if (result == JFileChooser.APPROVE_OPTION) {
             try {
             sintactico.parse();   
             System.out.println(sintactico.resultado);
+            System.out.println("Correcto");
             } catch (Exception e) {
                 System.out.println(sintactico.error_sym()); 
             }

@@ -70,7 +70,7 @@ void { return new Symbol(sym.zvoid,yyline,yycolumn,yytext()); }
 int {return new Symbol(sym.zint,yyline,yycolumn,yytext());}
 double {return new Symbol(sym.zdouble,yyline,yycolumn,yytext());}
 bool {return new Symbol(sym.zbool,yyline,yycolumn,yytext());}
-string {return new Symbol(sym.zstring,yyline,yycolumn,yytext());}
+string {System.out.println("stringtipo");return new Symbol(sym.zstring,yyline,yycolumn,yytext());}
 class {return new Symbol(sym.zclass,yyline,yycolumn,yytext());}
 interface {return new Symbol(sym.zinterface,yyline,yycolumn,yytext());}
 null {return new Symbol(sym.znull,yyline,yycolumn,yytext());}
@@ -87,7 +87,8 @@ New {return new Symbol(sym.zNew,yyline,yycolumn,yytext());}
 NewArray {return new Symbol(sym.zNewArray,yyline,yycolumn,yytext());}
 ({Integer})+"."({Integer})*({Exponent})? {return new Symbol(sym.zconstante_double,yyline,yycolumn,yytext());}
 Float {return new Symbol(sym.zFloat,yyline,yycolumn,yytext());}
-getByte {return new Symbol (sym.zgetbyte,yyline,yycolumn,yytext() );}
+getByte {return new Symbol (sym.zgetbyte,yyline,yycolumn,yytext() );} 
+setByte {return new Symbol (sym.zsetbyte,yyline,yycolumn,yytext() );}
 
 "(" { return new Symbol(sym.para,yyline,yycolumn,yytext()); }
 ")" { return new Symbol(sym.parac,yyline,yycolumn,yytext()); }
@@ -100,7 +101,7 @@ getByte {return new Symbol (sym.zgetbyte,yyline,yycolumn,yytext() );}
 "()" {return new Symbol(sym.paren,yyline,yycolumn,yytext());}
 "." {return new Symbol(sym.punto,yyline,yycolumn,yytext());}
 "," {return new Symbol(sym.coma,yyline,yycolumn,yytext());}
-";" {return new Symbol(sym.pyc,yyline,yycolumn,yytext());}
+";" {System.out.println("pyc"); return new Symbol(sym.pyc,yyline,yycolumn,yytext());}
 "!" {return new Symbol(sym.admira,yyline,yycolumn,yytext());}
 "||" {return new Symbol(sym.pipes,yyline,yycolumn,yytext());}
 "&&" {return new Symbol(sym.andpers,yyline,yycolumn,yytext());}
@@ -117,15 +118,15 @@ getByte {return new Symbol (sym.zgetbyte,yyline,yycolumn,yytext() );}
 "-" { System.out.println("menos"); return new Symbol(sym.guin,yyline,yycolumn,yytext());}
 "+" { System.out.println("mas"); return new Symbol(sym.mas,yyline,yycolumn,yytext());}
 
-{cbool} {return new Symbol(sym.cbool, yyline, yycolumn, yytext())}
+{cbool} {return new Symbol(sym.cbool, yyline, yycolumn, yytext());}
 {SpaceChar} { }
-{Ident} { return new Symbol(sym.id, yyline, yycolumn, yytext()); }
+{Ident} {System.out.println("id"); return new Symbol(sym.id, yyline, yycolumn, yytext()); }
 {Integer} {System.out.println(yytext()); return new Symbol(sym.zconst_int,yyline,yycolumn,yytext()); }
 "//"{InputChar}* { System.out.println("Comentario");} //REVISAR
 {LineChar} { }
 "/*"~"*/"  { System.out.println("Comentario");}  //REVISAR
-"/*"[^*]+~[^/]+  { return new Symbol(sym.error,yyline,yycolumn,yytext()););}
+"/*"[^*]+~[^/]+  { return new Symbol(sym.error,yyline,yycolumn,yytext());}
 \"{SChar}*\" {return new Symbol(sym.zconst_string);}
 //<<EOF>> { System.out.println("FIN"); } //REVISAR
 }
-. { System.out.println("error lexico"); return new Symbol(sym.error,yyline,yycolumn,yytext());); }
+. { System.out.println("error lexico"); return new Symbol(sym.error,yyline,yycolumn,yytext()); }

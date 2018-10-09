@@ -33,6 +33,7 @@ public class sym {
   public static final int menor = 40;
   public static final int porcentaje = 41;
   public static final int EOF = 0;
+  public static final int zsetbyte = 57;
   public static final int pyc = 29;
   public static final int zimplements = 46;
   public static final int mas = 45;
@@ -54,7 +55,7 @@ public class sym {
   public static final int id = 17;
   public static final int zthis = 7;
   public static final int zconst_string = 52;
-  public static final int zconst_int = 57;
+  public static final int zconst_int = 58;
   public static final int zint = 54;
   public static final int zprint = 48;
   public static final int znull = 6;
@@ -65,7 +66,7 @@ public class sym {
   public static final int zvoid = 2;
   public static final int zdouble = 16;
   public static final int zconstante_double = 53;
-  public static final int cbool = 58;
+  public static final int cbool = 59;
   public static final int zelse = 11;
   public static final String[] terminalNames = new String[] {
   "EOF",
@@ -125,6 +126,7 @@ public class sym {
   "zint",
   "zbool",
   "zgetbyte",
+  "zsetbyte",
   "zconst_int",
   "cbool"
   };

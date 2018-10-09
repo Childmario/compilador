@@ -39,12 +39,10 @@ parser code
 
      
     }
-:}
+:};
 
 //------> Codigo para las acciones gramaticales
-action code
-{:
-:}
+
 
 /*--------------- 2da Area: Declaraciones -----------------------*/
 //------> declaracion de terminales 
@@ -55,7 +53,7 @@ terminal String paren,punto,coma,pyc,admira,pipes,andpers,negar,zFloat;
 terminal String dobleigual,igual,maigual,mayor,meigual,menor,porcentaje;
 terminal String slash,aster,guin,mas,zimplements,zfor,zprint,zreadinteger;
 terminal String zreadline,zmalloc,zconst_string,zconstante_double,zint;
-terminal String zbool, zgetbyte;
+terminal String zbool, zgetbyte,zsetbyte;
 terminal Integer   zconst_int;
 terminal Boolen    cbool;
 
@@ -78,11 +76,11 @@ precedence left para, parac, coa, coc, lla, llc, paren, corcetes, llaves;
 precedence left admira, andpers, pipes, menor, meigual, mayor, maigual, dobleigual, negar, aster, slash, porcentaje, mas, guin;
 precedence left id, cbool, zconst_string, zconst_int, zconstante_double, zthis, zNew, zNewArray, znull;
 precedence left punto, coma, pyc;
-precedence left zgetbyte, zreadinteger, zreadline, zmalloc;
+precedence left zgetbyte, zreadinteger, zreadline, zmalloc,zsetbyte;
 precedence left zvoid, zclass, zinterface, zextends, zimplements, zprint, igual;
 precedence left zbool, zint, zdouble, zstring;
 
-start with Program;
+//start with Program;
 
 /*--------------- 3ra Area: Reglas Semanticas -----------------------*/
    
@@ -95,15 +93,13 @@ Decl::=   VariableDecl
 
 DeclPlus::= Decl DeclPlusBool;
 
-DeclPlusBool::= DeclPlus
-              |
-               ;
+DeclPlusBool::= /*nada*/| DeclPlus;
 
 VariableDecl::= Variable pyc;
 
 Variable::= Type id;
 
-Type::= zint|zdouble|zbool|zconst_string| id | Type corcetes;
+Type::= zint|zdouble|zbool|zstring| id | Type corcetes;
 
 FunctionDecl::= Type id para Formals parac StmtBlock
                 | zvoid id para Formals parac StmtBlock;
@@ -118,7 +114,7 @@ extendsident::= | zextends id;
 
 implementsident::=  | zimplements IdentifierPlus coma; 
 
-IdentifierPlus::= id IdentifierBool;
+IdentifierPlus::= id IdentifierPlusBool;
 
 IdentifierPlusBool::= |IdentifierPlus;
 
@@ -185,9 +181,9 @@ exprPossibilities::= mas Expr
 
 LValue::= id | Expr punto id | Expr coa Expr coc;
 
-Call::= id para Actuals parac | Expr punto id para Actuals parac;
+Call::= id para Actuals parac | Expr punto id para Actuals parac | Expr punto LibCall para Actuals parac;
 
-LibCall::= zgetbyte para Expr parac  | zgetbyte para Expr coma Expr parac;
+LibCall::= zgetbyte para Expr parac  | zsetbyte para Expr coma Expr parac;
 
 Actuals::= | ExprPlus coma;
 

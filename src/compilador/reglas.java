@@ -37,24 +37,22 @@ class reglas implements java_cup.runtime.Scanner {
   /** 
    * Translates characters to character classes
    */
-  private static final char [] ZZ_CMAP = {
-     0,  0,  0,  0,  0,  0,  0,  0,  0,  2,  3, 67, 67,  1,  0,  0, 
-     0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 
-     2, 57, 21,  0,  0, 63, 59, 20, 49, 50, 65,  9, 55, 66, 46, 64, 
-     5, 25, 25, 25, 25, 25, 25, 25,  4,  4,  0, 56, 62, 60, 61,  0, 
-     0, 44, 48,  7,  7,  8, 47, 10, 10, 30, 10, 10, 32, 33, 43, 10, 
-    26, 10, 28, 10, 10, 10, 10, 10,  6, 10, 10, 53, 22, 54,  0, 11, 
-     0, 17, 23, 35, 29, 15, 16, 31, 37, 27, 10, 42, 18, 39, 24, 34, 
-    40, 10, 13, 19, 12, 14, 36, 41, 38, 45, 10, 51, 58, 52,  0,  0, 
-     0,  0,  0,  0,  0, 67,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 
-     0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 
-     0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 
-     0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 
-     0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 
-     0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 
-     0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 
-     0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
-  };
+  private static final String ZZ_CMAP_PACKED = 
+    "\11\0\1\2\1\3\1\103\1\103\1\1\22\0\1\2\1\71\1\25"+
+    "\2\0\1\77\1\73\1\24\1\61\1\62\1\101\1\11\1\67\1\102"+
+    "\1\56\1\100\1\5\3\31\4\31\2\4\1\0\1\70\1\76\1\74"+
+    "\1\75\2\0\1\54\1\60\2\7\1\10\1\57\2\12\1\36\2\12"+
+    "\1\40\1\41\1\53\1\12\1\32\1\12\1\34\5\12\1\6\2\12"+
+    "\1\65\1\26\1\66\1\0\1\13\1\0\1\21\1\27\1\43\1\35"+
+    "\1\17\1\20\1\37\1\45\1\33\1\12\1\52\1\22\1\47\1\30"+
+    "\1\42\1\50\1\12\1\15\1\23\1\14\1\16\1\44\1\51\1\46"+
+    "\1\55\1\12\1\63\1\72\1\64\7\0\1\103\u1fa2\0\1\103\1\103"+
+    "\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\udfe6\0";
+
+  /** 
+   * Translates characters to character classes
+   */
+  private static final char [] ZZ_CMAP = zzUnpackCMap(ZZ_CMAP_PACKED);
 
   /** 
    * Translates DFA states to action switch labels.
@@ -469,6 +467,15 @@ class reglas implements java_cup.runtime.Scanner {
 
   /* user code: */
 
+
+   
+   private Symbol symbol(int type){
+      return new Symbol(type, yyline, yycolumn);
+   }
+   private Symbol symbol(int type, Object value){
+       return new Symbol(type, yyline, yycolumn, value);
+   }
+
 public String posiciocn(String token){
 
        String auxiliar = yytext();
@@ -504,6 +511,24 @@ return token+","+auxiliar+","+yyline+","+yycolumn +"-"+col;
       this.zzReader = in;
   }
 
+
+  /** 
+   * Unpacks the compressed character translation table.
+   *
+   * @param packed   the packed character translation table
+   * @return         the unpacked character translation table
+   */
+  private static char [] zzUnpackCMap(String packed) {
+    char [] map = new char[0x110000];
+    int i = 0;  /* index in packed string  */
+    int j = 0;  /* index in unpacked array */
+    while (i < 214) {
+      int  count = packed.charAt(i++);
+      char value = packed.charAt(i++);
+      do map[j++] = value; while (--count > 0);
+    }
+    return map;
+  }
 
 
   /**
@@ -737,8 +762,6 @@ return token+","+auxiliar+","+yyline+","+yycolumn +"-"+col;
     while (true) {
       zzMarkedPosL = zzMarkedPos;
 
-      yychar+= zzMarkedPosL-zzStartRead;
-
       boolean zzR = false;
       int zzCh;
       int zzCharCount;
@@ -863,7 +886,7 @@ return token+","+auxiliar+","+yyline+","+yycolumn +"-"+col;
       else {
         switch (zzAction < 0 ? zzAction : ZZ_ACTION[zzAction]) {
           case 1: 
-            { System.out.println("error lexico"); return new Symbol(sym.error,yyline,yycolumn,yytext());
+            { System.out.println("error lexico"); return symbol(sym.error);
             }
           case 63: break;
           case 2: 
@@ -871,131 +894,131 @@ return token+","+auxiliar+","+yyline+","+yycolumn +"-"+col;
             }
           case 64: break;
           case 3: 
-            { System.out.println(yytext()); return new Symbol(sym.zconst_int,yyline,yycolumn,yytext());
+            { System.out.println(yytext()); return symbol(sym.zconst_int);
             }
           case 65: break;
           case 4: 
-            { System.out.println("id"); return new Symbol(sym.id, yyline, yycolumn, yytext());
+            { System.out.println("id"); return symbol(sym.id);
             }
           case 66: break;
           case 5: 
-            { System.out.println("mas"); return new Symbol(sym.mas,yyline,yycolumn,yytext());
+            { System.out.println("mas"); return symbol(sym.mas);
             }
           case 67: break;
           case 6: 
-            { return new Symbol(sym.punto,yyline,yycolumn,yytext());
+            { return symbol(sym.punto);
             }
           case 68: break;
           case 7: 
-            { return new Symbol(sym.para,yyline,yycolumn,yytext());
+            { return symbol(sym.para);
             }
           case 69: break;
           case 8: 
-            { return new Symbol(sym.parac,yyline,yycolumn,yytext());
+            { return symbol(sym.parac);
             }
           case 70: break;
           case 9: 
-            { return new Symbol(sym.lla,yyline,yycolumn,yytext());
+            { return symbol(sym.lla);
             }
           case 71: break;
           case 10: 
-            { return new Symbol(sym.llc,yyline,yycolumn,yytext());
+            { return symbol(sym.llc);
             }
           case 72: break;
           case 11: 
-            { return new Symbol(sym.coa,yyline,yycolumn,yytext());
+            { return symbol(sym.coa);
             }
           case 73: break;
           case 12: 
-            { return new Symbol(sym.coc,yyline,yycolumn,yytext());
+            { return symbol(sym.coc);
             }
           case 74: break;
           case 13: 
-            { return new Symbol(sym.coma,yyline,yycolumn,yytext());
+            { return symbol(sym.coma);
             }
           case 75: break;
           case 14: 
-            { System.out.println("pyc"); return new Symbol(sym.pyc,yyline,yycolumn,yytext());
+            { System.out.println("pyc"); return symbol(sym.pyc);
             }
           case 76: break;
           case 15: 
-            { return new Symbol(sym.admira,yyline,yycolumn,yytext());
+            { return symbol(sym.admira);
             }
           case 77: break;
           case 16: 
-            { return new Symbol(sym.igual,yyline,yycolumn,yytext());
+            { return symbol(sym.igual);
             }
           case 78: break;
           case 17: 
-            { return new Symbol(sym.mayor,yyline,yycolumn,yytext());
+            { return symbol(sym.mayor);
             }
           case 79: break;
           case 18: 
-            { return new Symbol(sym.menor,yyline,yycolumn,yytext());
+            { return symbol(sym.menor);
             }
           case 80: break;
           case 19: 
-            { return new Symbol(sym.porcentaje,yyline,yycolumn,yytext());
+            { return symbol(sym.porcentaje);
             }
           case 81: break;
           case 20: 
-            { System.out.println("dividido"); return new Symbol(sym.slash,yyline,yycolumn,yytext());
+            { System.out.println("dividido"); return symbol(sym.slash);
             }
           case 82: break;
           case 21: 
-            { System.out.println("por"); return new Symbol(sym.aster,yyline,yycolumn,yytext());
+            { System.out.println("por"); return symbol(sym.aster);
             }
           case 83: break;
           case 22: 
-            { System.out.println("menos"); return new Symbol(sym.guin,yyline,yycolumn,yytext());
+            { System.out.println("menos"); return symbol(sym.guin);
             }
           case 84: break;
           case 23: 
-            { return new Symbol(sym.zconstante_double,yyline,yycolumn,yytext());
+            { return symbol(sym.zconstante_double);
             }
           case 85: break;
           case 24: 
-            { return new Symbol(sym.zconst_string);
+            { return symbol(sym.zconst_string);
             }
           case 86: break;
           case 25: 
-            { return new Symbol(sym.zif,yyline,yycolumn,yytext());
+            { return symbol(sym.zif);
             }
           case 87: break;
           case 26: 
-            { return new Symbol(sym.paren,yyline,yycolumn,yytext());
+            { return symbol(sym.paren);
             }
           case 88: break;
           case 27: 
-            { return new Symbol(sym.llaves,yyline,yycolumn,yytext());
+            { return symbol(sym.llaves);
             }
           case 89: break;
           case 28: 
-            { return new Symbol(sym.corcetes,yyline,yycolumn,yytext());
+            { return symbol(sym.corcetes);
             }
           case 90: break;
           case 29: 
-            { return new Symbol(sym.negar,yyline,yycolumn,yytext());
+            { return symbol(sym.negar);
             }
           case 91: break;
           case 30: 
-            { return new Symbol(sym.pipes,yyline,yycolumn,yytext());
+            { return symbol(sym.pipes);
             }
           case 92: break;
           case 31: 
-            { return new Symbol(sym.andpers,yyline,yycolumn,yytext());
+            { return symbol(sym.andpers);
             }
           case 93: break;
           case 32: 
-            { return new Symbol(sym.dobleigual,yyline,yycolumn,yytext());
+            { return symbol(sym.dobleigual);
             }
           case 94: break;
           case 33: 
-            { return new Symbol(sym.maigual,yyline,yycolumn,yytext());
+            { return symbol(sym.maigual);
             }
           case 95: break;
           case 34: 
-            { return new Symbol(sym.meigual,yyline,yycolumn,yytext());
+            { return symbol(sym.meigual);
             }
           case 96: break;
           case 35: 
@@ -1003,111 +1026,111 @@ return token+","+auxiliar+","+yyline+","+yycolumn +"-"+col;
             }
           case 97: break;
           case 36: 
-            { return new Symbol(sym.zfor,yyline,yycolumn,yytext());
+            { return symbol(sym.zfor);
             }
           case 98: break;
           case 37: 
-            { return new Symbol(sym.zint,yyline,yycolumn,yytext());
+            { return symbol(sym.zint);
             }
           case 99: break;
           case 38: 
-            { return new Symbol(sym.zNew,yyline,yycolumn,yytext());
+            { return symbol(sym.zNew);
             }
           case 100: break;
           case 39: 
-            { return new Symbol(sym.cbool, yyline, yycolumn, yytext());
+            { return symbol(sym.cbool);
             }
           case 101: break;
           case 40: 
-            { return new Symbol(sym.zthis,yyline,yycolumn,yytext());
+            { return symbol(sym.zthis);
             }
           case 102: break;
           case 41: 
-            { return new Symbol(sym.zelse,yyline,yycolumn,yytext());
+            { return symbol(sym.zelse);
             }
           case 103: break;
           case 42: 
-            { return new Symbol(sym.zbool,yyline,yycolumn,yytext());
+            { return symbol(sym.zbool);
             }
           case 104: break;
           case 43: 
-            { return new Symbol(sym.znull,yyline,yycolumn,yytext());
+            { return symbol(sym.znull);
             }
           case 105: break;
           case 44: 
-            { return new Symbol(sym.zvoid,yyline,yycolumn,yytext());
+            { return symbol(sym.zvoid);
             }
           case 106: break;
           case 45: 
-            { return new Symbol(sym.error,yyline,yycolumn,yytext());
+            { return symbol(sym.error);
             }
           case 107: break;
           case 46: 
-            { return new Symbol(sym.zbreak,yyline,yycolumn,yytext());
+            { return symbol(sym.zbreak);
             }
           case 108: break;
           case 47: 
-            { return new Symbol(sym.zprint,yyline,yycolumn,yytext());
+            { return symbol(sym.zprint);
             }
           case 109: break;
           case 48: 
-            { return new Symbol(sym.zclass,yyline,yycolumn,yytext());
+            { return symbol(sym.zclass);
             }
           case 110: break;
           case 49: 
-            { return new Symbol(sym.zwhile,yyline,yycolumn,yytext());
+            { return symbol(sym.zwhile);
             }
           case 111: break;
           case 50: 
-            { return new Symbol(sym.zFloat,yyline,yycolumn,yytext());
+            { return symbol(sym.zFloat);
             }
           case 112: break;
           case 51: 
-            { return new Symbol(sym.zreturn,yyline,yycolumn,yytext());
+            { return symbol(sym.zreturn);
             }
           case 113: break;
           case 52: 
-            { System.out.println("stringtipo");return new Symbol(sym.zstring,yyline,yycolumn,yytext());
+            { System.out.println("stringtipo");return symbol(sym.zstring);
             }
           case 114: break;
           case 53: 
-            { return new Symbol(sym.zdouble,yyline,yycolumn,yytext());
+            { return symbol(sym.zdouble);
             }
           case 115: break;
           case 54: 
-            { return new Symbol(sym.zmalloc,yyline,yycolumn,yytext());
+            { return symbol(sym.zmalloc);
             }
           case 116: break;
           case 55: 
-            { return new Symbol(sym.zextends,yyline,yycolumn,yytext());
+            { return symbol(sym.zextends);
             }
           case 117: break;
           case 56: 
-            { return new Symbol (sym.zsetbyte,yyline,yycolumn,yytext() );
+            { return symbol (sym.zsetbyte);
             }
           case 118: break;
           case 57: 
-            { return new Symbol (sym.zgetbyte,yyline,yycolumn,yytext() );
+            { return symbol (sym.zgetbyte);
             }
           case 119: break;
           case 58: 
-            { return new Symbol(sym.zreadline,yyline,yycolumn,yytext());
+            { return symbol(sym.zreadline);
             }
           case 120: break;
           case 59: 
-            { return new Symbol(sym.zNewArray,yyline,yycolumn,yytext());
+            { return symbol(sym.zNewArray);
             }
           case 121: break;
           case 60: 
-            { return new Symbol(sym.zinterface,yyline,yycolumn,yytext());
+            { return symbol(sym.zinterface);
             }
           case 122: break;
           case 61: 
-            { return new Symbol(sym.zimplements,yyline,yycolumn,yytext());
+            { return symbol(sym.zimplements);
             }
           case 123: break;
           case 62: 
-            { return new Symbol(sym.zreadinteger,yyline,yycolumn,yytext());
+            { return symbol(sym.zreadinteger);
             }
           case 124: break;
           default:

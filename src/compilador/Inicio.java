@@ -241,8 +241,8 @@ if (result == JFileChooser.APPROVE_OPTION) {
 
             sintactico.parse(); 
             //System.out.println(sintactico.resultado);
-            jLabel1.setText("Leido correctamente");
-            System.out.println("Correcto");
+//            jLabel1.setText("Leido correctamente");
+//            System.out.println("Correcto");
             } catch (Exception e) {
                 System.out.println(sintactico.error_sym()); 
             }

@@ -58,7 +58,7 @@ terminal Boolen    cbool;
 //------> declaracion de no terminales
 non terminal Object  Program, Decl, VariableDecl, Variable, FunctionDecl, Formals, ClassDecl;
 non terminal Object  Field, InterfaceDecl, Prototype, StmtBlock, Stmt, IfStmt, WhileStmt, ForStmt;
-non terminal Object  ReturnStmt, BreakStmt,PrintStmt, Expr, LValue, Call, LibCall;
+non terminal Object  ReturnStmt, BreakStmt,PrintStmt, Expr, LValue, Call, LibCall, Decl2;
 non terminal Object  Actuals, Constant, Ext, Imp, ImpID, ProtCont, FuncCont, StmtVar;
 non terminal Object  StmtStmt, StmtExpr, ExprPrint, ElseIfStmt, ClassField, InterfaceProt, CallCont;
 non terminal String  Type;
@@ -71,17 +71,15 @@ precedence left menor, meigual, mayor, maigual, igual, dobleigual, negar, andper
 
 precedence left zelse;
 
-precedence left id;
+precedence left zvoid, zclass , zinterface;
+
+precedence left zint, zstring, id, zbool, zdouble;
 
 /* -------------------GRAMATICA FORMAL------------------------ */
 
 
 
-Program ::= Program Decl
-
-| /* ε */ ;
-
-
+Program ::= Decl2 Decl | Decl;
 
 Decl ::= VariableDecl
 
@@ -91,7 +89,7 @@ Decl ::= VariableDecl
 
 | InterfaceDecl ;
 
-
+Decl2::= | Program;
 
 VariableDecl ::= Variable pyc ;
 

@@ -61,6 +61,7 @@ non terminal Object  Field, InterfaceDecl, Prototype, StmtBlock, Stmt, IfStmt, W
 non terminal Object  ReturnStmt, BreakStmt,PrintStmt, Expr, LValue, Call, LibCall, Decl2;
 non terminal Object  Actuals, Constant, Ext, Imp, ImpID, ProtCont, FuncCont, StmtVar;
 non terminal Object  StmtStmt, StmtExpr, ExprPrint, ElseIfStmt, ClassField, InterfaceProt, CallCont;
+non terminal Object  Formals2, Formals3;
 non terminal String  Type;
 
 /*--------------PRECEDENCIAS-----------*/
@@ -123,11 +124,11 @@ FuncCont ::= id para Formals parac StmtBlock ;
 
 
 
-Formals ::= Formals coma Variable
+Formals ::= | Variable Formals2 | Variable;
 
-| Variable
+Formals2 ::= coma Variable Formals3;
 
-| /* ε */ ;
+Formals3 ::= | Formals2; 
 
 
 

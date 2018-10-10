@@ -11,10 +11,11 @@ import java_cup.runtime.*;
 %line         //Activa el contador de línea para yytext()
 %column       //Activa el contador de columnas para yyext()
 //%type String   //Tipo de return que nos va a regresar yytext()
-//%cupsym sym
+%cupsym sym
 %cup
-//%full
-//%char
+%full
+%char
+%public
 
 
 %init{
@@ -23,10 +24,10 @@ import java_cup.runtime.*;
 
 
    
-   private Symbol symbol(int type){
+   private Symbol symhbol(int type){
       return new Symbol(type, yyline, yycolumn);
    }
-   private Symbol symbol(int type, Object value){
+   private Symbol symbhol(int type, Object value){
        return new Symbol(type, yyline, yycolumn, value);
    }
 
@@ -71,71 +72,71 @@ EscChar = \\[ntbrf\\\'\"] | {OctalEscape}
 OctalEscape = \\[0-7] | \\[0-7][0-7] | \\[0-3][0-7][0-7]
 %% 
 <YYINITIAL>{
-Print { return symbol(sym.zprint); }
-ReadInteger { return symbol(sym.zreadinteger); }
-ReadLine { return symbol(sym.zreadline); }
-Malloc { return symbol(sym.zmalloc); }
-void { return symbol(sym.zvoid); }
-int {return symbol(sym.zint);}
-double {return symbol(sym.zdouble);}
-bool {return symbol(sym.zbool);}
-string {System.out.println("stringtipo");return symbol(sym.zstring);}
-class {return symbol(sym.zclass);}
-interface {return symbol(sym.zinterface);}
-null {return symbol(sym.znull);}
-this {return symbol(sym.zthis);}
-extends {return symbol(sym.zextends);}
-implements {return symbol(sym.zimplements);}
-for {return symbol(sym.zfor);}
-while {return symbol(sym.zwhile);}
-if {return symbol(sym.zif);}
-else {return symbol(sym.zelse);}
-return {return symbol(sym.zreturn);}
-break {return symbol(sym.zbreak);}
-New {return symbol(sym.zNew);}
-NewArray {return symbol(sym.zNewArray);}
-({Integer})+"."({Integer})*({Exponent})? {return symbol(sym.zconstante_double);}
-Float {return symbol(sym.zFloat);}
-getByte {return symbol (sym.zgetbyte);} 
-setByte {return symbol (sym.zsetbyte);}
+Print { return new Symbol(sym.zprint, yycolumn, yyline, yytext()); }
+ReadInteger { return new Symbol(sym.zreadinteger, yycolumn, yyline, yytext()); }
+ReadLine { return new Symbol(sym.zreadline, yycolumn, yyline, yytext()); }
+Malloc { return new Symbol(sym.zmalloc, yycolumn, yyline, yytext()); }
+void { return new Symbol(sym.zvoid, yycolumn, yyline, yytext()); }
+int {return new Symbol(sym.zint, yycolumn, yyline, yytext());}
+double {return new Symbol(sym.zdouble, yycolumn, yyline, yytext());}
+bool {return new Symbol(sym.zbool, yycolumn, yyline, yytext());}
+string {System.out.println("stringtipo");return new Symbol(sym.zstring, yycolumn, yyline, yytext());}
+class {return new Symbol(sym.zclass, yycolumn, yyline, yytext());}
+interface {return new Symbol(sym.zinterface, yycolumn, yyline, yytext());}
+null {return new Symbol(sym.znull, yycolumn, yyline, yytext());}
+this {return new Symbol(sym.zthis, yycolumn, yyline, yytext());}
+extends {return new Symbol(sym.zextends, yycolumn, yyline, yytext());}
+implements {return new Symbol(sym.zimplements, yycolumn, yyline, yytext());}
+for {return new Symbol(sym.zfor, yycolumn, yyline, yytext());}
+while {return new Symbol(sym.zwhile, yycolumn, yyline, yytext());}
+if {return new Symbol(sym.zif, yycolumn, yyline, yytext());}
+else {return new Symbol(sym.zelse, yycolumn, yyline, yytext());}
+return {return new Symbol(sym.zreturn, yycolumn, yyline, yytext());}
+break {return new Symbol(sym.zbreak, yycolumn, yyline, yytext());}
+New {return new Symbol(sym.zNew, yycolumn, yyline, yytext());}
+NewArray {return new Symbol(sym.zNewArray, yycolumn, yyline, yytext());}
+({Integer})+"."({Integer})*({Exponent})? {return new Symbol(sym.zconstante_double, yycolumn, yyline, yytext());}
+Float {return new Symbol(sym.zFloat, yycolumn, yyline, yytext());}
+getByte {return new Symbol (sym.zgetbyte, yycolumn, yyline, yytext());} 
+setByte {return new Symbol (sym.zsetbyte, yycolumn, yyline, yytext());}
 
-"(" { return symbol(sym.para); }
-")" { return symbol(sym.parac); }
-"{" { return symbol(sym.lla); }
-"}" { return symbol(sym.llc); }
-"[" { return symbol(sym.coa); }
-"]" { return symbol(sym.coc); }
-"[]" {return symbol(sym.corcetes);}
-"{}" {return symbol(sym.llaves);}
-"()" {return symbol(sym.paren);}
-"." {return symbol(sym.punto);}
-"," {return symbol(sym.coma);}
-";" {System.out.println("pyc"); return symbol(sym.pyc);}
-"!" {return symbol(sym.admira);}
-"||" {return symbol(sym.pipes);}
-"&&" {return symbol(sym.andpers);}
-"!=" {return symbol(sym.negar);}
-"==" {return symbol(sym.dobleigual);}
-"=" {return symbol(sym.igual);}
-">=" {return symbol(sym.maigual);}
-">" {return symbol(sym.mayor);}
-"<=" {return symbol(sym.meigual);}
-"<" {return symbol(sym.menor);}
-"%" {return symbol(sym.porcentaje);}
-"/" { System.out.println("dividido"); return symbol(sym.slash);}
-"*" { System.out.println("por"); return symbol(sym.aster);}
-"-" { System.out.println("menos"); return symbol(sym.guin);}
-"+" { System.out.println("mas"); return symbol(sym.mas);}
+"(" { return new Symbol(sym.para, yycolumn, yyline, yytext()); }
+")" { return new Symbol(sym.parac, yycolumn, yyline, yytext()); }
+"{" { return new Symbol(sym.lla, yycolumn, yyline, yytext()); }
+"}" { return new Symbol(sym.llc, yycolumn, yyline, yytext()); }
+"[" { return new Symbol(sym.coa, yycolumn, yyline, yytext()); }
+"]" { return new Symbol(sym.coc, yycolumn, yyline, yytext()); }
+"[]" {return new Symbol(sym.corcetes, yycolumn, yyline, yytext());}
+"{}" {return new Symbol(sym.llaves, yycolumn, yyline, yytext());}
+"()" {return new Symbol(sym.paren, yycolumn, yyline, yytext());}
+"." {return new Symbol(sym.punto, yycolumn, yyline, yytext());}
+"," {return new Symbol(sym.coma, yycolumn, yyline, yytext());}
+";" {System.out.println("pyc"); return new Symbol(sym.pyc, yycolumn, yyline, yytext());}
+"!" {return new Symbol(sym.admira, yycolumn, yyline, yytext());}
+"||" {return new Symbol(sym.pipes, yycolumn, yyline, yytext());}
+"&&" {return new Symbol(sym.andpers, yycolumn, yyline, yytext());}
+"!=" {return new Symbol(sym.negar, yycolumn, yyline, yytext());}
+"==" {return new Symbol(sym.dobleigual, yycolumn, yyline, yytext());}
+"=" {return new Symbol(sym.igual, yycolumn, yyline, yytext());}
+">=" {return new Symbol(sym.maigual, yycolumn, yyline, yytext());}
+">" {return new Symbol(sym.mayor, yycolumn, yyline, yytext());}
+"<=" {return new Symbol(sym.meigual, yycolumn, yyline, yytext());}
+"<" {return new Symbol(sym.menor, yycolumn, yyline, yytext());}
+"%" {return new Symbol(sym.porcentaje, yycolumn, yyline, yytext());}
+"/" { System.out.println("dividido"); return new Symbol(sym.slash, yycolumn, yyline, yytext());}
+"*" { System.out.println("por"); return new Symbol(sym.aster, yycolumn, yyline, yytext());}
+"-" { System.out.println("menos"); return new Symbol(sym.guin, yycolumn, yyline, yytext());}
+"+" { System.out.println("mas"); return new Symbol(sym.mas, yycolumn, yyline, yytext());}
 
-{cbool} {return symbol(sym.cbool);}
+{cbool} {return new Symbol(sym.cbool, yycolumn, yyline, yytext());}
 {SpaceChar} { }
-{Ident} {System.out.println("id"); return symbol(sym.id); }
-{Integer} {System.out.println(yytext()); return symbol(sym.zconst_int); }
+{Ident} {System.out.println("id"); return new Symbol(sym.id, yycolumn, yyline, yytext()); }
+{Integer} {System.out.println(yytext()); return new Symbol(sym.zconst_int, yycolumn, yyline, yytext()); }
 "//"{InputChar}* { System.out.println("Comentario");} //REVISAR
 {LineChar} { }
 "/*"~"*/"  { System.out.println("Comentario");}  //REVISAR
-"/*"[^*]+~[^/]+  { return symbol(sym.error);}
-\"{SChar}*\" {return symbol(sym.zconst_string);}
+"/*"[^*]+~[^/]+  { System.out.println("error lexico");} //return new Symbol(sym.error, yycolumn, yyline, yytext());}
+\"{SChar}*\" {return new Symbol(sym.zconst_string, yycolumn, yyline, yytext());}
 //<<EOF>> { System.out.println("FIN"); } //REVISAR
 }
-. { System.out.println("error lexico"); return symbol(sym.error); }
+. { System.out.println("error lexico"); } //return new Symbol(sym.error); }

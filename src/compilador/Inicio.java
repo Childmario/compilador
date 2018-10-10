@@ -19,7 +19,7 @@ import jdk.nashorn.internal.parser.Lexer;
  * @author Mario
  */
 public class Inicio extends javax.swing.JFrame {
-    
+    String texto = "";
     /**
      * Creates new form Inicio
      */
@@ -42,6 +42,7 @@ public class Inicio extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
         tabla_tokens = new javax.swing.JTable();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -86,13 +87,19 @@ public class Inicio extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(25, 25, 25)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton1)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 340, Short.MAX_VALUE))
-                .addGap(18, 18, 18)
+                        .addGap(25, 25, 25)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jButton1)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 340, Short.MAX_VALUE))
+                        .addGap(18, 18, 18))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(87, 87, 87)
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -104,7 +111,10 @@ public class Inicio extends javax.swing.JFrame {
                 .addGap(26, 26, 26)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 299, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 299, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(57, 57, 57)
+                        .addComponent(jLabel1)))
                 .addContainerGap(41, Short.MAX_VALUE))
         );
 
@@ -209,14 +219,16 @@ if (result == JFileChooser.APPROVE_OPTION) {
 
     public void analizador_lex(String ruta) throws IOException{
             FileReader fr = new FileReader(ruta);
-//            BufferedReader lector = new BufferedReader(fr);
-//            
-//            String texto = "";
-//            String temp = "";
-//            String bfread;
-//            while ((bfread = lector.readLine()) != null) {            
-//            temp = temp + bfread;
-//        }
+            BufferedReader lector = new BufferedReader(fr);
+            
+            
+            String temp = "";
+            String bfread;
+            while ((bfread = lector.readLine()) != null) {            
+            temp = temp + bfread;
+        }
+            texto += temp;
+            jTextArea1.setText(texto);
 //            
 //            texto = temp;
 //            reglas analisis = new reglas(new BufferedReader(new StringReader(texto)));
@@ -226,8 +238,10 @@ if (result == JFileChooser.APPROVE_OPTION) {
             
 
             try {
-            sintactico.parse();   
-            System.out.println(sintactico.resultado);
+
+            sintactico.parse(); 
+            //System.out.println(sintactico.resultado);
+            jLabel1.setText("Leido correctamente");
             System.out.println("Correcto");
             } catch (Exception e) {
                 System.out.println(sintactico.error_sym()); 
@@ -311,6 +325,7 @@ if (result == JFileChooser.APPROVE_OPTION) {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTextArea jTextArea1;

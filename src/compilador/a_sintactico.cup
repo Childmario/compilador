@@ -56,133 +56,305 @@ terminal Integer   zconst_int;
 terminal Boolen    cbool;
 
 //------> declaracion de no terminales
-non terminal Object  InterfaceDecl, Program, Decl, DeclPlus, VariableDecl;
-non terminal Object  Variable, FunctionDecl, Formals, VariablePlus, extendsident;
-non terminal Object  implementsident, IdentifierPlus, ClassDecl, Field, FieldAst;
-non terminal Object  Prototype, StmtBlock, VariableDeclAst, Stmt, StmtAst;
-non terminal Object  ExprBool, elseStmt, IfStmt, ExprPlus, WhileStmt, ForStmt;
-non terminal Object  ReturnStmt, BreakStmt, PrintStmt, Expr, LValue, Call;
-non terminal Object  LibCall, Actuals, Constant, exprPossibilities, DeclPlusBool;
-non terminal Object IdentifierPlusBool, VariablePlusBool, ExprPlusBool;
-non terminal Object IdentifierBool,RemoveRecursion;
-non terminal String     Type;
+non terminal Object  Program, Decl, VariableDecl, Variable, FunctionDecl, Formals, ClassDecl;
+non terminal Object  Field, InterfaceDecl, Prototype, StmtBlock, Stmt, IfStmt, WhileStmt, ForStmt;
+non terminal Object  ReturnStmt, BreakStmt,PrintStmt, Expr, LValue, Call, LibCall;
+non terminal Object  Actuals, Constant, Ext, Imp, ImpID, ProtCont, FuncCont, StmtVar;
+non terminal Object  StmtStmt, StmtExpr, ExprPrint, ElseIfStmt, ClassField, InterfaceProt, CallCont;
+non terminal String  Type;
 
-//----> precedencia de menor a mayor 
-precedence left zif, zelse, zfor, zwhile;
-precedence left zbreak, zreturn;
-precedence left para, parac, coa, coc, lla, llc, paren, corcetes, llaves;
-precedence left admira, andpers, pipes, menor, meigual, mayor, maigual, dobleigual, negar, aster, slash, porcentaje, mas, guin;
-precedence left id, cbool, zconst_string, zconst_int, zconstante_double, zthis, zNew, zNewArray, znull;
-precedence left punto, coma, pyc;
-precedence left zgetbyte, zreadinteger, zreadline, zmalloc,zsetbyte;
-precedence left zvoid, zclass, zinterface, zextends, zimplements, zprint, igual;
-precedence left zbool, zint, zdouble, zstring;
+/*--------------PRECEDENCIAS-----------*/
 
-start with Program;
+precedence left mas, guin, aster, slash, porcentaje;
 
-/*--------------- 3ra Area: Reglas Semanticas -----------------------*/
-   
-Program::= DeclPlus;
+precedence left menor, meigual, mayor, maigual, igual, dobleigual, negar, andpers, pipes, admira ;
 
-Decl::=   VariableDecl
-        | FunctionDecl
-        | ClassDecl
-        | InterfaceDecl;
+precedence left zelse;
 
-DeclPlus::= Decl DeclPlusBool;
+precedence left id;
 
-DeclPlusBool::= /*nada*/| DeclPlus;
+/* -------------------GRAMATICA FORMAL------------------------ */
 
-VariableDecl::= Variable pyc;
 
-Variable::= Type id;
 
-Type::= zint|zdouble|zbool|zstring| id | Type corcetes;
+Program ::= Program Decl
 
-FunctionDecl::= Type id para Formals parac StmtBlock
-                | zvoid id para Formals parac StmtBlock;
+| /* ε */ ;
 
-Formals::=   | VariablePlus coma;
 
-VariablePlus::= Variable VariablePlusBool;
 
-VariablePlusBool::= | Variable;
+Decl ::= VariableDecl
 
-extendsident::= | zextends id;
+| FunctionDecl
 
-implementsident::=  | zimplements IdentifierPlus coma; 
+| ClassDecl
 
-IdentifierPlus::= id IdentifierPlusBool;
+| InterfaceDecl ;
 
-IdentifierPlusBool::= |IdentifierPlus;
 
-ClassDecl::= zclass id extendsident implementsident lla FieldAst llc;
 
-Field::= VariableDecl Field  
-        | FunctionDecl Field;
+VariableDecl ::= Variable pyc ;
 
-FieldAst::=  | Field
-            | FieldAst Field;
 
-InterfaceDecl::= zinterface id lla Prototype llc;
 
-Prototype::=| Type id para Formals parac pyc Prototype
-            | zvoid id para Formals parac pyc Prototype;
+Variable ::= Type id ;
 
-StmtBlock::= lla VariableDeclAst StmtAst llc;
 
-VariableDeclAst::= |VariableDecl VariableDeclAst;
 
-Stmt::= Expr pyc | pyc  | IfStmt | WhileStmt | ForStmt | BreakStmt | ReturnStmt | PrintStmt  | StmtBlock ;
+Type ::= zint
 
-StmtAst::= |StmtAst Stmt
-           |Stmt;
+| zdouble
 
-ExprBool::= |Expr;
+| zbool
 
-elseStmt::= |zelse Stmt;
+| zstring
 
-IfStmt ::= zif para Expr parac elseStmt;
+| id
 
-ExprPlus::= Expr ExprPlusBool;
+| Type corcetes ;
 
-ExprPlusBool::= |ExprPlus;
-WhileStmt::= zwhile para Expr parac Stmt;
 
-ForStmt::= zfor para ExprBool pyc Expr pyc ExprBool parac Stmt;
 
-ReturnStmt::= zreturn ExprBool;
+FunctionDecl ::= Type FuncCont
 
-BreakStmt::= zbreak pyc;
+| zvoid FuncCont ;
 
-PrintStmt::= zprint para ExprPlus coma parac pyc;      
 
-Expr::= LValue igual Expr RemoveRecursion | Constant RemoveRecursion | LValue RemoveRecursion |
-        zthis RemoveRecursion | Call RemoveRecursion | para Expr parac | admira Expr RemoveRecursion |
-        zNew para id parac RemoveRecursion | zNewArray para Expr coma Type parac  RemoveRecursion  |  zreadinteger paren RemoveRecursion |
-        zreadline paren RemoveRecursion | zmalloc para Expr parac RemoveRecursion;
 
-RemoveRecursion::=  | exprPossibilities RemoveRecursion | guin Expr RemoveRecursion;
+FuncCont ::= id para Formals parac StmtBlock ;
 
-exprPossibilities::= mas Expr
-                    | aster Expr
-                    | slash Expr
-                    | porcentaje Expr
-                    | menor Expr
-                    | meigual Expr
-                    | mayor Expr
-                    | maigual Expr
-                    | dobleigual Expr
-                    | negar Expr
-                    | andpers Expr
-                    | pipes Expr;
 
-LValue::= id | Expr punto id | Expr coa Expr coc;
 
-Call::= id para Actuals parac | Expr punto id para Actuals parac | Expr punto LibCall para Actuals parac;
+Formals ::= Formals coma Variable
 
-LibCall::= zgetbyte para Expr parac  | zsetbyte para Expr coma Expr parac;
+| Variable
 
-Actuals::= | ExprPlus coma;
+| /* ε */ ;
 
-Constant::= zconst_int | zconstante_double | cbool | zconst_string | znull;
+
+
+ClassDecl ::= zclass id Ext Imp lla ClassField llc ;
+
+
+
+Ext ::= zextends id
+
+| /* ε */ ;
+
+
+
+Imp ::= zimplements ImpID
+
+| /* ε */ ;
+
+
+
+ImpID ::= ImpID coma id
+
+| id ;
+
+
+
+ClassField ::= ClassField Field
+
+| /* ε */ ;
+
+
+
+Field ::= VariableDecl
+
+| FunctionDecl ;
+
+
+
+InterfaceDecl ::= zinterface id lla InterfaceProt llc ;
+
+
+
+InterfaceProt ::= InterfaceProt Prototype
+
+| /* ε */ ;
+
+
+
+Prototype ::= Type ProtCont
+
+| zvoid ProtCont;
+
+
+
+ProtCont ::= id para Formals parac pyc ;
+
+
+
+StmtBlock ::= lla StmtVar StmtStmt llc ;
+
+
+
+StmtVar ::= StmtVar VariableDecl
+
+| /* ε */ ;
+
+
+
+StmtStmt ::= StmtStmt Stmt
+
+| /* ε */ ;
+
+
+
+Stmt ::= StmtExpr pyc
+
+| IfStmt
+
+| WhileStmt
+
+| ForStmt
+
+| BreakStmt
+
+| ReturnStmt
+
+| PrintStmt
+
+| StmtBlock ;
+
+
+
+StmtExpr ::= Expr
+
+| /* ε */ ;
+
+
+
+IfStmt ::= zif para Expr parac Stmt ElseIfStmt ;
+
+
+
+ElseIfStmt ::= zelse Stmt
+
+| /* ε */ ;
+
+
+
+WhileStmt ::= zwhile para Expr parac Stmt ;
+
+
+
+ForStmt ::= zfor para StmtExpr pyc Expr pyc StmtExpr parac Stmt ;
+
+
+
+ReturnStmt ::= zreturn StmtExpr pyc ;
+
+
+
+BreakStmt ::= zbreak pyc ;
+
+
+
+PrintStmt ::= zprint para ExprPrint parac pyc ;
+
+
+
+ExprPrint ::= ExprPrint coma Expr
+
+| Expr ;
+
+
+
+Expr ::= LValue igual Expr
+
+| Constant
+
+| LValue
+
+| zthis
+
+| Call 
+
+| para Expr parac 
+
+| Expr mas Expr
+
+| Expr guin Expr
+
+| Expr aster Expr
+
+| Expr slash Expr
+
+| Expr porcentaje Expr
+
+| guin Expr
+
+| Expr menor Expr
+
+| Expr meigual Expr
+
+| Expr mayor Expr
+
+| Expr maigual Expr
+
+| Expr dobleigual Expr
+
+| Expr negar Expr
+
+| Expr andpers Expr
+
+| Expr pipes Expr
+
+| admira Expr
+
+| zNew para id parac
+
+| zNewArray para Expr coma Type parac
+
+| zreadinteger paren
+
+| zreadline paren
+
+| zmalloc para Expr parac ;
+
+
+
+LValue ::= id
+
+| Expr punto id
+
+| Expr coa Expr coc ;
+
+
+
+Call ::= id para Actuals parac 
+
+| Expr punto id CallCont
+
+| Expr punto LibCall CallCont ;
+
+
+
+CallCont ::= para Actuals parac ;
+
+
+
+LibCall ::= zgetbyte para Expr parac 
+
+| zsetbyte para Expr coma Expr parac ;
+
+
+
+Actuals ::= ExprPrint
+
+| /* ε */ ;
+
+
+
+Constant ::= zconst_int
+
+| zconstante_double
+
+| cbool
+
+| zconst_string
+
+| znull ;

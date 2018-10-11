@@ -97,8 +97,8 @@ New { System.out.println("zNew"+" Linea: " + yyline + " Columna: " + yycolumn +"
 NewArray {System.out.println("zNewArray"+" Linea: " + yyline + " Columna: " + yycolumn +" Lexema: "+ yytext()); return new Symbol(sym.zNewArray, yycolumn, yyline, yytext());}
 ({Integer})+"."({Integer})*({Exponent})? {System.out.println("zconstante_double"+" Linea: " + yyline + " Columna: " + yycolumn +" Lexema: "+ yytext()); return new Symbol(sym.zconstante_double, yycolumn, yyline, yytext());}
 Float {System.out.println("zfloat"+" Linea: " + yyline + " Columna: " + yycolumn +" Lexema: "+ yytext()); return new Symbol(sym.zFloat, yycolumn, yyline, yytext());}
-getByte {System.out.println("zgetbyte"+" Linea: " + yyline + " Columna: " + yycolumn +" Lexema: "+ yytext()); return new Symbol (sym.zgetbyte, yycolumn, yyline, yytext());} 
-setByte {System.out.println("zsetbyte"+" Linea: " + yyline + " Columna: " + yycolumn +" Lexema: "+ yytext()); return new Symbol (sym.zsetbyte, yycolumn, yyline, yytext());}
+GetByte {System.out.println("zgetbyte"+" Linea: " + yyline + " Columna: " + yycolumn +" Lexema: "+ yytext()); return new Symbol (sym.zgetbyte, yycolumn, yyline, yytext());} 
+SetByte {System.out.println("zsetbyte"+" Linea: " + yyline + " Columna: " + yycolumn +" Lexema: "+ yytext()); return new Symbol (sym.zsetbyte, yycolumn, yyline, yytext());}
 
 "(" {System.out.println("para"+" Linea: " + yyline + " Columna: " + yycolumn +" Lexema: "+ yytext()); return new Symbol(sym.para, yycolumn, yyline, yytext()); }
 ")" {System.out.println("parac"+" Linea: " + yyline + " Columna: " + yycolumn +" Lexema: "+ yytext()); return new Symbol(sym.parac, yycolumn, yyline, yytext()); }

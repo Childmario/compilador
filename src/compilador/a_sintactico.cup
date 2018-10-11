@@ -61,7 +61,7 @@ non terminal Object  Field, InterfaceDecl, Prototype, StmtBlock, Stmt, IfStmt, W
 non terminal Object  ReturnStmt, BreakStmt,PrintStmt, Expr, LValue, Call, LibCall, Decl2;
 non terminal Object  Actuals, Constant, Ext, Imp, ImpID, ProtCont, FuncCont, StmtVar;
 non terminal Object  StmtStmt, StmtExpr, ExprPrint, ElseIfStmt, ClassField, InterfaceProt, CallCont;
-non terminal Object  Formals2, Formals3, ImpID2, ImpID3;
+non terminal Object  FormalsCont,  StmtEnd, StmtCont;
 non terminal String  Type;
 
 /*--------------PRECEDENCIAS-----------*/
@@ -80,7 +80,9 @@ precedence left zint, zstring, id, zbool, zdouble;
 
 
 
-Program ::= Decl2 Decl;
+Program ::= Program Decl
+       | ;/*{nada}*/
+
 
 Decl ::= VariableDecl
 
@@ -92,11 +94,7 @@ Decl ::= VariableDecl
 
 ;
 
-Decl2::= | Program;
-
 VariableDecl ::= Variable pyc ;
-
-
 
 Variable ::= Type id ;
 
@@ -125,12 +123,11 @@ FunctionDecl ::= Type FuncCont
 FuncCont ::= id para Formals parac StmtBlock ;
 
 
+Formals ::= FormalsCont Variable
+| /* ε */ ;
 
-Formals ::= | Variable Formals2 | Variable;
-
-Formals2 ::= coma Variable Formals3;
-
-Formals3 ::= | Formals2; 
+FormalsCont ::= FormalsCont Variable coma
+| /* ε */ ;
 
 
 
@@ -148,10 +145,8 @@ Imp ::= zimplements ImpID
 
 | /* ε */ ;
 
-ImpID ::= id ImpID2 | id;
-ImpID2 ::= coma id ImpID3;
-ImpID3 ::= | ImpID2;
-
+ImpID ::= ImpID coma id
+| id ;
 
 
 ClassField ::= ClassField Field
@@ -186,20 +181,14 @@ ProtCont ::= id para Formals parac pyc ;
 
 
 
-StmtBlock ::= lla StmtVar StmtStmt llc ;
+StmtBlock ::= lla StmtCont llc ;
 
-
-
-StmtVar ::= StmtVar VariableDecl
-
+StmtCont ::= StmtEnd StmtCont
 | /* ε */ ;
 
 
-
-StmtStmt ::=  Stmt StmtStmt
-
-| /* ε */ ;
-
+StmtEnd ::= VariableDecl
+| Stmt ;
 
 
 Stmt ::= StmtExpr pyc
@@ -217,7 +206,6 @@ Stmt ::= StmtExpr pyc
 | PrintStmt
 
 | StmtBlock ;
-
 
 
 StmtExpr ::= Expr
@@ -300,9 +288,9 @@ Expr ::= LValue igual Expr
 
 | zNewArray para Expr coma Type parac
 
-| zreadinteger paren
+| zreadinteger para parac
 
-| zreadline paren
+| zreadline para parac
 
 | zmalloc para Expr parac 
 
@@ -325,12 +313,11 @@ LValue ::= id
 
 
 
-Call ::= id CallCont 
+Call ::= id para Actuals parac 
 
 | Expr punto id CallCont
 
 | Expr punto LibCall CallCont ;
-
 
 
 CallCont ::= para Actuals parac ;

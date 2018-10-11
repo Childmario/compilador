@@ -61,7 +61,7 @@ non terminal Object  Field, InterfaceDecl, Prototype, StmtBlock, Stmt, IfStmt, W
 non terminal Object  ReturnStmt, BreakStmt,PrintStmt, Expr, LValue, Call, LibCall, Decl2;
 non terminal Object  Actuals, Constant, Ext, Imp, ImpID, ProtCont, FuncCont, StmtVar;
 non terminal Object  StmtStmt, StmtExpr, ExprPrint, ElseIfStmt, ClassField, InterfaceProt, CallCont;
-non terminal Object  Formals2, Formals3;
+non terminal Object  Formals2, Formals3, ImpID2, ImpID3;
 non terminal String  Type;
 
 /*--------------PRECEDENCIAS-----------*/
@@ -146,11 +146,9 @@ Imp ::= zimplements ImpID
 
 | /* ε */ ;
 
-
-
-ImpID ::= ImpID coma id
-
-| id ;
+ImpID ::= id ImpID2 | id;
+ImpID2 ::= coma id ImpID3;
+ImpID3 ::= | ImpID2;
 
 
 
@@ -324,7 +322,7 @@ LValue ::= id
 
 
 
-Call ::= id para Actuals parac 
+Call ::= id CallCont 
 
 | Expr punto id CallCont
 

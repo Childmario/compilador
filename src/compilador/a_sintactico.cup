@@ -194,7 +194,7 @@ StmtVar ::= StmtVar VariableDecl
 
 
 
-StmtStmt ::= StmtStmt Stmt
+StmtStmt ::=  Stmt StmtStmt
 
 | /* ε */ ;
 
@@ -262,14 +262,6 @@ ExprPrint ::= ExprPrint coma Expr
 
 Expr ::= LValue igual Expr
 
-| Constant
-
-| LValue
-
-| zthis
-
-| Call 
-
 | para Expr parac 
 
 | Expr mas Expr
@@ -310,7 +302,16 @@ Expr ::= LValue igual Expr
 
 | zreadline paren
 
-| zmalloc para Expr parac ;
+| zmalloc para Expr parac 
+
+| Constant
+
+| LValue
+
+| zthis
+
+| Call 
+;
 
 
 

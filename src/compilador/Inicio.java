@@ -227,6 +227,7 @@ if (result == JFileChooser.APPROVE_OPTION) {
             while ((bfread = lector.readLine()) != null) {            
             temp = temp + bfread;
         }
+            jTextArea1.setText("");
             texto += temp;
             jTextArea1.setText(texto);
 //            

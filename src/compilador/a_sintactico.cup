@@ -13,9 +13,9 @@ parser code {:
         int fila = s.right;
         int columna = s.left;
         
-        System.out.println("!!!!!!! Error Sintactico Recuperado !!!!!!!");
+        System.out.println("Error Sintactico Recuperado !!!!!!!");
         System.out.println("\t\tLexema: "+lexema);
-        System.out.println("\t\tFila: "+fila);
+        System.out.println("\t\tLinea: "+fila);
         System.out.println("\t\tColumna: "+columna);
 
 
@@ -80,7 +80,7 @@ precedence left zint, zstring, id, zbool, zdouble;
 
 
 
-Program ::= Decl2 Decl | Decl;
+Program ::= Decl2 Decl;
 
 Decl ::= VariableDecl
 
@@ -88,7 +88,9 @@ Decl ::= VariableDecl
 
 | ClassDecl
 
-| InterfaceDecl ;
+| InterfaceDecl | error pyc | error llc 
+
+;
 
 Decl2::= | Program;
 

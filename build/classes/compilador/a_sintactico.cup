@@ -1,0 +1,358 @@
+/*--------------- 1ra Area: Codigo de Usuario -----------------------*/
+//-------> importaciones, paquetes
+package compilador;
+import java_cup.runtime.Symbol;
+
+//------> Codigo para el parser,variables, metodos
+parser code {:
+       //Metodo al que se llama automaticamente ante algun error sintactico
+
+    public void syntax_error(Symbol s)
+    {        
+        String lexema = String.valueOf(s.value);
+        int fila = s.right;
+        int columna = s.left;
+        
+        System.out.println("!!!!!!! Error Sintactico Recuperado !!!!!!!");
+        System.out.println("\t\tLexema: "+lexema);
+        System.out.println("\t\tFila: "+fila);
+        System.out.println("\t\tColumna: "+columna);
+
+
+       
+        
+    }
+
+    //Metodo al que se llama en el momento en que ya no es posible una recuperacion de errores
+    public void unrecovered_syntax_error(Symbol s) throws java.lang.Exception
+    {        
+        String lexema = String.valueOf(s.value);;
+        int fila = s.right;
+        int columna = s.left;
+        
+        System.out.println("!!!!!!! Error Sintactico, Panic Mode !!!!!!! ");
+        System.out.println("\t\tLexema: "+lexema);
+        System.out.println("\t\tFila: "+fila);
+        System.out.println("\t\tColumna: "+columna);
+
+     
+    }
+:};
+
+//------> Codigo para las acciones gramaticales
+
+
+/*--------------- 2da Area: Declaraciones -----------------------*/
+//------> declaracion de terminales 
+terminal String zvoid,zstring,zclass,zinterface,znull,zthis,zextends;
+terminal String zwhile,zif,zelse,zreturn,zbreak,zNew,zNewArray,zdouble;
+terminal String id,para,parac,lla,llc,coa,coc,corcetes,llaves;
+terminal String paren,punto,coma,pyc,admira,pipes,andpers,negar,zFloat;
+terminal String dobleigual,igual,maigual,mayor,meigual,menor,porcentaje;
+terminal String slash,aster,guin,mas,zimplements,zfor,zprint,zreadinteger;
+terminal String zreadline,zmalloc,zconst_string,zconstante_double,zint;
+terminal String zbool, zgetbyte,zsetbyte;
+terminal Integer   zconst_int;
+terminal Boolen    cbool;
+
+//------> declaracion de no terminales
+non terminal Object  Program, Decl, VariableDecl, Variable, FunctionDecl, Formals, ClassDecl;
+non terminal Object  Field, InterfaceDecl, Prototype, StmtBlock, Stmt, IfStmt, WhileStmt, ForStmt;
+non terminal Object  ReturnStmt, BreakStmt,PrintStmt, Expr, LValue, Call, LibCall, Decl2;
+non terminal Object  Actuals, Constant, Ext, Imp, ImpID, ProtCont, FuncCont, StmtVar;
+non terminal Object  StmtStmt, StmtExpr, ExprPrint, ElseIfStmt, ClassField, InterfaceProt, CallCont;
+non terminal Object  Formals2, Formals3, ImpID2, ImpID3;
+non terminal String  Type;
+
+/*--------------PRECEDENCIAS-----------*/
+
+precedence left mas, guin, aster, slash, porcentaje;
+
+precedence left menor, meigual, mayor, maigual, igual, dobleigual, negar, andpers, pipes, admira ;
+
+precedence left zelse;
+
+precedence left zvoid, zclass , zinterface;
+
+precedence left zint, zstring, id, zbool, zdouble;
+
+/* -------------------GRAMATICA FORMAL------------------------ */
+
+
+
+Program ::= Decl2 Decl | Decl;
+
+Decl ::= VariableDecl
+
+| FunctionDecl
+
+| ClassDecl
+
+| InterfaceDecl ;
+
+Decl2::= | Program;
+
+VariableDecl ::= Variable pyc ;
+
+
+
+Variable ::= Type id ;
+
+
+
+Type ::= zint
+
+| zdouble
+
+| zbool
+
+| zstring
+
+| id
+
+| Type corcetes ;
+
+
+
+FunctionDecl ::= Type FuncCont
+
+| zvoid FuncCont ;
+
+
+
+FuncCont ::= id para Formals parac StmtBlock ;
+
+
+
+Formals ::= | Variable Formals2 | Variable;
+
+Formals2 ::= coma Variable Formals3;
+
+Formals3 ::= | Formals2; 
+
+
+
+ClassDecl ::= zclass id Ext Imp lla ClassField llc ;
+
+
+
+Ext ::= zextends id
+
+| /* ε */ ;
+
+
+
+Imp ::= zimplements ImpID
+
+| /* ε */ ;
+
+ImpID ::= id ImpID2 | id;
+ImpID2 ::= coma id ImpID3;
+ImpID3 ::= | ImpID2;
+
+
+
+ClassField ::= ClassField Field
+
+| /* ε */ ;
+
+
+
+Field ::= VariableDecl
+
+| FunctionDecl ;
+
+
+
+InterfaceDecl ::= zinterface id lla InterfaceProt llc ;
+
+
+
+InterfaceProt ::= InterfaceProt Prototype
+
+| /* ε */ ;
+
+
+
+Prototype ::= Type ProtCont
+
+| zvoid ProtCont;
+
+
+
+ProtCont ::= id para Formals parac pyc ;
+
+
+
+StmtBlock ::= lla StmtVar StmtStmt llc ;
+
+
+
+StmtVar ::= StmtVar VariableDecl
+
+| /* ε */ ;
+
+
+
+StmtStmt ::=  Stmt StmtStmt
+
+| /* ε */ ;
+
+
+
+Stmt ::= StmtExpr pyc
+
+| IfStmt
+
+| WhileStmt
+
+| ForStmt
+
+| BreakStmt
+
+| ReturnStmt
+
+| PrintStmt
+
+| StmtBlock ;
+
+
+
+StmtExpr ::= Expr
+
+| /* ε */ ;
+
+
+
+IfStmt ::= zif para Expr parac Stmt ElseIfStmt ;
+
+
+
+ElseIfStmt ::= zelse Stmt
+
+| /* ε */ ;
+
+
+
+WhileStmt ::= zwhile para Expr parac Stmt ;
+
+
+
+ForStmt ::= zfor para StmtExpr pyc Expr pyc StmtExpr parac Stmt ;
+
+
+
+ReturnStmt ::= zreturn StmtExpr pyc ;
+
+
+
+BreakStmt ::= zbreak pyc ;
+
+
+
+PrintStmt ::= zprint para ExprPrint parac pyc ;
+
+
+
+ExprPrint ::= ExprPrint coma Expr
+
+| Expr ;
+
+
+
+Expr ::= LValue igual Expr
+
+| para Expr parac 
+
+| Expr mas Expr
+
+| Expr guin Expr
+
+| Expr aster Expr
+
+| Expr slash Expr
+
+| Expr porcentaje Expr
+
+| guin Expr
+
+| Expr menor Expr
+
+| Expr meigual Expr
+
+| Expr mayor Expr
+
+| Expr maigual Expr
+
+| Expr dobleigual Expr
+
+| Expr negar Expr
+
+| Expr andpers Expr
+
+| Expr pipes Expr
+
+| admira Expr
+
+| zNew para id parac
+
+| zNewArray para Expr coma Type parac
+
+| zreadinteger paren
+
+| zreadline paren
+
+| zmalloc para Expr parac 
+
+| Constant
+
+| LValue
+
+| zthis
+
+| Call 
+;
+
+
+
+LValue ::= id
+
+| Expr punto id
+
+| Expr coa Expr coc ;
+
+
+
+Call ::= id CallCont 
+
+| Expr punto id CallCont
+
+| Expr punto LibCall CallCont ;
+
+
+
+CallCont ::= para Actuals parac ;
+
+
+
+LibCall ::= zgetbyte para Expr parac 
+
+| zsetbyte para Expr coma Expr parac ;
+
+
+
+Actuals ::= ExprPrint
+
+| /* ε */ ;
+
+
+
+Constant ::= zconst_int
+
+| zconstante_double
+
+| cbool
+
+| zconst_string
+
+| znull ;

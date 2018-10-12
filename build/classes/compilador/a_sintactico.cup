@@ -6,14 +6,15 @@ import java_cup.runtime.Symbol;
 //------> Codigo para el parser,variables, metodos
 parser code {:
        //Metodo al que se llama automaticamente ante algun error sintactico
+static boolean error = false;
 
     public void syntax_error(Symbol s)
     {        
         String lexema = String.valueOf(s.value);
         int fila = s.right;
         int columna = s.left;
-        
-        System.out.println("Error Sintactico Recuperado !!!!!!!");
+        error = true;
+        System.out.println("Se ha encontrado un error sintactico recuperable, leer: ");
         System.out.println("\t\tLexema: "+lexema);
         System.out.println("\t\tLinea: "+fila);
         System.out.println("\t\tColumna: "+columna);
@@ -29,10 +30,10 @@ parser code {:
         String lexema = String.valueOf(s.value);;
         int fila = s.right;
         int columna = s.left;
-        
-        System.out.println("!!!!!!! Error Sintactico, Panic Mode !!!!!!! ");
+        error = true;
+        System.out.println("Se ha encontrado un error sintactico irrecuperable, leer: ");
         System.out.println("\t\tLexema: "+lexema);
-        System.out.println("\t\tFila: "+fila);
+        System.out.println("\t\tLinea: "+fila);
         System.out.println("\t\tColumna: "+columna);
 
      

@@ -177,8 +177,7 @@ Prototype ::= Type ProtCont
 
 
 
-ProtCont ::= id para Formals parac pyc ;
-
+ProtCont ::= id para Formals parac pyc;
 
 
 StmtBlock ::= lla StmtCont llc ;

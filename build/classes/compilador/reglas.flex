@@ -108,7 +108,7 @@ SetByte {System.out.println("zsetbyte"+" Linea: " + yyline + " Columna: " + yyco
 "]" { System.out.println("coc"+" Linea: " + yyline + " Columna: " + yycolumn +" Lexema: "+ yytext()); return new Symbol(sym.coc, yycolumn, yyline, yytext()); }
 "[]" {System.out.println("corcetes"+" Linea: " + yyline + " Columna: " + yycolumn +" Lexema: "+ yytext()); return new Symbol(sym.corcetes, yycolumn, yyline, yytext());}
 "{}" {System.out.println("llaves"+" Linea: " + yyline + " Columna: " + yycolumn +" Lexema: "+ yytext()); return new Symbol(sym.llaves, yycolumn, yyline, yytext());}
-"()" {System.out.println("paren"+" Linea: " + yyline + " Columna: " + yycolumn +" Lexema: "+ yytext()); return new Symbol(sym.paren, yycolumn, yyline, yytext());}
+//"()" {System.out.println("paren"+" Linea: " + yyline + " Columna: " + yycolumn +" Lexema: "+ yytext()); return new Symbol(sym.paren, yycolumn, yyline, yytext());}
 "." {System.out.println("punto"+" Linea: " + yyline + " Columna: " + yycolumn +" Lexema: "+ yytext()); return new Symbol(sym.punto, yycolumn, yyline, yytext());}
 "," {System.out.println("coma"+" Linea: " + yyline + " Columna: " + yycolumn +" Lexema: "+ yytext()); return new Symbol(sym.coma, yycolumn, yyline, yytext());}
 ";" {System.out.println("pyc"+" Linea: " + yyline + " Columna: " + yycolumn +" Lexema: "+ yytext()); return new Symbol(sym.pyc, yycolumn, yyline, yytext());}

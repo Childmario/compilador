@@ -46,8 +46,8 @@ parser code {:
 //------> declaracion de terminales 
 terminal String zvoid,zstring,zclass,zinterface,znull,zthis,zextends;
 terminal String zwhile,zif,zelse,zreturn,zbreak,zNew,zNewArray,zdouble;
-terminal String id,para,parac,lla,llc,coa,coc,corcetes,llaves;
-terminal String paren,punto,coma,pyc,admira,pipes,andpers,negar,zFloat;
+terminal String id,para,parac,lla,llc,coa,coc,corcetes;
+terminal String punto,coma,pyc,admira,pipes,andpers,negar;
 terminal String dobleigual,igual,maigual,mayor,meigual,menor,porcentaje;
 terminal String slash,aster,guin,mas,zimplements,zfor,zprint,zreadinteger;
 terminal String zreadline,zmalloc,zconst_string,zconstante_double,zint;
@@ -58,9 +58,9 @@ terminal Boolen    cbool;
 //------> declaracion de no terminales
 non terminal Object  Program, Decl, VariableDecl, Variable, FunctionDecl, Formals, ClassDecl;
 non terminal Object  Field, InterfaceDecl, Prototype, StmtBlock, Stmt, IfStmt, WhileStmt, ForStmt;
-non terminal Object  ReturnStmt, BreakStmt,PrintStmt, Expr, LValue, Call, LibCall, Decl2;
-non terminal Object  Actuals, Constant, Ext, Imp, ImpID, ProtCont, FuncCont, StmtVar;
-non terminal Object  StmtStmt, StmtExpr, ExprPrint, ElseIfStmt, ClassField, InterfaceProt, CallCont;
+non terminal Object  ReturnStmt, BreakStmt,PrintStmt, Expr, LValue, Call, LibCall;
+non terminal Object  Actuals, Constant, Ext, Imp, ImpID, ProtCont, FuncCont;
+non terminal Object  StmtExpr, ExprPrint, ElseIfStmt, ClassField, InterfaceProt, CallCont;
 non terminal Object  FormalsCont,  StmtEnd, StmtCont;
 non terminal String  Type;
 

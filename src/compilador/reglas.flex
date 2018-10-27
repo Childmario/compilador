@@ -22,7 +22,12 @@ import java_cup.runtime.*;
 %init}
 %{
 
+   static ArrayList<t_simbolo> simbolo = new ArrayList<>();
 
+   public void sponch (String simbolo, String tipo) {
+    t_simbolo o_simbolo = new t_simbolo(simbolo, tipo);
+    this.simbolo.add(o_simbolo);
+}
    
    private Symbol symhbol(int type){
       return new Symbol(type, yyline, yycolumn);
@@ -31,6 +36,9 @@ import java_cup.runtime.*;
        return new Symbol(type, yyline, yycolumn, value);
    }
 
+
+
+// <editor-fold defaultstate="collapsed" desc="Verificacion de longitud de id"> 
 public String posiciocn(String token){
 
        String auxiliar = yytext();
@@ -51,10 +59,8 @@ else{
 //return "Token: "+ token +" -> " +"<" + auxiliar + "> " + "Línea: " + yyline + " Columna: " + yycolumn +"-"+col;
 return token+","+auxiliar+","+yyline+","+yycolumn +"-"+col;
 }
-      
-
 }
-
+// </editor-fold>
 %}
 InputChar = [^\n\r]
 SpaceChar = [\ \t]
@@ -81,7 +87,7 @@ int {System.out.println("zint"+" Linea: " + yyline + " Columna: " + yycolumn +" 
 double {System.out.println("zdouble"+" Linea: " + yyline + " Columna: " + yycolumn +" Lexema: "+ yytext()); return new Symbol(sym.zdouble, yycolumn, yyline, yytext());}
 bool {System.out.println("zbool"+" Linea: " + yyline + " Columna: " + yycolumn +" Lexema: "+ yytext()); return new Symbol(sym.zbool, yycolumn, yyline, yytext());}
 string {System.out.println("zstring"+" Linea: " + yyline + " Columna: " + yycolumn +" Lexema: "+ yytext());return new Symbol(sym.zstring, yycolumn, yyline, yytext());}
-class {System.out.println("zclass"+" Linea: " + yyline + " Columna: " + yycolumn +" Lexema: "+ yytext()); return new Symbol(sym.zclass, yycolumn, yyline, yytext());}
+class {sponch (yytext(), "zclass") ;System.out.println("zclass"+" Linea: " + yyline + " Columna: " + yycolumn +" Lexema: "+ yytext()); return new Symbol(sym.zclass, yycolumn, yyline, yytext());}
 interface {System.out.println("zinterface"+" Linea: " + yyline + " Columna: " + yycolumn +" Lexema: "+ yytext()); return new Symbol(sym.zinterface, yycolumn, yyline, yytext());}
 null {System.out.println("znull"+" Linea: " + yyline + " Columna: " + yycolumn +" Lexema: "+ yytext()); return new Symbol(sym.znull, yycolumn, yyline, yytext());}
 this {System.out.println("zthis"+" Linea: " + yyline + " Columna: " + yycolumn +" Lexema: "+ yytext()); return new Symbol(sym.zthis, yycolumn, yyline, yytext());}
@@ -130,7 +136,7 @@ SetByte {System.out.println("zsetbyte"+" Linea: " + yyline + " Columna: " + yyco
 
 {cbool} {System.out.println("cbool"+" Linea: " + yyline + " Columna: " + yycolumn +" Lexema: "+ yytext()); return new Symbol(sym.cbool, yycolumn, yyline, yytext());}
 {SpaceChar} { }
-{Ident} {System.out.println("id" +" Linea: " + yyline + " Columna: " + yycolumn +" Lexema: "+ yytext()); return new Symbol(sym.id, yycolumn, yyline, yytext()); }
+{Ident} {sponch (yytext(), "String") ;System.out.println("id" +" Linea: " + yyline + " Columna: " + yycolumn +" Lexema: "+ yytext()); return new Symbol(sym.id, yycolumn, yyline, yytext()); }
 {Integer} {System.out.println("zconst_int"+" Linea: " + yyline + " Columna: " + yycolumn +" Lexema: "+ yytext()); return new Symbol(sym.zconst_int, yycolumn, yyline, yytext()); }
 "//"{InputChar}* { System.out.println("Comentario");} //REVISAR
 {LineChar} { }

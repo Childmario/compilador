@@ -464,7 +464,12 @@ public class reglas implements java_cup.runtime.Scanner {
 
   /* user code: */
 
+   static ArrayList<t_simbolo> simbolo = new ArrayList<>();
 
+   public void sponch (String simbolo, String tipo) {
+    t_simbolo o_simbolo = new t_simbolo(simbolo, tipo);
+    this.simbolo.add(o_simbolo);
+}
    
    private Symbol symhbol(int type){
       return new Symbol(type, yyline, yycolumn);
@@ -473,6 +478,9 @@ public class reglas implements java_cup.runtime.Scanner {
        return new Symbol(type, yyline, yycolumn, value);
    }
 
+
+
+// <editor-fold defaultstate="collapsed" desc="Verificacion de longitud de id"> 
 public String posiciocn(String token){
 
        String auxiliar = yytext();
@@ -493,10 +501,8 @@ else{
 //return "Token: "+ token +" -> " +"<" + auxiliar + "> " + "Línea: " + yyline + " Columna: " + yycolumn +"-"+col;
 return token+","+auxiliar+","+yyline+","+yycolumn +"-"+col;
 }
-      
-
 }
-
+// </editor-fold>
 
 
   /**
@@ -879,7 +885,7 @@ return token+","+auxiliar+","+yyline+","+yycolumn +"-"+col;
             }
           case 62: break;
           case 4: 
-            { System.out.println("id" +" Linea: " + yyline + " Columna: " + yycolumn +" Lexema: "+ yytext()); return new Symbol(sym.id, yycolumn, yyline, yytext());
+            { sponch (yytext(), "String") ;System.out.println("id" +" Linea: " + yyline + " Columna: " + yycolumn +" Lexema: "+ yytext()); return new Symbol(sym.id, yycolumn, yyline, yytext());
             }
           case 63: break;
           case 5: 
@@ -1047,7 +1053,7 @@ return token+","+auxiliar+","+yyline+","+yycolumn +"-"+col;
             }
           case 104: break;
           case 46: 
-            { System.out.println("zclass"+" Linea: " + yyline + " Columna: " + yycolumn +" Lexema: "+ yytext()); return new Symbol(sym.zclass, yycolumn, yyline, yytext());
+            { sponch (yytext(), "zclass") ;System.out.println("zclass"+" Linea: " + yyline + " Columna: " + yycolumn +" Lexema: "+ yytext()); return new Symbol(sym.zclass, yycolumn, yyline, yytext());
             }
           case 105: break;
           case 47: 

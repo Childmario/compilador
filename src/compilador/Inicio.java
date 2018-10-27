@@ -235,15 +235,17 @@ if (result == JFileChooser.APPROVE_OPTION) {
             jTextPane1.setText(texto);
 //            
 //            texto = temp;
-//            reglas analisis = new reglas(new BufferedReader(new StringReader(texto)));
+            //reglas analisis = new reglas(new BufferedReader(new StringReader(texto)));
             Sintactico sintactico = new Sintactico(new reglas(new FileReader(ruta)));
            // DefaultTableModel model = (DefaultTableModel) tabla_tokens.getModel();
            // String resultados = "";
             
 
             try {
-
+                
             sintactico.parse(); 
+            ArrayList<t_simbolo> aux = new ArrayList<>();
+            aux = reglas.simbolo;
             //System.out.println(sintactico.resultado);
 //            jLabel1.setText("Leido correctamente");
 //            System.out.println("Correcto");

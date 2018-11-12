@@ -97,7 +97,13 @@ Decl ::= VariableDecl
 
 VariableDecl ::= Variable pyc ;
 
-Variable ::= Type id ;
+Variable ::= Type id:n
+            {:
+                if(!Env.put(n, null)){
+                    System.out.println("error semnatico");
+                }
+            :}
+         ;
 
 
 
@@ -132,7 +138,7 @@ FormalsCont ::= FormalsCont Variable coma
 
 
 
-ClassDecl ::= zclass id Ext Imp lla ClassField llc ;
+ClassDecl ::= zclass id:n1 {:if (Env.putClass(n1, null, null) != 0) {System.out.println("Nombre de clase duplicado");}:} Ext Imp lla ClassField{:System.out.println("Saliendo de clase: "+n1); Env.pop();:} llc ;
 
 
 

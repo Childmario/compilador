@@ -5,75 +5,157 @@
  */
 package compilador;
 
-/**
- *
- * @author Mario
- */
 
 import java.util.*;
+import type.*;
 
 public class Env  {
+  static Env top;
+  static int num = 0;
   static Env root = new Env(null);
-  static Env top = root;
+  static int envCounter;
+  static ArrayList newEnvs = new ArrayList();
+
   HashMap table;  
-  Env prev;  
+  int counter;  
+  Env prev;
+  List vars;
 
   public Env(Env p) {
+	counter = num;
+	num++;
 	table = new HashMap();
-	prev = p;     
+	prev = p;
+	vars = new ArrayList();     
   }
 
-  public static int putClass(String c, String sc, sym s) {
-	if(root.table.containsKey(c)){ System.out.print("CLASS ENTRY: "+c);
-	  					 push();
-	  					 return 1;
+  public int getCounter(){
+	return counter;
+  }
+
+  public static Env getRoot(){
+	return root;
+  }
+
+  public static void initFirst() {
+	envCounter = 0;
+	newEnvs.add(envCounter, root);
+	top = (Env)newEnvs.get(envCounter);
+	put("printf", new Symb(Type.method(Type.voidtype(), Type.voidtype()), null, true));
+	put("scanf", new Symb(Type.method(Type.voidtype(), Type.voidtype()), null, true));
+	System.out.println(" "+top);
+  }
+
+  public static void initSecond() {
+	envCounter = 0;
+	top = (Env)newEnvs.get(envCounter);
+	System.out.println(" "+top);
+  }
+
+  public static void next() {
+	envCounter++;
+	top = (Env)newEnvs.get(envCounter);
+	System.out.println(" "+top);
+  }
+
+  public static int putClass(String c, boolean p) {
+	Name cName = Type.getName(c);
+	if((cName != null) && !Name.isForward(c)) { push();
+	  			 	 			  return 1;
 	}
-	if(sc == null){ root.table.put(c,s);
-	  		    System.out.print("CLASS ENTRY: "+c);
-	  		    top.table.put(c, s);
-	  		    push();
-	  		    return 0;
-	}
-	if(!root.table.containsKey(sc)){ System.out.print("CLASS ENTRY: "+c);
-						   push();
-						   return 2;
-	}
-	else { root.table.put(c,s);
-		 System.out.print("CLASS ENTRY: "+c);
-		 top.table.put(c, s);
+	else { Env current = top;
 		 push();
-		 return 0;
+	  	 cName = Type.putName(c, null, top);
+	  	 Symb s = new Symb(cName, cName, p);
+	  	 current.table.put(c, s);
+		 System.out.println("   PUT "+c+" IN "+current);
+	  	 return 0;
 	}    
   }
 
-  public static boolean put(String name, sym s) {
-	if(!top.table.containsKey(name)) { top.table.put(name,s);
-	  					     System.out.println("  NEW IDENTIFIER: "+name+" -> CURRENT ENVIRONMENT: "+top);
-	  					     return true;
+  public static int putClass(String c, boolean p, String sc) {
+	Name cName = Type.getName(c);
+	if((cName != null) && !Name.isForward(c)) { push();
+				 				  push();
+	  			 				  return 1;
+	}
+	else { Name scName = Type.getName(sc);
+		 if(scName == null){ push();
+					   push();
+				  	   return 2;
+		 }
+		 else { push(scName.getEnv());
+			  Env current = top;
+			  push();
+			  cName = Type.putName(c, sc, top);
+			  Symb s = new Symb(cName, cName, p);
+			  current.table.put(c, s);
+			  System.out.println("   PUT "+c+" IN "+current);
+			  root.table.put(c,s);
+		 	  System.out.println("   PUT "+c+" IN "+root);
+			  return 0;
+		 }
+	}    
+  }
+
+  public static boolean put(String name, Symb s) {
+	if(!top.table.containsKey(name)) {
+	  top.table.put(name,s);
+	  System.out.println("   PUT "+name+" IN "+top);
+	  return true;
 	}
 	return false;    
   }
 
-  public static sym get(String name) {
- 	for(Env e = top; e != null; e = e.prev) { sym found = (sym)(e.table.get(name));
-	  							if (found != null) return found;
+  public static void putSymb(String name, Symb s) {
+ 	Env e = top.prev;
+	e.table.put(name,s);
+	System.out.println("   CHANGED "+name+" IN "+e);   
+  }
+
+  public static boolean putVar(String name, Symb s) {
+	if(!top.table.containsKey(name)) {
+	  top.table.put(name,s);
+	  top.vars.add(name);
+	  System.out.println("   PUT VARIABLE "+name+" IN "+top);
+	  return true;
+	}
+	return false;    
+  }
+
+  public static Symb get(String name) {
+	return get(name, top);   
+  }
+
+  public static Symb get(String name, Env env) {
+ 	for(Env e = env; e != null; e = e.prev) {
+	  Symb found = (Symb)(e.table.get(name));
+	  if (found != null) return found;
 	}
 	return null;   
   }
 
+  static void push(Env e) {
+	envCounter++;
+	top = new Env(e);
+	newEnvs.add(envCounter, top);
+	System.out.println(" "+top);
+  }
+
   public static void push() {
-	top = new Env(top);
-	System.out.println(" -> CURRENT ENVIRONMENT: "+top);
+	push(top);
   }
 
   public static void pop() {
 	top = top.prev;
-   	System.out.println(" -> CURRENT ENVIRONMENT: "+top);
+	envCounter++;
+	newEnvs.add(envCounter, top);
+	System.out.println(" "+top);
   }
 
   public String toString() {
-	if(prev != null) return prev.toString()+table;
-	else return ""+table; 
+	if(prev != null) return " e"+counter+": "+"(e"+prev.getCounter()+") "+table+" - VARIABLES: "+vars;
+	else return " e"+counter+": "+table+" - VARIABLES: "+vars; 
   }
 
 }

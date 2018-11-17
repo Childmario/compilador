@@ -9,7 +9,6 @@ import java_cup.runtime.Symbol;
 parser code {:
        //Metodo al que se llama automaticamente ante algun error sintactico
 static boolean error = false;
-public static boolean first = true, second = false;
 public static int errors = 0;
 
     public void syntax_error(Symbol s)
@@ -51,12 +50,7 @@ public static int errors = 0;
 :};
 
 //------> Codigo para las acciones gramaticales
-init with {:
-	if(first) {	Type.initTypes();
-			Env.initFirst();
-	}
-	if(second) Env.initSecond();
-:};
+
 
 /*--------------- 2da Area: Declaraciones -----------------------*/
 //------> declaracion de terminales 
@@ -104,15 +98,7 @@ Decl ::= VariableDecl
 
 | FunctionDecl
 
-| ClassDecl {: Hashtable forwards;
-			   if(Sintactico.first) { forwards = Name.ForwardHashtable();
-						    int err = forwards.size();
-						    if(err > 0) { parser.errors = parser.errors + err;
-     						    	     		System.err.println("Error : Semantic error");
-      					    	     		System.err.println("  ==> CANNOT FIND CLASSES ("+err+"): "+forwards+"\n");
-						    }
-			   }
-			:}
+| ClassDecl 
 
 | InterfaceDecl | error pyc | error llc 
 
@@ -120,23 +106,17 @@ Decl ::= VariableDecl
 
 VariableDecl ::= Variable pyc ;
 
-Variable ::= Type id:n
-            {:
-                if(!Env.put(n, null)){
-                    System.out.println("error semnatico");
-                }
-            :}
-         ;
+Variable ::= Type id ;
 
 
 
-Type ::= zint {:RESULT = Type.integer();:}
+Type ::= zint 
 
-| zdouble {:RESULT = Type.floating();:}
+| zdouble 
 
 | zbool
 
-| zstring:n {:RESULT = n;:}
+| zstring
 
 | id
 
@@ -150,26 +130,22 @@ FunctionDecl ::= Type FuncCont
 
 
 
-FuncCont ::= id:n {:if(!Env.put(n, null)) {System.out.println("Nombre de metodo ya existe");} else {System.out.print(" METHOD ENTRY: "+n); Env.push();}:} para Formals parac StmtBlock {:System.out.print(" METHOD EXIT"); Env.pop();:};
+FuncCont ::= id:n {:if(!Env.put(n, null)) {System.out.println("Nombre de metodo ya existe");} else {System.out.print(" METHOD ENTRY: "+n); Env.push();}:} para Formals parac StmtBlock {:System.out.print(" METHOD EXIT"); if(Sintactico.first){Env.pop();} if(Sintactico.second){Env.next();}:};
 
 
 Formals ::= FormalsCont Variable
 | /* ε */ ;
 
-FormalsCont ::= FormalsCont Variable coma
+FormalsCont ::= FormalsCont Variable
 | /* ε */ ;
 
 
 
-ClassDecl ::= zclass id:n1 		{:	System.out.println("CLASS ENTRY: "+n1);
-			if(Sintactico.first) if (Env.putClass(n1, true)!=0) parser.sem_error(n1,"DUPLICATE CLASS NAME");
- 			if(Sintactico.second) { Env.next();
-						  Name c = (Env.get(n1)).getOwner();
-						  Name.putCurrentClass(c);
-			}
+ClassDecl ::= zclass id:n1 {:	
+			if (Env.putClass(n1, null, null) != 0) parser.sem_error(n1,"DUPLICATE CLASS NAME");
+ 			
 		:} Ext Imp lla ClassField   {: 	System.out.println("CLASS EXIT: "+n1);
-			if(Sintactico.first) Env.pop();
-			if(Sintactico.second) Env.next();
+			 Env.pop();
 		:} llc ;
 
 
@@ -219,7 +195,7 @@ Prototype ::= Type ProtCont
 ProtCont ::= id para Formals parac pyc;
 
 
-StmtBlock ::= lla {:System.out.print(" BLOCK ENTRY"); Env.push();:} StmtCont {:System.out.print(" BLOCK EXIT"); Env.pop();:} llc ;
+StmtBlock ::= lla {:System.out.print(" BLOCK ENTRY"); Env.push(); :} StmtCont {:System.out.print(" BLOCK EXIT"); Env.pop();:} llc ;
 
 StmtCont ::= StmtEnd StmtCont
 | /* ε */ ;
@@ -351,7 +327,7 @@ LValue ::= id
 
 
 
-Call ::= id para Actuals parac 
+Call ::= id:n {:if(Env.put(n, null)!=0){Env.sem_error(n, "Método: " + n + " no ha sido declarado");}:} para Actuals parac  //lLAMADA A METODOS
 
 | Expr punto id CallCont
 

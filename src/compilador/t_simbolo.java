@@ -10,17 +10,11 @@ package compilador;
  * @author Mario
  */
 public class t_simbolo {
-    
-    String simbolo;
     String tipo; //si es variable, funcion, clase, objeto.
     String tipo_dato;
     String valor;
-    String ambito;
-
 public t_simbolo (){
     
-    this.simbolo = "NA";
-    this.ambito = "NA";
     this.valor = "NA";
     this.tipo = "NA";
     this.tipo_dato = "NA";
@@ -28,17 +22,13 @@ public t_simbolo (){
 
 public t_simbolo(String simbolo, String tipo){
 
-    this.simbolo = simbolo;
-    this.ambito = ambito;
     this.tipo = tipo;
     
 }
 
 public t_simbolo(String simbolo,String tipo_dato, String tipo){
 
-    this.simbolo = simbolo;
-    this.valor = "";
-    this.ambito = "Sin ambito";
+    this.valor = simbolo;
     this.tipo = tipo;
     this.tipo_dato = tipo_dato;
     

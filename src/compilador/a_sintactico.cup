@@ -1,7 +1,6 @@
 /*--------------- 1ra Area: Codigo de Usuario -----------------------*/
 //-------> importaciones, paquetes
 package compilador;
-import type.*;
 import java.util.*;
 import java_cup.runtime.Symbol;
 
@@ -66,13 +65,14 @@ terminal Integer   zconst_int;
 terminal Boolen    cbool;
 
 //------> declaracion de no terminales
-non terminal Object  Program, Decl, VariableDecl, Variable, FunctionDecl, Formals, ClassDecl;
+non terminal Object  Program, Decl, VariableDecl, Variable, Formals, ClassDecl;
 non terminal Object  Field, InterfaceDecl, Prototype, StmtBlock, Stmt, IfStmt, WhileStmt, ForStmt;
 non terminal Object  ReturnStmt, BreakStmt,PrintStmt, Expr, LValue, Call, LibCall;
 non terminal Object  Actuals, Constant, Ext, Imp, ImpID, ProtCont, FuncCont;
 non terminal Object  StmtExpr, ExprPrint, ElseIfStmt, ClassField, InterfaceProt, CallCont;
 non terminal Object  FormalsCont,  StmtEnd, StmtCont;
-non terminal Type  Type;
+non terminal String  Type;
+non terminal String FunctionDecl;
 
 /*--------------PRECEDENCIAS-----------*/
 
@@ -106,11 +106,11 @@ Decl ::= VariableDecl
 
 VariableDecl ::= Variable pyc ;
 
-Variable ::= Type id ;
+Variable ::= Type:t id:n{:t_simbolo var = new t_simbolo("",t,"v"); if(!Env.put(n,var )){System.out.println("***WARNING*** ==> La variable: "+n+" ya existe");}:} ;
 
 
 
-Type ::= zint 
+Type ::= zint {:RESULT = "INT";:}
 
 | zdouble 
 
@@ -120,23 +120,24 @@ Type ::= zint
 
 | id
 
+|zvoid
+
 | Type corcetes ;
 
 
 
-FunctionDecl ::= Type FuncCont
-
-| zvoid FuncCont ;
+FunctionDecl ::= FuncCont:n ;
 
 
 
-FuncCont ::= id:n {:if(!Env.put(n, null)) {System.out.println("Nombre de metodo ya existe");} else {System.out.print(" METHOD ENTRY: "+n); Env.push();}:} para Formals parac StmtBlock {:System.out.print(" METHOD EXIT"); if(Sintactico.first){Env.pop();} if(Sintactico.second){Env.next();}:};
+
+FuncCont ::= Type:t id:n {:t_simbolo var = new t_simbolo("", t, "m"); if(!Env.put(n.toString(), var)) {System.out.println("Nombre de metodo ya existe");} else {System.out.print(" METHOD ENTRY: "+n); Env.push();}:} para Formals parac StmtBlock {:System.out.print(" METHOD EXIT" +n); Env.pop();:};
 
 
 Formals ::= FormalsCont Variable
 | /* ε */ ;
 
-FormalsCont ::= FormalsCont Variable
+FormalsCont ::= FormalsCont Variable coma
 | /* ε */ ;
 
 
@@ -310,7 +311,7 @@ Expr ::= LValue igual Expr
 
 | Constant
 
-| LValue
+| LValue:n
 
 | zthis
 
@@ -319,15 +320,15 @@ Expr ::= LValue igual Expr
 
 
 
-LValue ::= id
+LValue ::= id:n {:if(!Env.get_name(n)){System.out.println("***WARNING*** ==> Variable: "+n+" no ha sido declarada");}:}
 
-| Expr punto id
+| Expr punto id//*********validar
 
 | Expr coa Expr coc ;
 
 
 
-Call ::= id:n {:if(Env.put(n, null)!=0){Env.sem_error(n, "Método: " + n + " no ha sido declarado");}:} para Actuals parac  //lLAMADA A METODOS
+Call ::= id:n {:if(!Env.put(n, null)){parser.sem_error(n, "***WARNING*** ==> Método: " + n + " no ha sido declarado");}:} para Actuals parac  //lLAMADA A METODOS
 
 | Expr punto id CallCont
 

@@ -11,6 +11,7 @@ import java.util.*;
 public class Env  {
   static Env root = new Env(null);
   static Env top = root;
+  static HashMap m_table = new HashMap();
   HashMap table;  
   Env prev;  
 
@@ -45,9 +46,33 @@ public class Env  {
   public static boolean put(String name, t_simbolo s) {
 	if(!top.table.containsKey(name)) { top.table.put(name,s);
 	  					     System.out.println("  NEW IDENTIFIER: "+name+" -> CURRENT ENVIRONMENT: "+top);
+                                                     if (s != null) {
+                                                     if (s.tipo.compareTo("m")==0) {
+                                                         if (!m_table.containsKey(name)) {
+                                                             m_table.put(name, s);
+                                                         }
+                                                         
+            }
+                                                     }
 	  					     return true;
 	}
 	return false;    
+  }
+  
+  public static boolean tipos(String metodo, String var){
+        if (m_table.containsKey(metodo)) {
+            t_simbolo aux = (t_simbolo)m_table.get(metodo);
+            if (top.table.containsKey(var)) {
+                t_simbolo aux2 = (t_simbolo)top.table.get(var);
+                if (aux.tipo_dato.compareTo(aux2.tipo_dato)==0) {
+                    System.out.println("Si se puede operar, los parametros no cumplen con el método");
+                }
+                else{
+                    System.out.println("No se puede operar, los parametros no cumplen con el método");
+                }
+            }
+      }
+      return false;
   }
 
   public static Symb get(String name) {

@@ -261,7 +261,7 @@ PrintStmt ::= zprint para ExprPrint parac pyc ;
 
 ExprPrint ::= ExprPrint coma Expr
 
-| Expr ;
+| Expr:n {:RESULT=n;:};
 
 
 
@@ -311,7 +311,7 @@ Expr ::= LValue igual Expr
 
 | Constant
 
-| LValue:n
+| LValue:n {:RESULT = n;:}
 
 | zthis
 
@@ -320,7 +320,7 @@ Expr ::= LValue igual Expr
 
 
 
-LValue ::= id:n {:if(!Env.get_name(n)){System.out.println("***WARNING*** ==> Variable: "+n+" no ha sido declarada");}:}
+LValue ::= id:n {:if(!Env.get_name(n)){System.out.println("***WARNING*** ==> Variable: "+n+" no ha sido declarada");} RESULT = n;:}
 
 | Expr punto id//*********validar
 
@@ -328,7 +328,7 @@ LValue ::= id:n {:if(!Env.get_name(n)){System.out.println("***WARNING*** ==> Var
 
 
 
-Call ::= id:n {:if(!Env.put(n, null)){parser.sem_error(n, "***WARNING*** ==> Método: " + n + " no ha sido declarado");}:} para Actuals parac  //lLAMADA A METODOS
+Call ::= id:n {:if(!Env.put(n, null)){parser.sem_error(n, "***WARNING*** ==> Método: " + n + " no ha sido declarado");}:} para Actuals:n1 {:Env.tipos(n,n1.toString());:} parac  //lLAMADA A METODOS
 
 | Expr punto id CallCont
 
@@ -345,7 +345,7 @@ LibCall ::= zgetbyte para Expr parac
 
 
 
-Actuals ::= ExprPrint
+Actuals ::= ExprPrint:n {:System.out.println(n); RESULT=n;:}
 
 | /* ε */ ;
 

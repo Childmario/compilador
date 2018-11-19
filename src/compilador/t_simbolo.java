@@ -13,6 +13,7 @@ public class t_simbolo {
     String tipo; //si es variable, funcion, clase, objeto.
     String tipo_dato;
     String valor;
+    String vars = "";
 public t_simbolo (){
     
     this.valor = "NA";

@@ -65,14 +65,14 @@ terminal Integer   zconst_int;
 terminal Boolen    cbool;
 
 //------> declaracion de no terminales
-non terminal Object  Program, Decl, VariableDecl, Variable, Formals, ClassDecl;
+non terminal Object  Program, Decl, Formals, ClassDecl;
 non terminal Object  Field, InterfaceDecl, Prototype, StmtBlock, Stmt, IfStmt, WhileStmt, ForStmt;
 non terminal Object  ReturnStmt, BreakStmt,PrintStmt, Expr, LValue, Call, LibCall;
 non terminal Object  Actuals, Constant, Ext, Imp, ImpID, ProtCont, FuncCont;
-non terminal Object  StmtExpr, ExprPrint, ElseIfStmt, ClassField, InterfaceProt, CallCont;
-non terminal Object  FormalsCont,  StmtEnd, StmtCont;
-non terminal String  Type;
-non terminal String FunctionDecl;
+non terminal Object  StmtExpr, ElseIfStmt, ClassField, InterfaceProt, CallCont;
+non terminal Object    StmtEnd, StmtCont;
+non terminal String  Type, ExprPrint,FormalsCont;
+non terminal String FunctionDecl,VariableDecl,Variable ;
 
 /*--------------PRECEDENCIAS-----------*/
 
@@ -106,17 +106,17 @@ Decl ::= VariableDecl
 
 VariableDecl ::= Variable pyc ;
 
-Variable ::= Type:t id:n{:t_simbolo var = new t_simbolo("",t,"v"); if(!Env.put(n,var )){System.out.println("***WARNING*** ==> La variable: "+n+" ya existe");}:} ;
+Variable ::= Type:t id:n{:RESULT = ""; RESULT=RESULT.concat("["+n+","+t+"]");t_simbolo var = new t_simbolo("",t,"v"); if(!Env.put(n,var )){System.out.println("***WARNING*** ==> La variable: "+n+" ya existe");}:} ;
 
 
 
 Type ::= zint {:RESULT = "INT";:}
 
-| zdouble 
+| zdouble {:RESULT = "DOB";:}
 
-| zbool
+| zbool {:RESULT = "BOOL";:}
 
-| zstring
+| zstring {:RESULT = "STR";:}
 
 | id
 
@@ -131,13 +131,13 @@ FunctionDecl ::= FuncCont:n ;
 
 
 
-FuncCont ::= Type:t id:n {:t_simbolo var = new t_simbolo("", t, "m"); if(!Env.put(n.toString(), var)) {System.out.println("Nombre de metodo ya existe");} else {System.out.print(" METHOD ENTRY: "+n); Env.push();}:} para Formals parac StmtBlock {:System.out.print(" METHOD EXIT" +n); Env.pop();:};
+FuncCont ::= Type:t id:n {:t_simbolo var = new t_simbolo("", t, "m"); if(!Env.put(n.toString(), var)) {System.out.println("Nombre de metodo ya existe");} else {System.out.print(" METHOD ENTRY: "+n); Env.push();}:} para Formals:p {:Env.parametros(n,p);:} parac StmtBlock {:System.out.print(" METHOD EXIT" +n); Env.pop();:};
 
 
-Formals ::= FormalsCont Variable
+Formals ::= FormalsCont:a Variable:b {:a = a.concat(b); RESULT = a; :}
 | /* ε */ ;
 
-FormalsCont ::= FormalsCont Variable coma
+FormalsCont ::= FormalsCont:a Variable:b coma {:if(a==null){a="";}; a = a.concat(b+"-"); RESULT = a;:}
 | /* ε */ ;
 
 
@@ -259,9 +259,9 @@ PrintStmt ::= zprint para ExprPrint parac pyc ;
 
 
 
-ExprPrint ::= ExprPrint coma Expr
+ExprPrint ::= ExprPrint:a coma Expr:b {:a = a.concat(","+b.toString()); RESULT = a;:}
 
-| Expr:n {:RESULT=n;:};
+| Expr:n {:RESULT=n.toString();:};
 
 
 

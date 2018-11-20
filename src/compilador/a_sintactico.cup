@@ -320,7 +320,7 @@ Expr ::= LValue igual Expr
 
 
 
-LValue ::= id:n {:if(!Env.get_name(n)){System.out.println("***WARNING*** ==> Variable: "+n+" no ha sido declarada");} RESULT = n;:}
+LValue ::= id:n {:if(!Env.get_name(n,"v")){System.err.println("***WARNING*** ==> Variable: "+n+" no ha sido declarada");} RESULT = n;:}
 
 | Expr punto id//*********validar
 
@@ -328,7 +328,7 @@ LValue ::= id:n {:if(!Env.get_name(n)){System.out.println("***WARNING*** ==> Var
 
 
 
-Call ::= id:n {:if(!Env.put(n, null)){parser.sem_error(n, "***WARNING*** ==> Método: " + n + " no ha sido declarado");}:} para Actuals:n1 {:Env.tipos(n,n1.toString());:} parac  //lLAMADA A METODOS
+Call ::= id:n {:if(!Env.get_name(n, "m")){parser.sem_error(n, "***WARNING*** ==> Método: " + n + " no ha sido declarado");}:} para Actuals:n1 {:Env.tipos(n,n1.toString());:} parac  //lLAMADA A METODOS
 
 | Expr punto id CallCont
 

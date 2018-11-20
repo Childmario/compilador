@@ -92,7 +92,7 @@ public class Env  {
                                 if (tipo_aux.compareTo(tipo_variable.tipo_dato)!=0) {
                                     String out = t_var.get(i);
                                     String out2 = tipo.get(1);
-                                    System.out.println("El parámetro: "+ out + " no tiene al tipo de método necesario, se esperaba: "+out2+ "para: "+aux.vars);
+                                    System.err.println("El parámetro: "+ out + " no tiene al tipo de método necesario, se esperaba: "+out2+ "para: "+aux.vars);
                                 }                                    
                                 }
                                 else{
@@ -101,37 +101,37 @@ public class Env  {
                                         case "&int":
                                             if (tipo_aux.compareTo("INT")!=0) {
                                     String out2 = tipo.get(1);
-                                    System.out.println("El parámetro: "+ f + " no cumple con la firma, se esperaba: "+out2+" para: "+aux.vars);                                                
+                                    System.err.println("El parámetro: "+ f + " no cumple con la firma, se esperaba: "+out2+" para: "+aux.vars);                                                
                                             }
                                             break;
                                         case "&str":
                                             if (tipo_aux.compareTo("STR")!=0) {
                                     String out2 = tipo.get(1);
-                                    System.out.println("El parámetro: "+ f + " no cumple con la firma, se esperaba: "+out2+" para: "+aux.vars);                                                    
+                                    System.err.println("El parámetro: "+ f + " no cumple con la firma, se esperaba: "+out2+" para: "+aux.vars);                                                    
                                                 
                                             }                                            
                                             break;
                                         case "&dob":
                                             if (tipo_aux.compareTo("DOB")!=0) {
                                     String out2 = tipo.get(1);
-                                    System.out.println("El parámetro: "+ f + " no cumple con la firma, se esperaba: "+out2+" para: "+aux.vars);                                                   
+                                    System.err.println("El parámetro: "+ f + " no cumple con la firma, se esperaba: "+out2+" para: "+aux.vars);                                                   
                                             }                                            
                                             break;
                                         case "&null":
                                             if (tipo_aux.compareTo("NULL")!=0) {
                                     String out2 = tipo.get(1);
-                                    System.out.println("El parámetro: "+ f + " no cumple con la firma, se esperaba: "+out2+" para: "+aux.vars);                                                    
+                                    System.err.println("El parámetro: "+ f + " no cumple con la firma, se esperaba: "+out2+" para: "+aux.vars);                                                    
                                             }                                            
                                             break;
                                         case "&bool":
                                             if (tipo_aux.compareTo("BOOL")!=0) {
                                     String out2 = tipo.get(1);
-                                    System.out.println("El parámetro: "+ f + " no cumple con la firma, se esperaba: "+out2+" para: "+aux.vars);                                                  
+                                    System.err.println("El parámetro: "+ f + " no cumple con la firma, se esperaba: "+out2+" para: "+aux.vars);                                                  
                                             }                                            
                                             break;
                                         default:
                                             String out2 = tipo.get(i);
-                                            System.out.println("El termino: "+f+" no cumple con lo que esperaba el parametro del método, se esperaba: "+out2);
+                                            System.err.println("El termino: "+f+" no cumple con lo que esperaba el parametro del método, se esperaba: "+out2);
                                             break;
                                     }
                                 }
@@ -140,7 +140,7 @@ public class Env  {
             }
             }
             else{
-                System.out.println("El método: "+metodo+" ha sido invocado sin la cantidad de parametros necesitados");
+                System.err.println("El método: "+metodo+" ha sido invocado sin la cantidad de parametros necesitados");
             }
             
 
@@ -154,34 +154,34 @@ public class Env  {
                 if (top.table.containsKey(regreso)) {
           t_simbolo aux = (t_simbolo)top.table.get(regreso);
           if (tipo.toString().compareTo(aux.tipo_dato)!=0) {
-              System.out.println("La instrucción return está tratando regresando: +"+aux.tipo_dato+", se esperaba: "+tipo);
+              System.err.println("La instrucción return está tratando regresando: +"+aux.tipo_dato+", se esperaba: "+tipo);
           }
       }
       else{
           switch(regreso.toString()){
               case "&int":
                   if (tipo.toString().compareTo("INT")!=0) {
-                      System.out.println("La instrucción return está tratando regresando: INT, se esperaba: "+tipo);
+                      System.err.println("La instrucción return está tratando regresando: INT, se esperaba: "+tipo);
                   }
                   break;
               case "&str":
                   if (tipo.toString().compareTo("STR")!=0) {
-                      System.out.println("La instrucción return está tratando regresando: STRING, se esperaba: "+tipo);
+                      System.err.println("La instrucción return está tratando regresando: STRING, se esperaba: "+tipo);
                   }                  
                   break;
               case "&dob":
                   if (tipo.toString().compareTo("DOB")!=0) {
-                      System.out.println("La instrucción return está tratando regresando: DOBLE, se esperaba: "+tipo);
+                      System.err.println("La instrucción return está tratando regresando: DOBLE, se esperaba: "+tipo);
                   }                  
                   break;
               case "&null":
                   if (tipo.toString().compareTo("NULL")!=0) {
-                      System.out.println("La instrucción return está tratando regresando: NULL, se esperaba: "+tipo);
+                      System.err.println("La instrucción return está tratando regresando: NULL, se esperaba: "+tipo);
                   }                  
                   break;
               case "&bool":
                   if (tipo.toString().compareTo("BOOL")!=0) {
-                      System.out.println("La instrucción return está tratando regresando: BOOL, se esperaba: "+tipo);
+                      System.err.println("La instrucción return está tratando regresando: BOOL, se esperaba: "+tipo);
                   }                  
                   break;
                   default:
@@ -199,11 +199,24 @@ public class Env  {
 	return null;   
   }
   
-  public static boolean get_name(String n){
-        if (!top.table.containsKey(n)) {
+  public static boolean get_name(String n, String m){
+      if (m.compareTo("m")==0) {
+          if (!m_table.containsKey(n)) {
+              return false;
+          }
+          else{
+          return true;
+          }
+      }
+      else{
+          if (!top.table.containsKey(n)) {
           return false;
       }
-      return true;
+          else{
+              return true;
+          }
+      }
+    
   }
 
   public static void push() {

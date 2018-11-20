@@ -59,7 +59,7 @@ public class Env  {
 	return false;    
   }
   
-  public static void parametros(String id, Object formals){
+  public static void parametros(String id, Object formals){//método que inserta los parámetros de su firma y los guarda en el hashmap m_table.
   
       if (m_table.containsKey(id)) {
           t_simbolo aux = (t_simbolo)m_table.get(id);
@@ -85,13 +85,57 @@ public class Env  {
                 variable_analizada= variable_analizada.replace("]", "");//-> quito el ], entonces quedaría -> var1, int
                 ArrayList<String> tipo = new ArrayList<>();//arrgelo que guarda la firma de nuevo, pero limpia, sin caracteres basura
                 tipo.addAll(Arrays.asList(variable_analizada.split(",")));//hago split por coma al array tipo.
+                String tipo_aux = tipo.get(1);
+                                if (top.table.containsKey(t_var.get(i))) {
                 t_simbolo tipo_variable = (t_simbolo)top.table.get(t_var.get(i));//aquí obtengo la variable que se envía como parametro en la invocación y valido el tipo en las siguientes linea
                 
-                                if (tipo.get(1).compareTo(tipo_variable.tipo_dato)!=0) {
+                                if (tipo_aux.compareTo(tipo_variable.tipo_dato)!=0) {
                                     String out = t_var.get(i);
-                                    String out2 = tipo.get(i);
-                                    System.out.println("El parámetro: "+ out + " no tiene al tipo de método necesario, se esperaba: "+out2);
+                                    String out2 = tipo.get(1);
+                                    System.out.println("El parámetro: "+ out + " no tiene al tipo de método necesario, se esperaba: "+out2+ "para: "+aux.vars);
+                                }                                    
                                 }
+                                else{
+                                    int f = i+1;
+                                    switch(t_var.get(i)){
+                                        case "&int":
+                                            if (tipo_aux.compareTo("INT")!=0) {
+                                    String out2 = tipo.get(1);
+                                    System.out.println("El parámetro: "+ f + " no cumple con la firma, se esperaba: "+out2+" para: "+aux.vars);                                                
+                                            }
+                                            break;
+                                        case "&str":
+                                            if (tipo_aux.compareTo("STR")!=0) {
+                                    String out2 = tipo.get(1);
+                                    System.out.println("El parámetro: "+ f + " no cumple con la firma, se esperaba: "+out2+" para: "+aux.vars);                                                    
+                                                
+                                            }                                            
+                                            break;
+                                        case "&dob":
+                                            if (tipo_aux.compareTo("DOB")!=0) {
+                                    String out2 = tipo.get(1);
+                                    System.out.println("El parámetro: "+ f + " no cumple con la firma, se esperaba: "+out2+" para: "+aux.vars);                                                   
+                                            }                                            
+                                            break;
+                                        case "&null":
+                                            if (tipo_aux.compareTo("NULL")!=0) {
+                                    String out2 = tipo.get(1);
+                                    System.out.println("El parámetro: "+ f + " no cumple con la firma, se esperaba: "+out2+" para: "+aux.vars);                                                    
+                                            }                                            
+                                            break;
+                                        case "&bool":
+                                            if (tipo_aux.compareTo("BOOL")!=0) {
+                                    String out2 = tipo.get(1);
+                                    System.out.println("El parámetro: "+ f + " no cumple con la firma, se esperaba: "+out2+" para: "+aux.vars);                                                  
+                                            }                                            
+                                            break;
+                                        default:
+                                            String out2 = tipo.get(i);
+                                            System.out.println("El termino: "+f+" no cumple con lo que esperaba el parametro del método, se esperaba: "+out2);
+                                            break;
+                                    }
+                                }
+
                 
             }
             }

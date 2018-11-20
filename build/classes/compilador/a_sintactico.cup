@@ -309,7 +309,7 @@ Expr ::= LValue igual Expr
 
 | zmalloc para Expr parac 
 
-| Constant
+| Constant:m {:RESULT = m;:}
 
 | LValue:n {:RESULT = n;:}
 
@@ -351,12 +351,12 @@ Actuals ::= ExprPrint:n {:System.out.println(n); RESULT=n;:}
 
 
 
-Constant ::= zconst_int
+Constant ::= zconst_int {:RESULT = "&int";:}
 
-| zconstante_double
+| zconstante_double {:RESULT = "&dob";:}
 
-| cbool
+| cbool {:RESULT = "&bool";:}
 
-| zconst_string
+| zconst_string {:RESULT = "&str";:}
 
-| znull ;
+| znull{:RESULT = "&null";:} ;

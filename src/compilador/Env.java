@@ -147,6 +147,50 @@ public class Env  {
       }
       return false;
   }
+  
+  public static void mreturn(String tipo, Object regreso){
+      
+      if (regreso!=null) {
+                if (top.table.containsKey(regreso)) {
+          t_simbolo aux = (t_simbolo)top.table.get(regreso);
+          if (tipo.toString().compareTo(aux.tipo_dato)!=0) {
+              System.out.println("La instrucción return está tratando regresando: +"+aux.tipo_dato+", se esperaba: "+tipo);
+          }
+      }
+      else{
+          switch(regreso.toString()){
+              case "&int":
+                  if (tipo.toString().compareTo("INT")!=0) {
+                      System.out.println("La instrucción return está tratando regresando: INT, se esperaba: "+tipo);
+                  }
+                  break;
+              case "&str":
+                  if (tipo.toString().compareTo("STR")!=0) {
+                      System.out.println("La instrucción return está tratando regresando: STRING, se esperaba: "+tipo);
+                  }                  
+                  break;
+              case "&dob":
+                  if (tipo.toString().compareTo("DOB")!=0) {
+                      System.out.println("La instrucción return está tratando regresando: DOBLE, se esperaba: "+tipo);
+                  }                  
+                  break;
+              case "&null":
+                  if (tipo.toString().compareTo("NULL")!=0) {
+                      System.out.println("La instrucción return está tratando regresando: NULL, se esperaba: "+tipo);
+                  }                  
+                  break;
+              case "&bool":
+                  if (tipo.toString().compareTo("BOOL")!=0) {
+                      System.out.println("La instrucción return está tratando regresando: BOOL, se esperaba: "+tipo);
+                  }                  
+                  break;
+                  default:
+                      break;
+          }
+      }
+      }
+      else{}
+  }
 
   public static Symb get(String name) {
  	for(Env e = top; e != null; e = e.prev) { Symb found = (Symb)(e.table.get(name));

@@ -131,10 +131,10 @@ FunctionDecl ::= FuncCont:n ;
 
 
 
-FuncCont ::= Type:t id:n {:t_simbolo var = new t_simbolo("", t, "m"); if(!Env.put(n.toString(), var)) {System.out.println("Nombre de metodo ya existe");} else {System.out.print(" METHOD ENTRY: "+n); Env.push();}:} para Formals:p {:Env.parametros(n,p);:} parac StmtBlock {:System.out.print(" METHOD EXIT" +n); Env.pop();:};
+FuncCont ::= Type:t id:n {:t_simbolo var = new t_simbolo("", t, "m"); if(!Env.put(n.toString(), var)) {System.out.println("Nombre de metodo ya existe");} else {System.out.print(" METHOD ENTRY: "+n); Env.push();}:} para Formals:p {:Env.parametros(n,p);:} parac StmtBlock:v {:Env.mreturn(t,v);System.out.print(" BLOCK EXIT"); Env.pop();System.out.print(" METHOD EXIT" +n); Env.pop();:};
 
 
-Formals ::= FormalsCont:a Variable:b {:a = a.concat(b); RESULT = a; :}
+Formals ::= FormalsCont:a Variable:b {:if(a==null){a="";a = a.concat(b);}else{a = a.concat(b);} RESULT = a; :}
 | /* ε */ ;
 
 FormalsCont ::= FormalsCont:a Variable:b coma {:if(a==null){a="";}; a = a.concat(b+"-"); RESULT = a;:}
@@ -196,17 +196,17 @@ Prototype ::= Type ProtCont
 ProtCont ::= id para Formals parac pyc;
 
 
-StmtBlock ::= lla {:System.out.print(" BLOCK ENTRY"); Env.push(); :} StmtCont {:System.out.print(" BLOCK EXIT"); Env.pop();:} llc ;
+StmtBlock ::= lla {:System.out.print(" BLOCK ENTRY"); Env.push(); :} StmtCont:p {:RESULT=p;:} llc ;
 
-StmtCont ::= StmtEnd StmtCont
+StmtCont ::= StmtEnd:p StmtCont:q{:if(p!=null){if(q==null){q="";q = q.toString().concat(p.toString());}else {q = q.toString().concat(p.toString());}}; RESULT = q; :}
 | /* ε */ ;
 
 
 StmtEnd ::= VariableDecl
-| Stmt ;
+| Stmt:p {:RESULT = p;:} ;
 
 
-Stmt ::= StmtExpr pyc
+Stmt ::= StmtExpr:m{:RESULT=m;:} pyc
 
 | IfStmt
 
@@ -216,14 +216,14 @@ Stmt ::= StmtExpr pyc
 
 | BreakStmt
 
-| ReturnStmt
+| ReturnStmt:p {:RESULT = p;:}
 
 | PrintStmt
 
 | StmtBlock ;
 
 
-StmtExpr ::= Expr
+StmtExpr ::= Expr:n {:RESULT=n;:}
 
 | /* ε */ ;
 
@@ -247,7 +247,7 @@ ForStmt ::= zfor para StmtExpr pyc Expr pyc StmtExpr parac Stmt ;
 
 
 
-ReturnStmt ::= zreturn StmtExpr pyc ;
+ReturnStmt ::= zreturn StmtExpr:p {:RESULT = p;:} pyc ;
 
 
 
@@ -267,7 +267,7 @@ ExprPrint ::= ExprPrint:a coma Expr:b {:a = a.concat(","+b.toString()); RESULT =
 
 Expr ::= LValue igual Expr
 
-| para Expr parac 
+| para Expr:p parac {:RESULT = p;:}
 
 | Expr mas Expr
 

@@ -22,7 +22,7 @@ public class Env  {
 	prev = p;     
   }
 
-  public static int putClass(String c, String sc, Symb s) {
+  public static int putClass(String c, String sc, t_simbolo s) {
 	if(root.table.containsKey(c)){ System.out.print("Clase creada: "+c);
 	  					 push();
 	  					 return 1;
@@ -31,6 +31,11 @@ public class Env  {
 	  		    System.out.print("Clase creada: "+c);
 	  		    top.table.put(c, s);
 	  		    push();
+                            s = new t_simbolo();
+                            s.ambito = "***GLOBAL***";
+                            s.tipo = "***CLASE***";
+                            Salida v_class =new Salida(c, s);
+                            t_salida.add(v_class);
 	  		    return 0;
 	}
 	if(!root.table.containsKey(sc)){ System.out.print("Clase creada: "+c);
@@ -53,14 +58,18 @@ public class Env  {
 	if(!top.table.containsKey(name)) { 
             top.table.put(name,s);   
             s.ambito = top.prev.table.toString();
-            Salida out = new Salida(name, s);
-            t_salida.add(out);
 	    System.out.println("  NEW IDENTIFIER: "+name+" -> CURRENT ENVIRONMENT: "+top);
                           if (s != null) {
                                  if (s.tipo.compareTo("m")==0) {
                                            if (!m_table.containsKey(name)) {
                                                     m_table.put(name, s);
+                                                    Salida out = new Salida(name, s);
+                                                    t_salida.add(out);                                                    
                                                 }
+                                 }
+                                 else{
+                                        Salida out = new Salida(name, s);
+                                        t_salida.add(out);
                                  }
                           }
                           return true;
@@ -74,6 +83,12 @@ public class Env  {
           t_simbolo aux = (t_simbolo)m_table.get(id);
           aux.vars = formals.toString();
           m_table.replace(id, aux);
+          for (int i = 0; i < t_salida.size(); i++) {
+              if (t_salida.get(i).nombre.compareTo(id)==0) {
+                  Salida element = new Salida(id, aux);
+                  t_salida.set(i, element);
+              }
+          }
       }
       
       
@@ -235,6 +250,12 @@ public class Env  {
 
   public static void pop() {
 	top = top.prev;
+        t_simbolo aux = new t_simbolo();
+        aux.ambito = top.toString();
+        aux.tipo="ELIMINACION";
+        aux.tipo_dato = "E";
+        Salida out = new Salida("SALIENDO AMBITO", aux);
+        t_salida.add(out);
    	System.out.println(" -> CURRENT ENVIRONMENT: "+top);
   }
 

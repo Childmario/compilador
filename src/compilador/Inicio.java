@@ -239,8 +239,16 @@ if (result == JFileChooser.APPROVE_OPTION) {
             try {
                 
             sintactico.parse(); 
-            ArrayList<t_simbolo> aux = new ArrayList<>();
-            aux = reglas.simbolo;
+            //ArrayList<t_simbolo> aux = new ArrayList<>();
+                for (int i = 0; i < Env.t_salida.size(); i++) {
+                    Salida aux = Env.t_salida.get(i);
+                    String a = aux.simbolo.tipo_dato;
+                    String b = aux.simbolo.tipo;
+                    String c = aux.simbolo.vars;
+                    String d = aux.simbolo.ambito;
+                    System.out.println(aux.nombre + "|" +"(tipo)"+ b+ " -- " + "(dato)"+a +" -- "  + "(ambito)"+d );
+                }
+            //aux = reglas.simbolo;
             //System.out.println(sintactico.resultado);
 //            jLabel1.setText("Leido correctamente");
 //            System.out.println("Correcto");

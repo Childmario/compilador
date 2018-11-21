@@ -14,6 +14,7 @@ public class t_simbolo {
     String tipo_dato;
     String valor;
     String vars = "";
+    String ambito = "";
 public t_simbolo (){
     
     this.valor = "NA";

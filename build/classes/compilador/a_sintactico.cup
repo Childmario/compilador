@@ -60,7 +60,7 @@ terminal String punto,coma,pyc,admira,pipes,andpers,negar;
 terminal String dobleigual,igual,maigual,mayor,meigual,menor,porcentaje;
 terminal String slash,aster,guin,mas,zimplements,zfor,zprint,zreadinteger;
 terminal String zreadline,zmalloc,zconst_string,zconstante_double,zint;
-terminal String zbool, zgetbyte,zsetbyte;
+terminal String zbool, zgetbyte,zsetbyte, zconst;
 terminal Integer   zconst_int;
 terminal Boolen    cbool;
 
@@ -84,7 +84,10 @@ precedence left zelse;
 
 precedence left zvoid, zclass , zinterface;
 
+
 precedence left zint, zstring, id, zbool, zdouble;
+
+
 
 /* -------------------GRAMATICA FORMAL------------------------ */
 
@@ -107,7 +110,6 @@ Decl ::= VariableDecl
 VariableDecl ::= Variable pyc ;
 
 Variable ::= Type:t id:n{:RESULT = ""; RESULT=RESULT.concat("["+n+","+t+"]");t_simbolo var = new t_simbolo("",t,"v"); if(!Env.put(n,var )){System.out.println("***WARNING*** ==> La variable: "+n+" ya existe");}:} ;
-
 
 
 Type ::= zint {:RESULT = "INT";:}
@@ -322,7 +324,7 @@ Expr ::= LValue igual Expr
 
 LValue ::= id:n {:if(!Env.get_name(n,"v")){System.err.println("***WARNING*** ==> Variable: "+n+" no ha sido declarada");} RESULT = n;:}
 
-| Expr punto id//*********validar
+| Expr:a punto id{:RESULT=a;:}//*********validar
 
 | Expr coa Expr coc ;
 

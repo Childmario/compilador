@@ -12,6 +12,8 @@ public class Env  {
   static Env root = new Env(null);
   static Env top = root;
   static HashMap m_table = new HashMap();
+  static ArrayList<Salida> t_salida = new ArrayList<>();
+  String Operacion;
   HashMap table;  
   Env prev;  
 
@@ -21,41 +23,48 @@ public class Env  {
   }
 
   public static int putClass(String c, String sc, Symb s) {
-	if(root.table.containsKey(c)){ System.out.print("CLASS ENTRY: "+c);
+	if(root.table.containsKey(c)){ System.out.print("Clase creada: "+c);
 	  					 push();
 	  					 return 1;
 	}
 	if(sc == null){ root.table.put(c,s);
-	  		    System.out.print("CLASS ENTRY: "+c);
+	  		    System.out.print("Clase creada: "+c);
 	  		    top.table.put(c, s);
 	  		    push();
 	  		    return 0;
 	}
-	if(!root.table.containsKey(sc)){ System.out.print("CLASS ENTRY: "+c);
+	if(!root.table.containsKey(sc)){ System.out.print("Clase creada: "+c);
 						   push();
 						   return 2;
 	}
 	else { root.table.put(c,s);
-		 System.out.print("CLASS ENTRY: "+c);
+		 System.out.print("Clase creada: "+c);
 		 top.table.put(c, s);
 		 push();
 		 return 0;
 	}    
   }
 
+  public static boolean get_class(Object in){
+      return root.table.containsKey(in.toString());
+  }
+  
   public static boolean put(String name, t_simbolo s) {
-	if(!top.table.containsKey(name)) { top.table.put(name,s);
-	  					     System.out.println("  NEW IDENTIFIER: "+name+" -> CURRENT ENVIRONMENT: "+top);
-                                                     if (s != null) {
-                                                     if (s.tipo.compareTo("m")==0) {
-                                                         if (!m_table.containsKey(name)) {
-                                                             m_table.put(name, s);
-                                                         }
-                                                         
-            }
-                                                     }
-	  					     return true;
-	}
+	if(!top.table.containsKey(name)) { 
+            top.table.put(name,s);   
+            s.ambito = top.prev.table.toString();
+            Salida out = new Salida(name, s);
+            t_salida.add(out);
+	    System.out.println("  NEW IDENTIFIER: "+name+" -> CURRENT ENVIRONMENT: "+top);
+                          if (s != null) {
+                                 if (s.tipo.compareTo("m")==0) {
+                                           if (!m_table.containsKey(name)) {
+                                                    m_table.put(name, s);
+                                                }
+                                 }
+                          }
+                          return true;
+        }
 	return false;    
   }
   
@@ -233,5 +242,188 @@ public class Env  {
 	if(prev != null) return prev.toString()+table;
 	else return ""+table; 
   }
+  
+  //Extras
+      public static boolean getInterfaces(String I)
+    {
+        if(!root.table.containsKey(I))
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
+      
+    public static void Validar(String Lvalue, String Valor)
+    {
+        if(top.table.containsKey(Lvalue))
+        {
+            Info aux = (Info) (top.table.get(Lvalue));
+            if(Valor.contains("+") || Valor.contains("-") || Valor.contains("*") || Valor.contains("/"))
+            {
+                String Resultado = Resolve(Valor);
 
+                if(Resultado.equals("-1"))
+                {
+                    System.out.println("  Error: No se puede realizar la operacion de asignacion para el valor de  " + Lvalue + " -> Ambito Actual: "+top);
+                }
+                else
+                {               
+                    if(aux.type == "string" )
+                    {                    
+                       System.out.println("  Error: No se puede asignar un valor numerico a un string " + Lvalue + " -> Ambito Actual: "+top);
+                     }
+                    else
+                    {                     
+                         String tipo;
+                        if(RevFloat(Resultado))
+                        {                        
+                            tipo = "integer";
+                        }
+                        else
+                        {
+                             tipo = "double";
+                         }
+                        if(aux.type == tipo)
+                        {
+                            aux.value = Resultado;
+                            top.table.replace(Lvalue, aux);
+                            System.out.println("  Nuevo valor para el identificador "+Lvalue+ " -> Valor: "+Resultado + " -> Ambito Actual: "+top);
+                        }
+                        else
+                        {
+                           System.out.println("  Error: No se puede asignar un valor a la variable " +Lvalue + " -> " + aux.type + " & " + tipo + " no son compatibles" + " -> Ambito Actual: "+top);   
+                        }
+                    }
+                }
+            }
+            else
+            {
+                    boolean Variable = isNumeric(Valor);
+                    String tipo;
+                    if (Variable == true)
+                    {
+                        if(aux.type == "string" )
+                        {
+                            System.out.println("  Error: No se puede asignar un valor numerico a un string " + Lvalue + " -> Ambito Actual: "+top);
+                        }
+                        else
+                        {
+                            if(RevFloat(Valor))
+                            {
+                                tipo = "integer";
+                            }
+                            else
+                            {
+                                tipo = "double";
+                            }
+                            if(aux.type == tipo)
+                            {
+                                aux.value = Valor;
+                                top.table.replace(Lvalue, aux);            
+                                System.out.println("  Nuevo valor para el identificador "+Lvalue+ " -> Valor: "+Valor + " -> Ambito Actual: "+top);
+                            }
+                            else
+                            {
+                               System.out.println("  Error: No se puede asignar un valor a la variable " +Lvalue + " -> " + aux.type + " & " + tipo + " no son compatibles" + " -> Ambito Actual: "+top);  
+                            }
+                        }
+                    }
+                    else
+                    {
+                        String tipoLval = aux.type;
+                        if(top.table.containsKey(Valor))
+                        {
+                            //Verificar tipos
+                             Info tmp = (Info) (top.table.get(Valor));
+                             if(tipoLval == tmp.type)
+                             {
+                                 if(tmp.value == null)
+                                 {
+                                     System.out.println("  Error: No se puede asignar un valor nulo a la variable " + Lvalue + " -> Ambito Actual: "+top);
+                                 }
+                                 else
+                                 {
+                                    aux.value = tmp.value;
+                                    top.table.replace(Lvalue, aux.value);
+                                    System.out.println("  Nuevo valor para el identificador "+Lvalue+ " -> Valor: "+aux.value + " -> Ambito Actual: "+top);
+                                 }
+                             }
+                             else
+                             {
+                                 System.out.println("  Error: No se puede asignar un valor a la variable " +Lvalue + " -> " + tipoLval + " & " + tmp.type + " no son compatibles" + " -> Ambito Actual: "+top);
+                             }
+
+                        }
+                        else
+                        {
+                            if(Valor.contains("\""))
+                            {
+                                if(aux.type == "string")
+                                {
+                                     aux.value = Valor;
+                                     top.table.replace(Lvalue, aux);            
+                                     System.out.println("  Nuevo valor para el identificador "+Lvalue+ " -> Valor: "+Valor + " -> Ambito Actual: "+top);
+
+                                }
+                                else
+                                {
+                                    System.out.println("  Error: No se puede asignar un valor String a la variable " + Lvalue + " -> Ambito Actual: "+top);
+                                }
+                            }
+                            else
+                            {
+                                System.out.println("  Error: No se puede asignar el valor de una variable no existente a la variable " + Lvalue + " -> Ambito Actual: "+top);
+                            }
+                        }
+                    }
+            }
+        }
+        else
+        {
+            System.out.println("  Error: No se puede asignar realizar la asignacion de valor a " + Lvalue + " ya que no esta declarada -> Ambito Actual: "+top);
+        }
+    }      
+    public static boolean isNumeric(String S)
+    {
+        try
+        {
+            double d = Double.parseDouble(S);
+        }
+        catch(NumberFormatException nfe)
+        {
+            return false;
+        }
+        return true;
+    }
+        public static String ReturnVal(String S)
+    {
+        Info aux = (Info) (top.table.get(S));       
+        return aux.value.toString();
+    }
+    
+
+    public static String Resolve(String S)
+    {
+        Posfijo Stage1 = new Posfijo(S);
+        String Posfijo = Stage1.getPostFix();    
+        Solver Stage2 = new Solver(Posfijo);
+        return Stage2.getResult();
+    }
+    
+   private static boolean RevFloat(String Result)
+  {
+      float N = Float.parseFloat(Result);
+      
+      if(N % 1 == 0)
+      {
+         return true;
+      }
+      else
+      {
+          return false;
+      }
+  }  
 }

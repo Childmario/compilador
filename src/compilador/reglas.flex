@@ -105,6 +105,7 @@ NewArray {System.out.println("zNewArray"+" Linea: " + yyline + " Columna: " + yy
 //Float {System.out.println("zfloat"+" Linea: " + yyline + " Columna: " + yycolumn +" Lexema: "+ yytext()); return new Symbol(sym.zFloat, yycolumn, yyline, yytext());}
 GetByte {System.out.println("zgetbyte"+" Linea: " + yyline + " Columna: " + yycolumn +" Lexema: "+ yytext()); return new Symbol (sym.zgetbyte, yycolumn, yyline, yytext());} 
 SetByte {System.out.println("zsetbyte"+" Linea: " + yyline + " Columna: " + yycolumn +" Lexema: "+ yytext()); return new Symbol (sym.zsetbyte, yycolumn, yyline, yytext());}
+"const" {System.out.println("constante"+" Linea: " + yyline + " Columna: " + yycolumn +" Lexema: "+ yytext()); return new Symbol (sym.zconst, yycolumn, yyline, yytext());}
 
 "(" {/*System.out.println("para"+" Linea: " + yyline + " Columna: " + yycolumn +" Lexema: "+ yytext());*/ return new Symbol(sym.para, yycolumn, yyline, yytext()); }
 ")" {/*System.out.println("parac"+" Linea: " + yyline + " Columna: " + yycolumn +" Lexema: "+ yytext());*/ return new Symbol(sym.parac, yycolumn, yyline, yytext()); }

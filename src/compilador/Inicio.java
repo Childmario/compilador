@@ -255,10 +255,12 @@ if (result == JFileChooser.APPROVE_OPTION) {
 if (!Sintactico.error) {
                     System.out.println("Sintacticamente correcto");
                     jLabel2.setText("Sintacticamente correcto");
-                     JFileChooser fileChooser_save = new JFileChooser();
+ 
+                    
+ JFileChooser fileChooser_save = new JFileChooser();
  fileChooser_save.setCurrentDirectory(new File(System.getProperty("user.home")));
  int result_save = fileChooser_save.showSaveDialog(this);
-         if (result_save == JFileChooser.APPROVE_OPTION) {
+ if (result_save == JFileChooser.APPROVE_OPTION) {
      File selectedFile = fileChooser_save.getSelectedFile();
       
              try {
@@ -283,6 +285,48 @@ if (!Sintactico.error) {
            }
 
         }
+ 
+ // <editor-fold defaultstate="collapsed" desc="Guardar CSV"> 
+  JFileChooser save2 = new JFileChooser();
+ save2.setCurrentDirectory(new File(System.getProperty("user.home")));
+ int result2 = save2.showSaveDialog(this);
+ if (result2 == JFileChooser.APPROVE_OPTION) {
+     File sel = save2.getSelectedFile();
+      
+             try {
+ 
+     FileWriter out = new FileWriter(sel);
+     String HEADER = "SIMBOLO,TIPO,DATO,VALOR,AMBITO";
+     String SEPARATOR = "\n";
+     String COMA = ",";
+                 out.append(HEADER);
+                 for (Salida z:  Env.t_salida) {
+                    Salida aux = z;
+                    out.append(SEPARATOR);
+                    out.append(z.nombre);
+                    out.append(COMA);
+                    String a = aux.simbolo.tipo_dato;
+                    out.append(a);
+                    out.append(COMA);
+                    String b = aux.simbolo.tipo;
+                    out.append(b);
+                    out.append(COMA);
+                    String c = aux.simbolo.valor;
+                    out.append(c);
+                    out.append(COMA);
+                    String d = aux.simbolo.ambito;
+                    out.append(d);
+                    out.append(COMA);
+
+                 }
+                 out.flush();
+                 out.close();
+                 
+             } catch (IOException ex) {
+           }
+
+        }
+// </editor-fold>
                 }
                 Sintactico.error = false;
             } catch (Exception e) {

@@ -68,7 +68,7 @@ public class Env  {
 	if(!top.table.containsKey(name)) { 
             top.table.put(name,s);   
             s.ambito = top.prev.table.toString();
-	    System.out.println("  NEW IDENTIFIER: "+name+" -> CURRENT ENVIRONMENT: "+top);
+	    System.out.println("  IDENTIFICADOR DECLARADO "+name+" -> AMBIENTE ACTUAL: "+top);
                           if (s != null) {
                                  if (s.tipo.compareTo("m")==0) {
                                            if (!m_table.containsKey(name)) {
@@ -276,7 +276,7 @@ public class Env  {
         aux.tipo_dato = "E";
         Salida out = new Salida("SALIENDO AMBITO", aux);
         t_salida.add(out);
-   	System.out.println(" -> CURRENT ENVIRONMENT: "+top);
+   	System.out.println(" -> AMBIENTE ACTUAL: "+top);
   }
 
   public String toString() {

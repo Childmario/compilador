@@ -23,29 +23,39 @@ public class Env  {
   }
 
   public static int putClass(String c, String sc, t_simbolo s) {
-	if(root.table.containsKey(c)){ System.out.print("Clase creada: "+c);
-	  					 push();
-	  					 return 1;
+	if(root.table.containsKey(c)){
+         System.out.print("Clase creada: "+c);
+	  	 push();
+	  	 return 1;
 	}
-	if(sc == null){ root.table.put(c,s);
-	  		    System.out.print("Clase creada: "+c);
-	  		    top.table.put(c, s);
-	  		    push();
-                            s = new t_simbolo();
-                            s.ambito = "***GLOBAL***";
-                            s.tipo = "***CLASE***";
-                            Salida v_class =new Salida(c, s);
-                            t_salida.add(v_class);
-	  		    return 0;
+	if(sc == null){
+        root.table.put(c,s);
+	  	System.out.print("Clase creada: "+c);
+	  	top.table.put(c, s);
+	  	push();
+        s = new t_simbolo();
+        s.ambito = "***GLOBAL***";
+        s.tipo = "***CLASE***";
+        Salida v_class =new Salida(c, s);
+        t_salida.add(v_class);
+	  	return 0;
 	}
-	if(!root.table.containsKey(sc)){ System.out.print("Clase creada: "+c);
-						   push();
-						   return 2;
+	if(!root.table.containsKey(sc)){ 
+        root.table.put(c,s);
+        System.out.print("Clase creada: "+c);
+        top.table.put(c,s);
+		push();
+		return 2;
 	}
 	else { root.table.put(c,s);
 		 System.out.print("Clase creada: "+c);
 		 top.table.put(c, s);
-		 push();
+         push();
+         s = new t_simbolo();
+         s.ambito = "***GLOBAL***";
+         s.tipo = "***CLASE***";
+         Salida v_class =new Salida(c, s);
+         t_salida.add(v_class);
 		 return 0;
 	}    
   }
@@ -497,5 +507,29 @@ public class Env  {
            nespacios+=" ";
        }
        return nespacios;
+   }
+   
+   public static void constantes (String constante){
+   
+       constante = constante.replace("[", "");
+       constante = constante.replace("]", "");
+       ArrayList <String> lista = new ArrayList<>();
+       lista.addAll(Arrays.asList(constante.split(",")));
+       if (lista.size()==2) {
+           if (top.table.containsKey(lista.get(0))) {
+               t_simbolo aux = (t_simbolo)top.table.get(lista.get(0));
+               aux.tipo="c";
+               for (int i = 0; i < t_salida.size(); i++) {
+                   if (t_salida.get(i).nombre.compareTo(lista.get(0))==0) {
+                       
+                       Salida element = new Salida(lista.get(0), aux);
+                       
+                       t_salida.set(i, element);
+                       
+                   }
+               }
+           }
+       }
+       
    }
 }

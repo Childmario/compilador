@@ -108,7 +108,7 @@ Decl ::= VariableDecl
 ;
 
 VariableDecl ::= Variable pyc 
-| zconst Variable pyc;
+| zconst Variable:c {:Env.constantes(c);:} pyc;
 
 Variable ::= Type:t id:n{:RESULT = ""; RESULT=RESULT.concat("["+n+","+t+"]");t_simbolo var = new t_simbolo("",t,"v"); if(!Env.put(n,var )){System.out.println("***WARNING*** ==> La variable: "+n+" ya existe");}:} ;
 
@@ -145,16 +145,34 @@ FormalsCont ::= FormalsCont:a Variable:b coma {:if(a==null){a="";}; a = a.concat
 
 
 
-ClassDecl ::= zclass id:n1 {:	
-			if (Env.putClass(n1, null, null) != 0) parser.sem_error(n1,"NOMBRE DE CLASE DUPLICADO");
- 			
-		:} Ext Imp lla ClassField   {: 	System.out.println("CLASS EXIT: "+n1);
+ClassDecl ::= zclass id:n1 Ext:a {:	
+          if(a==null){
+                if (Env.putClass(n1, null, null) != 0) {
+                parser.sem_error(n1,"NOMBRE DE CLASE DUPLICADO");
+                }
+          }
+          else {
+
+        switch(Env.putClass(n1,a.toString(),null))
+        {
+            case 1:
+            System.out.println(" ***WARNING*** Clase " + n1 + " ya ha sido declarada");
+            break;
+
+            case 2:
+            System.out.println(" ***WARNING*** Clase " + a.toString() + " ya ha sido declarada");
+            break;                
+        }               
+
+          }
+			:} 
+             Imp lla ClassField   {: 	System.out.println("CLASS EXIT: "+n1);
 			 Env.pop();
 		:} llc ;
 
 
 
-Ext ::= zextends id
+Ext ::= zextends id:n {:RESULT = n;:}
 
 | /* ε */ ;
 

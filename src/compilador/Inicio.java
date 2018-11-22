@@ -255,6 +255,34 @@ if (result == JFileChooser.APPROVE_OPTION) {
 if (!Sintactico.error) {
                     System.out.println("Sintacticamente correcto");
                     jLabel2.setText("Sintacticamente correcto");
+                     JFileChooser fileChooser_save = new JFileChooser();
+ fileChooser_save.setCurrentDirectory(new File(System.getProperty("user.home")));
+ int result_save = fileChooser_save.showSaveDialog(this);
+         if (result_save == JFileChooser.APPROVE_OPTION) {
+     File selectedFile = fileChooser_save.getSelectedFile();
+      
+             try {
+ 
+     FileWriter escritor = new FileWriter(selectedFile);
+     BufferedWriter escritor2 = new BufferedWriter(escritor);
+     escritor2.write("SIMBOLO                 TIPO              DATO          VALOR              AMBITO");
+     escritor2.newLine();
+                 for (int i = 0; i < Env.t_salida.size(); i++) {
+                    Salida aux = Env.t_salida.get(i);
+                    String a = aux.simbolo.tipo_dato;
+                    String b = aux.simbolo.tipo;
+                    String c = aux.simbolo.valor;
+                    String d = aux.simbolo.ambito;
+                    escritor2.write(aux.nombre + Env.escritura(aux.nombre,24,0) + b +Env.escritura(b, 42,24)+ a+Env.escritura(a, 56,42)+c+Env.escritura(c, 75,56)+d);
+                    escritor2.newLine();
+                 }
+                 escritor2.close();
+                 escritor.close();
+                 
+             } catch (IOException ex) {
+           }
+
+        }
                 }
                 Sintactico.error = false;
             } catch (Exception e) {

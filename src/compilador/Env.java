@@ -186,7 +186,11 @@ public class Env  {
       }
       else{
            ArrayList<String> v_tipos = new ArrayList<>();
-           v_tipos.addAll(Arrays.asList(regreso.toString().split("&")));                    
+           v_tipos.addAll(Arrays.asList(regreso.toString().split("&")));
+                    if (v_tipos.size()==1) {
+                        System.err.println("La variable:"+v_tipos.get(0)+" no ha sido declarada en el ámbito actual");
+                    }
+                    else{
           switch(v_tipos.get(1)){
               case "int":
                   if (tipo.toString().compareTo("INT")!=0) {
@@ -216,7 +220,8 @@ public class Env  {
                   default:
                       break;
           }
-      }
+                    }
+      }//fin else
       }
       else{}
   }
@@ -287,6 +292,8 @@ public class Env  {
         if(top.table.containsKey(Lvalue))
         {
             Valor = Valor.replaceAll("&int", "");
+            Valor = Valor.replace("&dob", "");
+            Valor = Valor.replace("&str", "");
             t_simbolo aux = (t_simbolo) (top.table.get(Lvalue));
             if(Valor.contains("+") || Valor.contains("-") || Valor.contains("*") || Valor.contains("/"))
             {
@@ -481,4 +488,14 @@ public class Env  {
           return false;
       }
   }  
+   
+   public static String escritura(String size_id, int espacios, int cols){
+       String nespacios = "";
+       int tamano = size_id.length();
+       int ciclos = espacios - (tamano+cols);
+       for (int i = 0; i < ciclos; i++) {
+           nespacios+=" ";
+       }
+       return nespacios;
+   }
 }

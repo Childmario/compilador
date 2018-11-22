@@ -108,6 +108,7 @@ Decl ::= VariableDecl
 ;
 
 VariableDecl ::= Variable pyc ;
+| zconst Variable pyc;
 
 Variable ::= Type:t id:n{:RESULT = ""; RESULT=RESULT.concat("["+n+","+t+"]");t_simbolo var = new t_simbolo("",t,"v"); if(!Env.put(n,var )){System.out.println("***WARNING*** ==> La variable: "+n+" ya existe");}:} ;
 

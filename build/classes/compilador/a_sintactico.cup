@@ -110,7 +110,7 @@ Decl ::= VariableDecl
 VariableDecl ::= Variable pyc 
 | zconst Variable:c {:Env.constantes(c);:} pyc;
 
-Variable ::= Type:t id:n{:nleft++;nright++;RESULT = ""; RESULT=RESULT.concat("["+n+","+t+"]");t_simbolo var = new t_simbolo("",t,"v"); if(!Env.put(n,var )){System.err.println("***WARNING*** ==> La variable: "+n+" ya existe. Fila: "+nright+" Columna: "+nleft);}:} ;
+Variable ::= Type:t id:n{:nleft++;nright++;RESULT = ""; RESULT=RESULT.concat("["+n+";"+t+"]");t_simbolo var = new t_simbolo("",t,"v"); if(!Env.put(n,var )){System.err.println("***WARNING*** ==> La variable: "+n+" ya existe. Fila: "+nright+" Columna: "+nleft);}:} ;
 
 
 Type ::= zint {:RESULT = "INT";:}
@@ -123,7 +123,7 @@ Type ::= zint {:RESULT = "INT";:}
 
 | id
 
-|zvoid
+|zvoid {:RESULT = "VOD";:}
 
 | Type corcetes ;
 

@@ -88,7 +88,7 @@ public class Env  {
   }
   
   public static void parametros(String id, Object formals){//método que inserta los parámetros de su firma y los guarda en el hashmap m_table.
-  
+      if (formals!=null) {
       if (m_table.containsKey(id)) {
           t_simbolo aux = (t_simbolo)m_table.get(id);
           aux.vars = formals.toString();
@@ -102,7 +102,7 @@ public class Env  {
           }
       }
       
-      
+      }
   }
   
   public static boolean tipos(String metodo, String var, int fila, int columna){
@@ -110,7 +110,7 @@ public class Env  {
       columna++;
         if (m_table.containsKey(metodo)) {
             t_simbolo aux = (t_simbolo)m_table.get(metodo);
-          ArrayList<String> firma = new ArrayList<>();//Arreglo que guarda la firma de métodos del metodo -> [var1, int], [var2, int]
+          ArrayList<String> firma = new ArrayList<>();//Arreglo que guarda la firma de métodos del metodo -> [var1, int]- [var2, int]
           ArrayList<String> t_var = new ArrayList<>();//arreglo que guarda las variables que están siendo enviadas al metodo -> metodo(var1, var2)
           firma.addAll(Arrays.asList(aux.vars.split("-")));
           t_var.addAll(Arrays.asList(var.split(",")));
@@ -121,7 +121,7 @@ public class Env  {
                 variable_analizada= variable_analizada.replace("[", "");//-> quito el [, enonces quedaría -> var1, int]
                 variable_analizada= variable_analizada.replace("]", "");//-> quito el ], entonces quedaría -> var1, int
                 ArrayList<String> tipo = new ArrayList<>();//arrgelo que guarda la firma de nuevo, pero limpia, sin caracteres basura
-                tipo.addAll(Arrays.asList(variable_analizada.split(",")));//hago split por coma al array tipo.
+                tipo.addAll(Arrays.asList(variable_analizada.split(";")));//hago split por coma al array tipo.
                 String tipo_aux = tipo.get(1);
                                 if (top.table.containsKey(t_var.get(i))) {
                 t_simbolo tipo_variable = (t_simbolo)top.table.get(t_var.get(i));//aquí obtengo la variable que se envía como parametro en la invocación y valido el tipo en las siguientes linea
@@ -188,6 +188,8 @@ public class Env  {
   }
   
   public static void mreturn(String tipo, Object regreso, int fila, int columna){
+      if (tipo!="VOD") {
+          
       
       if (regreso!=null) {
                 if (top.table.containsKey(regreso)) {
@@ -236,6 +238,7 @@ public class Env  {
       }//fin else
       }
       else{}
+  }
   }
 
   public static Symb get(String name) {

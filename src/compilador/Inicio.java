@@ -275,6 +275,9 @@ if (!Sintactico.error) {
                     String b = aux.simbolo.tipo;
                     String c = aux.simbolo.valor;
                     String d = aux.simbolo.ambito;
+                     if (a==null||b==null||c==null||d==null) {
+                         System.out.println("err");
+                     }
                     escritor2.write(aux.nombre + Env.escritura(aux.nombre,24,0) + b +Env.escritura(b, 42,24)+ a+Env.escritura(a, 56,42)+c+Env.escritura(c, 75,56)+d);
                     escritor2.newLine();
                  }
@@ -296,7 +299,7 @@ if (!Sintactico.error) {
              try {
  
      FileWriter out = new FileWriter(sel);
-     String HEADER = "SIMBOLO,TIPO,DATO,VALOR,AMBITO";
+     String HEADER = "SIMBOLO,TIPO,DATO,VALOR,FIRMA,AMBITO";
      String SEPARATOR = "\n";
      String COMA = ",";
                  out.append(HEADER);
@@ -314,6 +317,9 @@ if (!Sintactico.error) {
                     String c = aux.simbolo.valor;
                     out.append(c);
                     out.append(COMA);
+                    String e = aux.simbolo.vars;
+                    out.append(e);
+                    out.append(COMA);                    
                     String d = aux.simbolo.ambito;
                     out.append(d);
                     out.append(COMA);

@@ -107,7 +107,7 @@ Decl ::= VariableDecl
 
 ;
 
-VariableDecl ::= Variable pyc ;
+VariableDecl ::= Variable pyc 
 | zconst Variable pyc;
 
 Variable ::= Type:t id:n{:RESULT = ""; RESULT=RESULT.concat("["+n+","+t+"]");t_simbolo var = new t_simbolo("",t,"v"); if(!Env.put(n,var )){System.out.println("***WARNING*** ==> La variable: "+n+" ya existe");}:} ;
@@ -134,7 +134,7 @@ FunctionDecl ::= FuncCont:n ;
 
 
 
-FuncCont ::= Type:t id:n {:t_simbolo var = new t_simbolo("", t, "m"); if(!Env.put(n.toString(), var)) {System.out.println("Nombre de metodo ya existe");} else {System.out.print(" METHOD ENTRY: "+n); Env.push();}:} para Formals:p {:Env.parametros(n,p);:} parac StmtBlock:v {:Env.mreturn(t,v);System.out.print(" BLOCK EXIT"); Env.pop();System.out.print(" METHOD EXIT" +n); Env.pop();:};
+FuncCont ::= Type:t id:n {:t_simbolo var = new t_simbolo("", t, "m"); if(!Env.put(n.toString(), var)) {System.out.println("Nombre de metodo ya existe");} else {System.out.print(" METHOD ENTRY: "+n); Env.push();}:} para Formals:p {:Env.parametros(n,p);:} parac StmtBlock:v {:Env.mreturn(t,v);System.out.print(" BLOCK EXIT"); /*Env.pop();*/System.out.print(" METHOD EXIT" +n); Env.pop();:};
 
 
 Formals ::= FormalsCont:a Variable:b {:if(a==null){a="";a = a.concat(b);}else{a = a.concat(b);} RESULT = a; :}
@@ -199,7 +199,7 @@ Prototype ::= Type ProtCont
 ProtCont ::= id para Formals parac pyc;
 
 
-StmtBlock ::= lla {:System.out.print(" BLOCK ENTRY"); Env.push(); :} StmtCont:p {:RESULT=p;:} llc ;
+StmtBlock ::= lla {:System.out.print(" BLOCK ENTRY"); /*Env.push();*/ :} StmtCont:p {:RESULT=p;:} llc ;
 
 StmtCont ::= StmtEnd:p StmtCont:q{:if(p!=null){if(q==null){q="";q = q.toString().concat(p.toString());}else {q = q.toString().concat(p.toString());}}; RESULT = q; :}
 | /* ε */ ;

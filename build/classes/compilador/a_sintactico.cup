@@ -60,7 +60,7 @@ terminal String punto,coma,pyc,admira,pipes,andpers,negar;
 terminal String dobleigual,igual,maigual,mayor,meigual,menor,porcentaje;
 terminal String slash,aster,guin,mas,zimplements,zfor,zprint,zreadinteger;
 terminal String zreadline,zmalloc,zconst_string,zconstante_double,zint;
-terminal String zbool, zgetbyte,zsetbyte, zconst;
+terminal String zbool, zgetbyte,zsetbyte, zconst, zinclude;
 terminal Object   zconst_int;
 terminal Boolen    cbool;
 
@@ -110,7 +110,7 @@ Decl ::= VariableDecl
 VariableDecl ::= Variable pyc 
 | zconst Variable:c {:Env.constantes(c);:} pyc;
 
-Variable ::= Type:t id:n{:RESULT = ""; RESULT=RESULT.concat("["+n+","+t+"]");t_simbolo var = new t_simbolo("",t,"v"); if(!Env.put(n,var )){System.out.println("***WARNING*** ==> La variable: "+n+" ya existe");}:} ;
+Variable ::= Type:t id:n{:nleft++;nright++;RESULT = ""; RESULT=RESULT.concat("["+n+","+t+"]");t_simbolo var = new t_simbolo("",t,"v"); if(!Env.put(n,var )){System.out.println("***WARNING*** ==> La variable: "+n+" ya existe. Fila: "+nright+" Columna: "+nleft);}:} ;
 
 
 Type ::= zint {:RESULT = "INT";:}
@@ -346,13 +346,13 @@ Expr1 ::= Constant:a{:RESULT = a;:}
 
 LValue ::= id:n {:if(!Env.get_name(n,"v")){System.err.println("***WARNING*** ==> Variable: "+n+" no ha sido declarada");} RESULT = n;:}
 
-| Expr:a punto id{:RESULT=a:}//*********validar
+| Expr:a punto id{:RESULT=a;:}//*********validar
 
 | Expr coa Expr coc ;
 
 
 
-Call ::= id:n {:if(!Env.get_name(n, "m")){parser.sem_error(n, "***WARNING*** ==> Método: " + n + " no ha sido declarado");}:} para Actuals:n1 {:Env.tipos(n,n1.toString());:} parac  //lLAMADA A METODOS
+Call ::= id:n {:nleft++;nright++;if(!Env.get_name(n, "m")){parser.sem_error(n, "***WARNING*** ==> Método: " + n + " no ha sido declarado. Fila: "+nright+" Columna: "+nleft);}:} para Actuals:n1 {:Env.tipos(n,n1.toString(), n1right, n1left);:} parac  //lLAMADA A METODOS
 
 | Expr punto id CallCont
 

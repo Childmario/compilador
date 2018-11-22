@@ -105,7 +105,9 @@ public class Env  {
       
   }
   
-  public static boolean tipos(String metodo, String var){
+  public static boolean tipos(String metodo, String var, int fila, int columna){
+      fila++;;
+      columna++;
         if (m_table.containsKey(metodo)) {
             t_simbolo aux = (t_simbolo)m_table.get(metodo);
           ArrayList<String> firma = new ArrayList<>();//Arreglo que guarda la firma de métodos del metodo -> [var1, int], [var2, int]
@@ -138,37 +140,37 @@ public class Env  {
                                         case "int":
                                             if (tipo_aux.compareTo("INT")!=0) {
                                     String out2 = tipo.get(1);
-                                    System.err.println("El parámetro: "+ f + " no cumple con la firma, se esperaba: "+out2+" para: "+aux.vars);                                                
+                                    System.err.println("El parámetro: "+ f + " no cumple con la firma, se esperaba: "+out2+" para: "+aux.vars + " Fila: "+fila+" Columna: "+columna);                                                
                                             }
                                             break;
                                         case "str":
                                             if (tipo_aux.compareTo("STR")!=0) {
                                     String out2 = tipo.get(1);
-                                    System.err.println("El parámetro: "+ f + " no cumple con la firma, se esperaba: "+out2+" para: "+aux.vars);                                                    
+                                    System.err.println("El parámetro: "+ f + " no cumple con la firma, se esperaba: "+out2+" para: "+aux.vars + " Fila: "+fila+" Columna: "+columna);                                                  
                                                 
                                             }                                            
                                             break;
                                         case "dob":
                                             if (tipo_aux.compareTo("DOB")!=0) {
                                     String out2 = tipo.get(1);
-                                    System.err.println("El parámetro: "+ f + " no cumple con la firma, se esperaba: "+out2+" para: "+aux.vars);                                                   
+                                    System.err.println("El parámetro: "+ f + " no cumple con la firma, se esperaba: "+out2+" para: "+aux.vars + " Fila: "+fila+" Columna: "+columna);                                                   
                                             }                                            
                                             break;
                                         case "null":
                                             if (tipo_aux.compareTo("NULL")!=0) {
                                     String out2 = tipo.get(1);
-                                    System.err.println("El parámetro: "+ f + " no cumple con la firma, se esperaba: "+out2+" para: "+aux.vars);                                                    
+                                    System.err.println("El parámetro: "+ f + " no cumple con la firma, se esperaba: "+out2+" para: "+aux.vars + " Fila: "+fila+" Columna: "+columna);                                                    
                                             }                                            
                                             break;
                                         case "bool":
                                             if (tipo_aux.compareTo("BOOL")!=0) {
                                     String out2 = tipo.get(1);
-                                    System.err.println("El parámetro: "+ f + " no cumple con la firma, se esperaba: "+out2+" para: "+aux.vars);                                                  
+                                    System.err.println("El parámetro: "+ f + " no cumple con la firma, se esperaba: "+out2+" para: "+aux.vars + " Fila: "+fila+" Columna: "+columna);                                                  
                                             }                                            
                                             break;
                                         default:
                                             String out2 = tipo.get(i);
-                                            System.err.println("El termino: "+f+" no cumple con lo que esperaba el parametro del método, se esperaba: "+out2);
+                                            System.err.println("El termino: "+f+" no cumple con lo que esperaba el parametro del método, se esperaba: "+out2 + " Fila: "+fila+" Columna: "+columna);
                                             break;
                                     }
                                 }
@@ -177,7 +179,7 @@ public class Env  {
             }
             }
             else{
-                System.err.println("El método: "+metodo+" ha sido invocado sin la cantidad de parametros necesitados");
+                System.err.println("El método: "+metodo+" ha sido invocado sin la cantidad de parametros necesitados" + " Fila: "+fila+" Columna: "+columna);
             }
             
 

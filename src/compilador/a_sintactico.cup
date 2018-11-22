@@ -110,7 +110,7 @@ Decl ::= VariableDecl
 VariableDecl ::= Variable pyc 
 | zconst Variable:c {:Env.constantes(c);:} pyc;
 
-Variable ::= Type:t id:n{:nleft++;nright++;RESULT = ""; RESULT=RESULT.concat("["+n+","+t+"]");t_simbolo var = new t_simbolo("",t,"v"); if(!Env.put(n,var )){System.out.println("***WARNING*** ==> La variable: "+n+" ya existe. Fila: "+nright+" Columna: "+nleft);}:} ;
+Variable ::= Type:t id:n{:nleft++;nright++;RESULT = ""; RESULT=RESULT.concat("["+n+","+t+"]");t_simbolo var = new t_simbolo("",t,"v"); if(!Env.put(n,var )){System.err.println("***WARNING*** ==> La variable: "+n+" ya existe. Fila: "+nright+" Columna: "+nleft);}:} ;
 
 
 Type ::= zint {:RESULT = "INT";:}
@@ -134,7 +134,7 @@ FunctionDecl ::= FuncCont:n ;
 
 
 
-FuncCont ::= Type:t id:n {:t_simbolo var = new t_simbolo("", t, "m"); if(!Env.put(n.toString(), var)) {System.out.println("Nombre de metodo ya existe");} else {System.out.print(" METHOD ENTRY: "+n); Env.push();}:} para Formals:p {:Env.parametros(n,p);:} parac StmtBlock:v {:Env.mreturn(t,v);System.out.print(" BLOCK EXIT"); /*Env.pop();*/System.out.print(" METHOD EXIT" +n); Env.pop();:};
+FuncCont ::= Type:t id:n {:t_simbolo var = new t_simbolo("", t, "m"); if(!Env.put(n.toString(), var)) {System.out.println("Nombre de metodo ya existe");} else {System.out.print(" METHOD ENTRY: "+n); Env.push();}:} para Formals:p {:Env.parametros(n,p);:} parac StmtBlock:v {:Env.mreturn(t,v,vright, vleft);System.out.print(" BLOCK EXIT"); /*Env.pop();*/System.out.print(" METHOD EXIT" +n); Env.pop();:};
 
 
 Formals ::= FormalsCont:a Variable:b {:if(a==null){a="";a = a.concat(b);}else{a = a.concat(b);} RESULT = a; :}
@@ -287,7 +287,7 @@ ExprPrint ::= ExprPrint:a coma Expr:b {:a = a.concat(","+b.toString()); RESULT =
 
 
 Expr ::= LValue:v igual Expr:e {:
-    Env.Validar(v.toString(), e.toString());
+    Env.Validar(v.toString(), e.toString(),eright, eleft);
 :}
 
 | para Expr:p parac {:RESULT = p;:}

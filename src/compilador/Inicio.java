@@ -244,9 +244,9 @@ if (result == JFileChooser.APPROVE_OPTION) {
                     Salida aux = Env.t_salida.get(i);
                     String a = aux.simbolo.tipo_dato;
                     String b = aux.simbolo.tipo;
-                    String c = aux.simbolo.vars;
+                    String c = aux.simbolo.valor;
                     String d = aux.simbolo.ambito;
-                    System.out.println(aux.nombre + "|" +"(tipo)"+ b+ " -- " + "(dato)"+a +" -- "  + "(ambito)"+d );
+                    System.out.println(aux.nombre + "|" +"(tipo)"+ b+ " -- " + "(dato)"+a +" -- " +"(valor)"+c+" -- " + "(ambito)"+d );
                 }
             //aux = reglas.simbolo;
             //System.out.println(sintactico.resultado);

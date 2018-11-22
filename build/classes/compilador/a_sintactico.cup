@@ -61,13 +61,13 @@ terminal String dobleigual,igual,maigual,mayor,meigual,menor,porcentaje;
 terminal String slash,aster,guin,mas,zimplements,zfor,zprint,zreadinteger;
 terminal String zreadline,zmalloc,zconst_string,zconstante_double,zint;
 terminal String zbool, zgetbyte,zsetbyte, zconst;
-terminal Integer   zconst_int;
+terminal Object   zconst_int;
 terminal Boolen    cbool;
 
 //------> declaracion de no terminales
 non terminal Object  Program, Decl, Formals, ClassDecl;
 non terminal Object  Field, InterfaceDecl, Prototype, StmtBlock, Stmt, IfStmt, WhileStmt, ForStmt;
-non terminal Object  ReturnStmt, BreakStmt,PrintStmt, Expr, LValue, Call, LibCall;
+non terminal Object  ReturnStmt, BreakStmt,PrintStmt, Expr, Expr1, LValue, Call, LibCall;
 non terminal Object  Actuals, Constant, Ext, Imp, ImpID, ProtCont, FuncCont;
 non terminal Object  StmtExpr, ElseIfStmt, ClassField, InterfaceProt, CallCont;
 non terminal Object    StmtEnd, StmtCont;
@@ -145,7 +145,7 @@ FormalsCont ::= FormalsCont:a Variable:b coma {:if(a==null){a="";}; a = a.concat
 
 
 ClassDecl ::= zclass id:n1 {:	
-			if (Env.putClass(n1, null, null) != 0) parser.sem_error(n1,"DUPLICATE CLASS NAME");
+			if (Env.putClass(n1, null, null) != 0) parser.sem_error(n1,"NOMBRE DE CLASE DUPLICADO");
  			
 		:} Ext Imp lla ClassField   {: 	System.out.println("CLASS EXIT: "+n1);
 			 Env.pop();
@@ -267,17 +267,19 @@ ExprPrint ::= ExprPrint:a coma Expr:b {:a = a.concat(","+b.toString()); RESULT =
 
 
 
-Expr ::= LValue igual Expr
+Expr ::= LValue:v igual Expr:e {:
+    Env.Validar(v.toString(), e.toString());
+:}
 
 | para Expr:p parac {:RESULT = p;:}
 
-| Expr mas Expr
+| Expr1:e1 mas Expr:e2 {:RESULT = e1 + "+" + e2;:}
 
-| Expr guin Expr
+| Expr1:e1 guin Expr:e2{:RESULT = e1 + "-" + e2;:}
 
-| Expr aster Expr
+| Expr1:e1 aster Expr:e2{:RESULT = e1 + "*" + e2;:}
 
-| Expr slash Expr
+| Expr1:e1 slash Expr:e2{:RESULT = e1 + "/" + e2;:}
 
 | Expr porcentaje Expr
 
@@ -320,7 +322,8 @@ Expr ::= LValue igual Expr
 | Call 
 ;
 
-
+Expr1 ::= Constant:a{:RESULT = a;:}
+|         id:e{:RESULT = e;:};
 
 LValue ::= id:n {:if(!Env.get_name(n,"v")){System.err.println("***WARNING*** ==> Variable: "+n+" no ha sido declarada");} RESULT = n;:}
 
@@ -353,12 +356,12 @@ Actuals ::= ExprPrint:n {:System.out.println(n); RESULT=n;:}
 
 
 
-Constant ::= zconst_int {:RESULT = "&int";:}
+Constant ::= zconst_int:a {:RESULT = a + "&int";:}
 
-| zconstante_double {:RESULT = "&dob";:}
+| zconstante_double:a {:RESULT = a + "&dob";:}
 
 | cbool {:RESULT = "&bool";:}
 
-| zconst_string {:RESULT = "&str";:}
+| zconst_string:a {:RESULT = a+ "&str";:}
 
 | znull{:RESULT = "&null";:} ;

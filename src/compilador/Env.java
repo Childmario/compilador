@@ -87,6 +87,7 @@ public class Env  {
               if (t_salida.get(i).nombre.compareTo(id)==0) {
                   Salida element = new Salida(id, aux);
                   t_salida.set(i, element);
+                  break;
               }
           }
       }
@@ -120,34 +121,36 @@ public class Env  {
                                 }                                    
                                 }
                                 else{
+                                    ArrayList<String> v_tipos = new ArrayList<>();
+                                    v_tipos.addAll(Arrays.asList(t_var.get(i).split("&")));
                                     int f = i+1;
-                                    switch(t_var.get(i)){
-                                        case "&int":
+                                    switch(v_tipos.get(1)){
+                                        case "int":
                                             if (tipo_aux.compareTo("INT")!=0) {
                                     String out2 = tipo.get(1);
                                     System.err.println("El parámetro: "+ f + " no cumple con la firma, se esperaba: "+out2+" para: "+aux.vars);                                                
                                             }
                                             break;
-                                        case "&str":
+                                        case "str":
                                             if (tipo_aux.compareTo("STR")!=0) {
                                     String out2 = tipo.get(1);
                                     System.err.println("El parámetro: "+ f + " no cumple con la firma, se esperaba: "+out2+" para: "+aux.vars);                                                    
                                                 
                                             }                                            
                                             break;
-                                        case "&dob":
+                                        case "dob":
                                             if (tipo_aux.compareTo("DOB")!=0) {
                                     String out2 = tipo.get(1);
                                     System.err.println("El parámetro: "+ f + " no cumple con la firma, se esperaba: "+out2+" para: "+aux.vars);                                                   
                                             }                                            
                                             break;
-                                        case "&null":
+                                        case "null":
                                             if (tipo_aux.compareTo("NULL")!=0) {
                                     String out2 = tipo.get(1);
                                     System.err.println("El parámetro: "+ f + " no cumple con la firma, se esperaba: "+out2+" para: "+aux.vars);                                                    
                                             }                                            
                                             break;
-                                        case "&bool":
+                                        case "bool":
                                             if (tipo_aux.compareTo("BOOL")!=0) {
                                     String out2 = tipo.get(1);
                                     System.err.println("El parámetro: "+ f + " no cumple con la firma, se esperaba: "+out2+" para: "+aux.vars);                                                  
@@ -182,28 +185,30 @@ public class Env  {
           }
       }
       else{
-          switch(regreso.toString()){
-              case "&int":
+           ArrayList<String> v_tipos = new ArrayList<>();
+           v_tipos.addAll(Arrays.asList(regreso.toString().split("&")));                    
+          switch(v_tipos.get(1)){
+              case "int":
                   if (tipo.toString().compareTo("INT")!=0) {
                       System.err.println("La instrucción return está tratando regresando: INT, se esperaba: "+tipo);
                   }
                   break;
-              case "&str":
+              case "str":
                   if (tipo.toString().compareTo("STR")!=0) {
                       System.err.println("La instrucción return está tratando regresando: STRING, se esperaba: "+tipo);
                   }                  
                   break;
-              case "&dob":
+              case "dob":
                   if (tipo.toString().compareTo("DOB")!=0) {
                       System.err.println("La instrucción return está tratando regresando: DOBLE, se esperaba: "+tipo);
                   }                  
                   break;
-              case "&null":
+              case "null":
                   if (tipo.toString().compareTo("NULL")!=0) {
                       System.err.println("La instrucción return está tratando regresando: NULL, se esperaba: "+tipo);
                   }                  
                   break;
-              case "&bool":
+              case "bool":
                   if (tipo.toString().compareTo("BOOL")!=0) {
                       System.err.println("La instrucción return está tratando regresando: BOOL, se esperaba: "+tipo);
                   }                  
@@ -281,7 +286,8 @@ public class Env  {
     {
         if(top.table.containsKey(Lvalue))
         {
-            Info aux = (Info) (top.table.get(Lvalue));
+            Valor = Valor.replaceAll("&int", "");
+            t_simbolo aux = (t_simbolo) (top.table.get(Lvalue));
             if(Valor.contains("+") || Valor.contains("-") || Valor.contains("*") || Valor.contains("/"))
             {
                 String Resultado = Resolve(Valor);
@@ -292,7 +298,7 @@ public class Env  {
                 }
                 else
                 {               
-                    if(aux.type == "string" )
+                    if(aux.tipo_dato == "STR" )
                     {                    
                        System.out.println("  Error: No se puede asignar un valor numerico a un string " + Lvalue + " -> Ambito Actual: "+top);
                      }
@@ -301,21 +307,28 @@ public class Env  {
                          String tipo;
                         if(RevFloat(Resultado))
                         {                        
-                            tipo = "integer";
+                            tipo = "INT";
                         }
                         else
                         {
-                             tipo = "double";
+                             tipo = "DOB";
                          }
-                        if(aux.type == tipo)
+                        if(aux.tipo_dato == tipo)
                         {
-                            aux.value = Resultado;
+                            aux.valor = Resultado;
                             top.table.replace(Lvalue, aux);
                             System.out.println("  Nuevo valor para el identificador "+Lvalue+ " -> Valor: "+Resultado + " -> Ambito Actual: "+top);
+                            for (int i = 0; i < t_salida.size(); i++) {
+                                if (t_salida.get(i).nombre.compareTo(Lvalue)==0) {
+                                    Salida element = new Salida(Lvalue, aux);
+                                    t_salida.set(i, element);
+                                    break;
+                                }
+                            }
                         }
                         else
                         {
-                           System.out.println("  Error: No se puede asignar un valor a la variable " +Lvalue + " -> " + aux.type + " & " + tipo + " no son compatibles" + " -> Ambito Actual: "+top);   
+                           System.out.println("  Error: No se puede asignar un valor a la variable " +Lvalue + " -> " + aux.tipo_dato + " & " + tipo + " no son compatibles" + " -> Ambito Actual: "+top);   
                         }
                     }
                 }
@@ -326,7 +339,7 @@ public class Env  {
                     String tipo;
                     if (Variable == true)
                     {
-                        if(aux.type == "string" )
+                        if(aux.tipo_dato == "STR" )
                         {
                             System.out.println("  Error: No se puede asignar un valor numerico a un string " + Lvalue + " -> Ambito Actual: "+top);
                         }
@@ -334,47 +347,61 @@ public class Env  {
                         {
                             if(RevFloat(Valor))
                             {
-                                tipo = "integer";
+                                tipo = "INT";
                             }
                             else
                             {
-                                tipo = "double";
+                                tipo = "DOB";
                             }
-                            if(aux.type == tipo)
+                            if(aux.tipo_dato == tipo)
                             {
-                                aux.value = Valor;
+                                aux.valor = Valor;
                                 top.table.replace(Lvalue, aux);            
                                 System.out.println("  Nuevo valor para el identificador "+Lvalue+ " -> Valor: "+Valor + " -> Ambito Actual: "+top);
+                                                            for (int i = 0; i < t_salida.size(); i++) {
+                                if (t_salida.get(i).nombre.compareTo(Lvalue)==0) {
+                                    Salida element = new Salida(Lvalue, aux);
+                                    t_salida.set(i, element);
+                                    break;
+                                }
+                            }
                             }
                             else
                             {
-                               System.out.println("  Error: No se puede asignar un valor a la variable " +Lvalue + " -> " + aux.type + " & " + tipo + " no son compatibles" + " -> Ambito Actual: "+top);  
+                               System.out.println("  Error: No se puede asignar un valor a la variable " +Lvalue + " -> " + aux.tipo_dato + " & " + tipo + " no son compatibles" + " -> Ambito Actual: "+top);  
                             }
                         }
                     }
                     else
                     {
-                        String tipoLval = aux.type;
+                        String tipoLval = aux.tipo_dato;
                         if(top.table.containsKey(Valor))
                         {
                             //Verificar tipos
-                             Info tmp = (Info) (top.table.get(Valor));
-                             if(tipoLval == tmp.type)
+                             t_simbolo tmp = (t_simbolo) (top.table.get(Valor));
+                             if(tipoLval == tmp.tipo_dato)
                              {
-                                 if(tmp.value == null)
+                                 if(tmp.valor == null)
                                  {
                                      System.out.println("  Error: No se puede asignar un valor nulo a la variable " + Lvalue + " -> Ambito Actual: "+top);
                                  }
                                  else
                                  {
-                                    aux.value = tmp.value;
-                                    top.table.replace(Lvalue, aux.value);
-                                    System.out.println("  Nuevo valor para el identificador "+Lvalue+ " -> Valor: "+aux.value + " -> Ambito Actual: "+top);
+                                    aux.valor = tmp.valor;
+                                    top.table.replace(Lvalue, aux.valor);
+                                    System.out.println("  Nuevo valor para el identificador "+Lvalue+ " -> Valor: "+aux.valor + " -> Ambito Actual: "+top);
+                            for (int i = 0; i < t_salida.size(); i++) {
+                                if (t_salida.get(i).nombre.compareTo(Lvalue)==0) {
+                                    Salida element = new Salida(Lvalue, aux);
+                                    t_salida.set(i, element);
+                                    break;
+                                }
+                            }                                    
                                  }
                              }
                              else
                              {
-                                 System.out.println("  Error: No se puede asignar un valor a la variable " +Lvalue + " -> " + tipoLval + " & " + tmp.type + " no son compatibles" + " -> Ambito Actual: "+top);
+                                 System.out.println("  Error: No se puede asignar un valor a la variable " +Lvalue + " -> " + tipoLval + " & " + tmp.tipo_dato + " no son compatibles" + " -> Ambito Actual: "+top);
                              }
 
                         }
@@ -382,11 +409,18 @@ public class Env  {
                         {
                             if(Valor.contains("\""))
                             {
-                                if(aux.type == "string")
+                                if(aux.tipo_dato == "STR")
                                 {
-                                     aux.value = Valor;
+                                     aux.valor = Valor;
                                      top.table.replace(Lvalue, aux);            
                                      System.out.println("  Nuevo valor para el identificador "+Lvalue+ " -> Valor: "+Valor + " -> Ambito Actual: "+top);
+                            for (int i = 0; i < t_salida.size(); i++) {
+                                if (t_salida.get(i).nombre.compareTo(Lvalue)==0) {
+                                    Salida element = new Salida(Lvalue, aux);
+                                    t_salida.set(i, element);
+                                    break;
+                                }
+                            }                                     
 
                                 }
                                 else
@@ -421,8 +455,8 @@ public class Env  {
     }
         public static String ReturnVal(String S)
     {
-        Info aux = (Info) (top.table.get(S));       
-        return aux.value.toString();
+        t_simbolo aux = (t_simbolo) (top.table.get(S));       
+        return aux.valor.toString();
     }
     
 

@@ -35,6 +35,17 @@ public t_simbolo(String simbolo,String tipo_dato, String tipo){
     this.tipo_dato = tipo_dato;
     
 }
+
+   public String getType()
+   {
+       return tipo_dato;
+   }
+   
+   public Object getValue()
+   {
+       return tipo_dato;
+   }
+    
    
     
 }

@@ -532,4 +532,13 @@ public class Env  {
        }
        
    }
+   
+   public static boolean existe_clase(String id){
+       if (root.table.containsKey(id)) {
+           return true;
+       }
+       else{
+       return false;
+       }
+   }
 }
